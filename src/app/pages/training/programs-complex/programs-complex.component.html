@@ -1,0 +1,14 @@
+
+
+
+<mat-list role="list">
+    <ng-container *ngFor="let complex of programComplexes; let last = last">
+        <mat-list-item 
+          (click)="complexClick(complex.id)" 
+          role="listitem"
+        >
+          {{complex.name}}
+        </mat-list-item>
+        <mat-divider *ngIf="!last"></mat-divider>
+    </ng-container>
+</mat-list>
