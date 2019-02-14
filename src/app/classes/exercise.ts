@@ -6,14 +6,14 @@ export class Exercise extends Mappable {
     protoLink: ProtoExercise;
     private _tryes: MyTry[] = [];
     private _comment: string;
-    
+
     public get tryes(): MyTry[] {
         return this._tryes;
     }
     public set tryes(value: MyTry[]) {
         this._tryes = value;
     }
-    
+
     public get comment(): string {
         return this._comment;
     }
@@ -21,9 +21,13 @@ export class Exercise extends Mappable {
         this._comment = value;
     }
 
-
     get name() { return this.protoLink.name; }
     get description() { return this.protoLink.description; }
 
-
+    constructor(data?: any) {
+        super(data);
+        if (data) {
+            Object.assign(this, data);
+        }
+    }
 }

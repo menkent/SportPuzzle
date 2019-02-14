@@ -12,18 +12,25 @@ export class MyTry extends Mappable {
     public set type(value: MyTryTypes) {
         this._type = value;
     }
-    
+
     public get weight(): number {
         return this._weight;
     }
     public set weight(value: number) {
         this._weight = value;
     }
-    
+
     public get repeatCount(): number {
         return this._repeatCount;
     }
     public set repeatCount(value: number) {
         this._repeatCount = value;
+    }
+
+    constructor(data?: any) {
+        super(data);
+        if (data) {
+            Object.assign(this, data);
+        }
     }
 }

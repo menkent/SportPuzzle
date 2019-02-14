@@ -4,12 +4,12 @@ export class Mappable {
     public toJson(): string {
       return JSON.stringify(this.toMap());
     }
-  
+
     // toMap
     public toMap(obj: any = this): any {
       return this.objToMap(obj);
     }
-  
+
     // objToMap
     private objToMap(obj: any = this): any {
       if (obj === null) {
@@ -79,11 +79,10 @@ export class Mappable {
       }
       return objValues;
     }
-  
 
-    constructor(data?: any) {
-        if (data) {
-          Object.assign(this, data);
-        }
-      }
+  constructor(data?: any) {
+    if (data) {
+      Object.assign(this, data);
+    }
+  }
 }

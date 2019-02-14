@@ -11,14 +11,14 @@ export class ProtoExercise extends Mappable {
     public set name(value: string) {
         this._name = value;
     }
-    
+
     public get description(): string {
         return this._description;
     }
     public set description(value: string) {
         this._description = value;
     }
-    
+
     public get videoLink(): string {
         return this._videoLink;
     }
@@ -26,5 +26,10 @@ export class ProtoExercise extends Mappable {
         this._videoLink = value;
     }
 
-
+    constructor(data?: any) {
+        super(data);
+        if (data) {
+            Object.assign(this, data);
+        }
+    }
 }

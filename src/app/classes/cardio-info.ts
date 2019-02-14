@@ -13,21 +13,21 @@ export class CardioInfo extends Mappable {
     public set cardioType(value: CardioTypes) {
         this._cardioType = value;
     }
-    
+
     public get averagePulse(): number {
         return this._averagePulse;
     }
     public set averagePulse(value: number) {
         this._averagePulse = value;
     }
-    
+
     public get averageSpeed(): number {
         return this._averageSpeed;
     }
     public set averageSpeed(value: number) {
         this._averageSpeed = value;
     }
-    
+
     public get time(): number {
         return this._time;
     }
@@ -41,5 +41,10 @@ export class CardioInfo extends Mappable {
         return finded && finded.name || '';
     }
 
-
+    constructor(data?: any) {
+        super(data);
+        if (data) {
+            Object.assign(this, data);
+        }
+    }
 }

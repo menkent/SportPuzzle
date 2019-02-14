@@ -1,3 +1,78 @@
-<p>
-  trainig works!
-</p>
+
+
+<mat-divider></mat-divider>
+<mat-toolbar>
+  <button (click)="showDebug()">Отобразить инфу!</button>
+
+</mat-toolbar>
+<mat-divider></mat-divider>
+<form ngForm #f *ngIf="trainig">
+  <div class="container">
+
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Дата тренеровки"
+          name="trainingDate" 
+          [(ngModel)]="trainig.date"
+        >
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field>
+          <input matInput type="number" min="30" max="150" placeholder="Вес" name="userWeight" [(ngModel)]="trainig.userWeight">
+      </mat-form-field>
+
+  </div>
+  <mat-divider></mat-divider>
+
+  <div class="container">
+    <span class="mat-h3">Стартовое кардио</span>
+  </div>
+  <mat-divider></mat-divider>
+
+  <div class="container">
+    <span class="mat-h3">Разминка</span>
+  </div>
+  <mat-divider></mat-divider>
+
+  <div class="container">
+    <span class="mat-h3">Упражнения</span>
+    <mat-vertical-stepper [linear]="false" #stepper>
+        <ng-container *ngFor="let protoExercise of protoTrainig.exercises; let last = last;">
+            <mat-step>
+                <ng-template matStepLabel>{{ protoExercise.name }}</ng-template>
+                <mat-form-field>
+                  <input matInput placeholder="Last name, First name" required>
+                </mat-form-field>
+                <div *ngIf="!last">
+                  <button mat-raised-button matStepperNext color="primary">Next</button>
+                </div>
+                <div *ngIf="last">
+                  <button mat-raised-button color="primary" (click)="finishExercise()">Next</button>
+                </div>
+            </mat-step>
+        </ng-container>
+
+        <mat-step>
+            <ng-template matStepLabel>Растяжка</ng-template>
+            <span class="mat-h3">Растяжка</span>
+            <div>
+              <button mat-raised-button matStepperNext color="primary">Next</button>
+            </div>
+        </mat-step>
+
+        <mat-step>
+            <ng-template matStepLabel>Финальное кардио</ng-template>
+            <span class="mat-h3">Финальное кардио</span>
+            <div>
+              <button mat-raised-button matStepperNext color="primary">Next</button>
+            </div>
+        </mat-step>
+
+      </mat-vertical-stepper>
+  </div>
+  <mat-divider></mat-divider>
+
+
+  
+</form>

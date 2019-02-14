@@ -13,14 +13,14 @@ export class User extends Mappable {
     public set id(value: string) {
         this._id = value;
     }
-    
+
     public get programComplexes(): ProgramComplex[] {
         return this._programComplexes;
     }
     public set programComplexes(value: ProgramComplex[]) {
         this._programComplexes = value;
     }
-    
+
     public get trainigs(): Training[] {
         return this._trainigs;
     }
@@ -28,5 +28,10 @@ export class User extends Mappable {
         this._trainigs = value;
     }
 
-    
+    constructor(data?: any) {
+        super(data);
+        if (data) {
+            Object.assign(this, data);
+        }
+    }
 }

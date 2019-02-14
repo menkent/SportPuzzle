@@ -12,14 +12,14 @@ export class ProtoTraining extends Mappable {
     public set name(value: string) {
         this._name = value;
     }
-    
+
     public get id(): string {
         return this._id;
     }
     public set id(value: string) {
         this._id = value;
     }
-    
+
     public get exercises(): ProtoExercise[] {
         return this._exercises;
     }
@@ -27,4 +27,10 @@ export class ProtoTraining extends Mappable {
         this._exercises = value;
     }
 
+    constructor(data?: any) {
+        super(data);
+        if (data) {
+            Object.assign(this, data);
+        }
+    }
 }

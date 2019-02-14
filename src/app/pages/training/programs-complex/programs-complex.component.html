@@ -1,14 +1,31 @@
 
 
+<ng-container *ngFor="let complex of programComplexes; let last = last">
+  <mat-expansion-panel>
 
-<mat-list role="list">
-    <ng-container *ngFor="let complex of programComplexes; let last = last">
-        <mat-list-item 
-          (click)="complexClick(complex.id)" 
-          role="listitem"
-        >
-          {{complex.name}}
-        </mat-list-item>
-        <mat-divider *ngIf="!last"></mat-divider>
-    </ng-container>
-</mat-list>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{complex.name}}
+      </mat-panel-title>
+      <mat-panel-description>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    {{ complex.comment }}
+    <mat-list role="list">
+        <ng-container *ngFor="let trainig of complex.protoTrainigs; let last = last">
+            <mat-list-item 
+              (click)="trainigClick(trainig.id)"
+              role="listitem"
+            >
+            {{ trainig.name }}
+            </mat-list-item>
+            <mat-divider *ngIf="!last"></mat-divider>
+        </ng-container>
+    </mat-list>
+
+  </mat-expansion-panel>
+  <mat-divider *ngIf="!last"></mat-divider>
+</ng-container>
+
+
+

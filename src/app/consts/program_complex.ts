@@ -25,18 +25,23 @@ const protoExercises = [
         description: 'ну короче тащи на себя с прямой спиной',
         videoLink: '',
     }),
-]
+];
 
 
 const TestProtoTrainig = new ProtoTraining({
     name: 'test proto training 1',
     id: '1',
-    exercises: [protoExercises],
+    exercises: protoExercises,
 });
 
+const TestProtoTrainig2 = new ProtoTraining({
+    name: 'test proto ___ 22',
+    id: '2',
+    exercises: protoExercises,
+});
 
 export const PROGCOMPLEX = new ProgramComplex({
     id: 'tasdtatdajhb',
     name: 'test 1',
-    protoTrainigs: [TestProtoTrainig],
+    protoTrainigs: [TestProtoTrainig, TestProtoTrainig2],
 });

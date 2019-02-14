@@ -1,25 +1,25 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ProgramsComplexComponent } from './programs-complex/programs-complex.component';
-import { ComplexInfoComponent } from './complex-info/complex-info.component';
 import { TrainigInfoComponent } from './trainig-info/trainig-info.component';
 import { TrainigComponent } from './trainig/trainig.component';
 
 const routes: Routes = [
   {
-    path: "",
+    path: '',
     component: ProgramsComplexComponent
   },
   {
-    path: "complex-info",
-    component: ComplexInfoComponent,
-  },
-  {
-    path: "trainig-info/:id",
+    path: 'trainig-info/:id',
     component: TrainigInfoComponent,
   },
   {
-    path: "trainig",
+    path: 'trainig',
+    redirectTo: '',
+    pathMatch: 'full'
+  },
+  {
+    path: 'trainig/:protoid',
     component: TrainigComponent,
   }
 ];
