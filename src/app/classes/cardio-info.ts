@@ -2,10 +2,10 @@ import { Mappable } from './mappable';
 import { CardioTypes, CardioTypesHB } from './cardio-types.enum';
 
 export class CardioInfo extends Mappable {
-    private _cardioType: CardioTypes;
+    private _cardioType: CardioTypes = CardioTypes.RUNNING;
     private _averagePulse: number;
     private _averageSpeed: number;
-    private _time: number; // in seconds
+    private _time: number = 0; // in seconds
 
     public get cardioType(): CardioTypes {
         return this._cardioType;

@@ -9,7 +9,7 @@
 <form ngForm #f *ngIf="trainig">
   <div class="container">
 
-      <mat-form-field>
+      <mat-form-field class="col-6 col-md-6">
         <input matInput [matDatepicker]="picker" placeholder="Дата тренеровки"
           name="trainingDate" 
           [(ngModel)]="trainig.date"
@@ -18,14 +18,14 @@
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field class="col-6 col-md-6">
           <input matInput type="number" min="30" max="150" placeholder="Вес" name="userWeight" [(ngModel)]="trainig.userWeight">
       </mat-form-field>
 
   </div>
   <mat-divider></mat-divider>
 
-  <div class="container">
+  <!-- <div class="container">
     <span class="mat-h3">Стартовое кардио</span>
   </div>
   <mat-divider></mat-divider>
@@ -33,29 +33,51 @@
   <div class="container">
     <span class="mat-h3">Разминка</span>
   </div>
-  <mat-divider></mat-divider>
+  <mat-divider></mat-divider> -->
 
   <div class="container">
-    <span class="mat-h3">Упражнения</span>
-    <mat-vertical-stepper [linear]="false" #stepper>
+    
+    <mat-vertical-stepper [linear]="false" #stepper
+    (selectionChange)="cardioStart.stop(); cardioEnd.stop();"
+    >
+
+        <mat-step>
+            <ng-template matStepLabel>Стартовое кардио</ng-template>
+            
+            <app-cardio-try #cardioStart
+              [namespace]="trainig.cardioStart"
+            ></app-cardio-try>
+
+            <div>
+              <button mat-raised-button matStepperNext color="primary">Next</button>
+            </div>
+        </mat-step>
+    
+        <mat-step>
+            <ng-template matStepLabel>Разминка</ng-template>
+            <app-my-warm></app-my-warm>
+            <div>
+              <button mat-raised-button matStepperNext color="primary">Next</button>
+            </div>
+        </mat-step>
+
+        <!-- УПРАЖНЕНИЯ -->
         <ng-container *ngFor="let protoExercise of protoTrainig.exercises; let last = last;">
             <mat-step>
                 <ng-template matStepLabel>{{ protoExercise.name }}</ng-template>
-                <mat-form-field>
-                  <input matInput placeholder="Last name, First name" required>
-                </mat-form-field>
-                <div *ngIf="!last">
+                
+                <!-- список подходов, кнопка добавления подхода. По завершению этого - нужно убрать пустые подходы -->
+                <app-my-try></app-my-try>
+
+                <div>
                   <button mat-raised-button matStepperNext color="primary">Next</button>
-                </div>
-                <div *ngIf="last">
-                  <button mat-raised-button color="primary" (click)="finishExercise()">Next</button>
                 </div>
             </mat-step>
         </ng-container>
 
         <mat-step>
             <ng-template matStepLabel>Растяжка</ng-template>
-            <span class="mat-h3">Растяжка</span>
+            <app-my-stretching></app-my-stretching>
             <div>
               <button mat-raised-button matStepperNext color="primary">Next</button>
             </div>
@@ -63,7 +85,11 @@
 
         <mat-step>
             <ng-template matStepLabel>Финальное кардио</ng-template>
-            <span class="mat-h3">Финальное кардио</span>
+
+            <app-cardio-try #cardioEnd
+              [namespace]="trainig.cardioEnd"
+            ></app-cardio-try>
+
             <div>
               <button mat-raised-button matStepperNext color="primary">Next</button>
             </div>

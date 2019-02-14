@@ -1,0 +1,71 @@
+@import "variables.scss";
+@import "mixin.scss";
+
+*,
+*:after,
+*:before {
+  margin: 0;
+    padding: 0;
+    box-sizing: border-box; 
+}
+
+.wrapper {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.container {}
+
+[class*='col-'] {
+    float: left;
+    padding: 0 1rem;
+    width: 100%;
+    min-height: 1px; 
+}
+
+.row-flex {
+    display: flex;
+}
+
+.row-flex-center {
+    align-items: center;
+}
+
+@for $i from 1 through $grid-columns {      
+    .col-#{$i} {         
+        width: 100% / $grid-columns * $i;   
+    }
+}  
+
+// @include grid-generator(xs, 12);
+
+// @include respond-from(sm) {
+// 	@include grid-generator(sm, 12);
+// }
+
+// @include respond-from(md) {
+// 	@include grid-generator(md, 12);
+// }
+
+ 
+
+@media #{$breakpoint-medium} {
+    .wrapper {      
+        width: 95%;
+        max-width: $grid-max-width;     
+    }
+
+    @for $i from 1 through $grid-columns {      
+        .col-md-#{$i} {         
+            width: 100% / $grid-columns * $i;   
+        }           
+    } 
+}
+
+@media #{$breakpoint-xsmall} {
+    // @for $i from 1 through $grid-columns {      
+    //     .col-xs-#{$i} {         
+    //         width: 100% / $grid-columns * $i;   
+    //     }           
+    // } 
+}

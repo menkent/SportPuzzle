@@ -25,17 +25,27 @@ const protoExercises = [
         description: 'ну короче тащи на себя с прямой спиной',
         videoLink: '',
     }),
+    new ProtoExercise({
+        name: 'Французский жим',
+        description: 'фвфв',
+        videoLink: '',
+    }),
+    new ProtoExercise({
+        name: 'Разведение рук в тренажёре-бабочке',
+        description: 'Локти должны быть развёрнуты',
+        videoLink: '',
+    }),
 ];
 
 
 const TestProtoTrainig = new ProtoTraining({
-    name: 'test proto training 1',
+    name: 'Тренеровка день 1: спина, трицепс',
     id: '1',
     exercises: protoExercises,
 });
 
 const TestProtoTrainig2 = new ProtoTraining({
-    name: 'test proto ___ 22',
+    name: 'Тренеровка день 2: ноги, бицепс',
     id: '2',
     exercises: protoExercises,
 });

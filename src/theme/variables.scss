@@ -1,0 +1,14 @@
+
+// grid variables
+$grid-columns: 12;
+$grid-max-width: 65em;
+ 
+ 
+// breakpoints
+$br-xsmall: "480";
+$br-small: "720";
+$br-medium: "1024";
+
+$breakpoint-xsmall: "only screen and (min-width: #{$br-xsmall}dp)";
+$breakpoint-small: "only screen and (min-width: #{$br-small}dp)";
+$breakpoint-medium: "only screen and (min-width: #{$br-medium}dp)";

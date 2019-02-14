@@ -60,5 +60,8 @@ export class Training extends Mappable {
         }
     }
 
-
+    init() {
+        this.cardioStart = new CardioInfo();
+        this.cardioEnd = new CardioInfo();
+    }
 }

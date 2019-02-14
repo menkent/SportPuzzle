@@ -33,6 +33,7 @@ export class TrainigComponent implements OnInit {
         protoTrainig: this.protoTrainig,
         date: new Date(),
       });
+      this.trainig.init();
     });
 
 

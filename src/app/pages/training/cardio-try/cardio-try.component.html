@@ -1,0 +1,31 @@
+<div class="row-flex">
+  <mat-form-field class="col-6">
+    <mat-label>Тип Кардио</mat-label>
+    <mat-select #cardioType [(value)]="namespace.cardioType">
+      <ng-container *ngFor="let cardioType of CardioTypesHB">
+        <mat-option [value]="cardioType.sysname">{{ cardioType.name }}</mat-option>
+      </ng-container>
+    </mat-select>
+  </mat-form-field>
+    
+  <mat-form-field class="col-6">
+      <input matInput type="number" min="0" max="50" placeholder="averageSpeed" name="averageSpeed" [(ngModel)]="namespace.averageSpeed">
+  </mat-form-field>
+  
+  <!-- <mat-form-field class="col-6">
+      <input matInput type="number" min="0" max="50" placeholder="averagePulse" name="averagePulse" [(ngModel)]="namespace.averagePulse">
+  </mat-form-field> -->
+
+  
+</div>
+<div class="row-flex row-flex-center">
+    <mat-form-field class="col-6">
+      <input matInput [disabled]="timerIsActive" type="time" placeholder="time" name="time" [(ngModel)]="viewedTime">
+    </mat-form-field>
+    <div class="col-6">
+        <button mat-raised-button color="accent" (click)="startStopClick()"
+          class="to-right-btn"
+        >{{ timerIsActive ? 'STOP' : 'START' }}</button>
+    </div>
+  
+</div>

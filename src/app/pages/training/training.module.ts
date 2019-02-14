@@ -10,13 +10,18 @@ import { MatListModule, MatDividerModule, MatIconModule, MatExpansionModule, Mat
   MatToolbarModule,
   MatButtonModule,
   MatButtonToggleModule,
-  MatStepperModule} from '@angular/material';
+  MatStepperModule,
+  MatSelectModule} from '@angular/material';
 import { TrainigInfoComponent } from './trainig-info/trainig-info.component';
 import { TrainigComponent } from './trainig/trainig.component';
 import { FormsModule } from '@angular/forms';
+import { MyTryComponent } from './my-try/my-try.component';
+import { CardioTryComponent } from './cardio-try/cardio-try.component';
+import { MyStretchingComponent } from './my-stretching/my-stretching.component';
+import { MyWarmComponent } from './my-warm/my-warm.component';
 
 @NgModule({
-  declarations: [ProgramsComplexComponent, TrainigInfoComponent, TrainigComponent],
+  declarations: [ProgramsComplexComponent, TrainigInfoComponent, TrainigComponent, MyTryComponent, CardioTryComponent, MyStretchingComponent, MyWarmComponent],
   imports: [
     CommonModule,
     TrainingRoutingModule,
@@ -31,11 +36,12 @@ import { FormsModule } from '@angular/forms';
     MatListModule,
     MatDividerModule,
     MatStepperModule,
+    MatSelectModule,
 
     MatExpansionModule,
     MatIconModule,
     MatDatepickerModule,
   ],
-  exports: [ProgramsComplexComponent, TrainigInfoComponent, TrainigComponent]
+  exports: [ProgramsComplexComponent, TrainigInfoComponent, TrainigComponent, MyTryComponent, CardioTryComponent, MyStretchingComponent, MyWarmComponent]
 })
 export class TrainingModule { }
