@@ -44,9 +44,10 @@ export class CardioTryComponent implements OnInit {
 
   stop() {
     if (!this.timerIsActive) return;
+    const timeLost = Math.floor(this.getTime() / 1000.);;
     this.timerIsActive = false;
     clearInterval(this.timer);
-    this.namespace.time += Math.floor(this.getTime() / 1000.);
+    this.namespace.time += timeLost;
   }
 
   start() {
