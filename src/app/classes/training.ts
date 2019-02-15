@@ -10,6 +10,7 @@ export class Training extends Mappable {
     private _userWeight: number;
     private _cardioStart: CardioInfo;
     private _cardioEnd: CardioInfo;
+    private _comment: string;
 
     public get protoTrainig(): ProtoTraining {
         return this._protoTrainig;
@@ -51,6 +52,13 @@ export class Training extends Mappable {
     }
     public set cardioEnd(value: CardioInfo) {
         this._cardioEnd = value;
+    }
+
+    public get comment(): string {
+        return this._comment;
+    }
+    public set comment(value: string) {
+        this._comment = value;
     }
 
     constructor(data?: any) {

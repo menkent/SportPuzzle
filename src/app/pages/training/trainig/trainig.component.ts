@@ -92,6 +92,10 @@ export class TrainigComponent implements OnInit {
     return exercise && exercise.tryes || [];
   }
 
+  getExerciseByProtoExercise(protoExercise: ProtoExercise) {
+    return this.trainig.getExercise(protoExercise);
+  }
+
   addNewTry(protoExercise: ProtoExercise) {
     // console.log('addNewTry::', protoExercise);
     const exercise = this.trainig.getExercise(protoExercise);

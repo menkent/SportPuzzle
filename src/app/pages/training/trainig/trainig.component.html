@@ -68,7 +68,7 @@
         </mat-step>
 
         <!-- УПРАЖНЕНИЯ -->
-        <ng-container *ngFor="let protoExercise of protoTrainig.exercises; let last = last;">
+        <ng-container *ngFor="let protoExercise of protoTrainig.exercises; let last = last; ">
             <mat-step>
                 <ng-template matStepLabel>
                     <div class="exercise-label-wrapper">
@@ -102,7 +102,7 @@
                     ></app-my-try>
                   </ng-container>
                 </div>  
-
+        
                 <!-- Кнопки -->
                 <div class="row btns-row">
                   <button mat-fab color="basic" class="add-try-btn"
@@ -110,6 +110,10 @@
                   >
                     <mat-icon>add</mat-icon>
                   </button>
+
+                  <!-- <button mat-fab color="primary" (click)="add_comment = true;">
+                    <mat-icon>add_comment</mat-icon>
+                  </button> -->
                 
                   <button mat-fab matStepperNext color="primary">
                       <mat-icon>arrow_forward</mat-icon>
@@ -138,6 +142,14 @@
       </mat-vertical-stepper>
   </div>
   <mat-divider></mat-divider>
+
+  <div class="container">
+    <div class="row">
+      <mat-form-field class="" class="col-12">
+        <textarea matInput name="commentTrainig" placeholder="Comment to Training" [(ngModel)]="trainig.comment"></textarea>
+      </mat-form-field>
+    </div>
+  </div>
 
   <div class="container final-trainig-wrapper">
     <div class="row btns-row solo-btn final">
