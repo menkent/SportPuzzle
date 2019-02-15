@@ -12,3 +12,20 @@ $br-medium: "1024";
 $breakpoint-xsmall: "only screen and (min-width: #{$br-xsmall}dp)";
 $breakpoint-small: "only screen and (min-width: #{$br-small}dp)";
 $breakpoint-medium: "only screen and (min-width: #{$br-medium}dp)";
+
+
+// colors
+$indigo: #3F51B5;
+$green: #4CAF50;
+$blue: #2196F3;
+$grey: #9E9E9E;
+$white: white;
+$whited: #E0E0E0;
+
+
+$main-green: $green;
+$main-blue: $indigo;
+$main-grey: black;
+$secondary-gray: $grey;
+
+

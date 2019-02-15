@@ -38,19 +38,25 @@
   <div class="container">
     
     <mat-vertical-stepper [linear]="false" #stepper
-    (selectionChange)="cardioStart.stop(); cardioEnd.stop();"
+    (selectionChange)="cardioStart.stop(); cardioEnd.stop(); changeSelection($event);"
     >
 
         <mat-step>
-            <ng-template matStepLabel>Стартовое кардио</ng-template>
+            <ng-template matStepLabel 
+                matStepLabel[completed]="true"
+              >Стартовое кардио</ng-template>
             
             <app-cardio-try #cardioStart
               [namespace]="trainig.cardioStart"
             ></app-cardio-try>
 
-            <div>
-              <button mat-raised-button matStepperNext color="primary">Next</button>
-            </div>
+            
+            <!-- Кнопки -->
+            <div class="row btns-row solo-btn">
+                <button mat-fab matStepperNext color="primary">
+                    <mat-icon>arrow_forward</mat-icon>
+                </button>
+              </div>
         </mat-step>
     
         <mat-step>
@@ -64,13 +70,50 @@
         <!-- УПРАЖНЕНИЯ -->
         <ng-container *ngFor="let protoExercise of protoTrainig.exercises; let last = last;">
             <mat-step>
-                <ng-template matStepLabel>{{ protoExercise.name }}</ng-template>
-                
-                <!-- список подходов, кнопка добавления подхода. По завершению этого - нужно убрать пустые подходы -->
-                <app-my-try></app-my-try>
+                <ng-template matStepLabel>
+                    <div class="exercise-label-wrapper">
+                      <div class="exercise-label-name">{{ protoExercise.name }}</div>
+                      
+                      <div class="exercise-label-icons">
+                          <button mat-icon-button
+                                  *ngIf="protoExercise.description"
+                                  (click)="openHelpDialogExercise(protoExercise)"
+                          >
+                              <mat-icon>help</mat-icon>
+                          </button>
+                          <button mat-icon-button
+                                  *ngIf="protoExercise.videoLink"
+                                  (click)="openVideoLinkExercise(protoExercise)">
+                              <mat-icon>videocam</mat-icon>
+                          </button>
+                          <!-- <button mat-icon-button>
+                              <mat-icon>find_replace</mat-icon>
+                          </button> -->
+                      </div>
 
-                <div>
-                  <button mat-raised-button matStepperNext color="primary">Next</button>
+                    </div>
+                </ng-template>
+
+                <!-- список подходов, кнопка добавления подхода. По завершению этого - нужно убрать пустые подходы -->
+                <div class="row">
+                  <ng-container *ngFor="let oneTry of getTryesByProtoExercise(protoExercise); let index = index;">
+                    <app-my-try 
+                      [namespace]="oneTry"
+                    ></app-my-try>
+                  </ng-container>
+                </div>  
+
+                <!-- Кнопки -->
+                <div class="row btns-row">
+                  <button mat-fab color="basic" class="add-try-btn"
+                    (click)="addNewTry(protoExercise)"
+                  >
+                    <mat-icon>add</mat-icon>
+                  </button>
+                
+                  <button mat-fab matStepperNext color="primary">
+                      <mat-icon>arrow_forward</mat-icon>
+                  </button>
                 </div>
             </mat-step>
         </ng-container>
@@ -89,16 +132,19 @@
             <app-cardio-try #cardioEnd
               [namespace]="trainig.cardioEnd"
             ></app-cardio-try>
-
-            <div>
-              <button mat-raised-button matStepperNext color="primary">Next</button>
-            </div>
+           
         </mat-step>
 
       </mat-vertical-stepper>
   </div>
   <mat-divider></mat-divider>
 
-
+  <div class="container final-trainig-wrapper">
+    <div class="row btns-row solo-btn final">
+        <button mat-fab color="basic" class="green-btn" (click)="trySave()">
+            <mat-icon>check</mat-icon>
+        </button>
+    </div>
+  </div>
   
 </form>

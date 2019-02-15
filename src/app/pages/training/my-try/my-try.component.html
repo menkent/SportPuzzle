@@ -1,3 +1,23 @@
-<p>
-  my-try works!
-</p>
+
+<div class="row">
+    <!-- <mat-form-field class="col-2"> -->
+        <!-- <input matInput disabled type="number" min="0" max="200" placeholder="Number" name="index" [(ngModel)]="namespace.index"> -->
+        
+    <!-- </mat-form-field> -->
+    <div class="col-2 vert-align">
+        <span class="mat-title sub-header">{{ namespace.index }}</span>
+    </div>
+    <mat-form-field class="col-5">
+        <input matInput type="number" min="0" max="200" placeholder="weight, kg" name="weight" [(ngModel)]="namespace.weight">
+        <button mat-button *ngIf="namespace.weight" matSuffix mat-icon-button aria-label="Clear" (click)="namespace.weight=''">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-form-field>
+    
+    <mat-form-field class="col-5">
+        <input matInput type="number" min="0" max="200" placeholder="repeatCount" name="repeatCount" [(ngModel)]="namespace.repeatCount">
+        <button mat-button *ngIf="namespace.repeatCount" matSuffix mat-icon-button aria-label="Clear" (click)="namespace.repeatCount=''">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-form-field>
+</div>

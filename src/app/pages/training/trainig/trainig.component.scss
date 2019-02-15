@@ -1,0 +1,36 @@
+
+.exercise-label-wrapper {
+    display: block;
+}
+
+.exercise-label-name {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    position: absolute;
+    display: block;
+    float: left;
+    width: calc(100% - 135px);
+    top: 28px;
+}
+
+.exercise-label-icons {
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 15px;
+}
+
+
+.btns-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+
+    &.solo-btn {
+        justify-content: flex-end;
+    }
+}
+
+.final-trainig-wrapper {
+    padding: 0.25rem 0;
+}

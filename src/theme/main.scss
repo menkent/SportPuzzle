@@ -1,5 +1,6 @@
 @import "variables.scss";
 @import "mixin.scss";
+@import "buttons.scss";
 
 *,
 *:after,
@@ -23,6 +24,11 @@
     min-height: 1px; 
 }
 
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .row-flex {
     display: flex;
 }
@@ -36,6 +42,12 @@
         width: 100% / $grid-columns * $i;   
     }
 }  
+
+
+
+.sub-header {
+    color: $secondary-gray;
+}
 
 // @include grid-generator(xs, 12);
 

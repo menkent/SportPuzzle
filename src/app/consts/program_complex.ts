@@ -8,12 +8,12 @@ const protoExercises = [
     new ProtoExercise({
         name: 'Жим ногами платформы лёжа',
         description: 'жим ногами платформы лёжа на спине',
-        videoLink: '',
+        videoLink: 'adasdasd',
     }),
     new ProtoExercise({
         name: 'Жим штанги от груди на горизонтальной скамье',
         description: 'Жим штанги от груди на горизонтальной скамье',
-        videoLink: '',
+        videoLink: 'asdadasdasd',
     }),
     new ProtoExercise({
         name: 'Становая тяга на прямых ногах (мёртвая тяга)',

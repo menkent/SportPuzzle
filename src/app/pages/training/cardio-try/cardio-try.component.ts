@@ -14,7 +14,7 @@ export class CardioTryComponent implements OnInit {
 
   private timeStart: number;
   private timerIsActive: boolean = false;
-  protected timeToView: string = '00:00'; 
+  protected timeToView: string = '00:00';
   protected timer: any;
 
   constructor() { }

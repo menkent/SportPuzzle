@@ -23,9 +23,9 @@
       <input matInput [disabled]="timerIsActive" type="time" placeholder="time" name="time" [(ngModel)]="viewedTime">
     </mat-form-field>
     <div class="col-6">
-        <button mat-raised-button color="accent" (click)="startStopClick()"
-          class="to-right-btn"
-        >{{ timerIsActive ? 'STOP' : 'START' }}</button>
+        <button mat-fab color="accent" (click)="startStopClick()" class="to-right-btn"> 
+            <mat-icon>{{ timerIsActive ? 'pause' : 'play_arrow' }}</mat-icon>
+        </button>
     </div>
   
 </div>

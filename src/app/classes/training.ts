@@ -64,4 +64,12 @@ export class Training extends Mappable {
         this.cardioStart = new CardioInfo();
         this.cardioEnd = new CardioInfo();
     }
+
+    getExercise(protoExercise) {
+        return this.exercises.find(ex => ex.protoLink === protoExercise);
+    }
+
+    getExercises(protoExercise) {
+        return this.exercises.filter(ex => ex.protoLink === protoExercise);
+    }
 }

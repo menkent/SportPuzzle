@@ -1,0 +1,18 @@
+@import "variables.scss";
+
+
+.green-btn {
+    background-color: $main-green;
+    color: $white;
+}
+
+.round-btn {
+    border: 1px solid $whited;
+    border-radius: 50%;
+}
+
+.add-try-btn {
+    background-color: $main-green;
+    color: $white;
+}
+

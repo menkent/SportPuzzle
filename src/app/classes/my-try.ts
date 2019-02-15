@@ -3,8 +3,9 @@ import { Mappable } from './mappable';
 
 export class MyTry extends Mappable {
     private _type: MyTryTypes = MyTryTypes.POWER;
-    private _weight: number = 0;
-    private _repeatCount: number = 0;
+    private _weight: number;
+    private _repeatCount: number;
+    private _index: number;
 
     public get type(): MyTryTypes {
         return this._type;
@@ -25,6 +26,17 @@ export class MyTry extends Mappable {
     }
     public set repeatCount(value: number) {
         this._repeatCount = value;
+    }
+
+    public get index(): number {
+        return this._index;
+    }
+    public set index(value: number) {
+        this._index = value;
+    }
+
+    isEmpty() {
+        return !this._repeatCount || this._repeatCount <= 0;
     }
 
     constructor(data?: any) {
