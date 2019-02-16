@@ -23,6 +23,7 @@ export class Exercise extends Mappable {
 
     get name() { return this.protoLink.name; }
     get description() { return this.protoLink.description; }
+    get isCompleted() { return this.tryes.length > 0;} // Упражнение считается выполненным, если есть хоть 1 подход
 
     constructor(data?: any) {
         super(data);

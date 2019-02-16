@@ -35,6 +35,9 @@ export class CardioInfo extends Mappable {
         this._time = value;
     }
 
+    get isCompleted() {
+        return this.time;
+    }
 
     get typeName() {
         const finded = CardioTypesHB.find( ({sysname}) => sysname === this.cardioType);

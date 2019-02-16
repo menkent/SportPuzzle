@@ -7,7 +7,6 @@ import { mergeMap } from 'rxjs/operators';
 import { MatVerticalStepper } from '@angular/material';
 import { Exercise } from 'src/app/classes/exercise';
 import { ProtoExercise } from 'src/app/classes/proto-exercise';
-import { PortalInjector } from '@angular/cdk/portal';
 import { MyTry } from 'src/app/classes/my-try';
 
 @Component({
@@ -33,26 +32,21 @@ export class TrainigComponent implements OnInit {
 
       console.log('========', this.protoTrainig);
       // Пока всегда создаём новую программу, позже научиться загружать из локалстоража
+      // То есть мы ищем НЕ ЗАВЕРШЕННУЮ тренеровку в локал-стораже, если она там есть, то показываем её
+      // Если же дата отличается более чем на 5-6 часов, то предупреждаем, что загружена совсем старая тренеровка, предлагаем начать новую (закрыв старую!!)
+
       this.trainig = new Training({
         protoTrainig: this.protoTrainig,
         date: new Date(),
       });
       this.trainig.init();
     });
-
-
-    // this.route.paramMap
   }
 
 
   showDebug() {
     console.log(this.protoTrainig);
     console.log(this.trainig);
-  }
-
-
-  finishExercise() {
-    console.log('finishExercise::', this.stepper);
   }
 
   changeSelection(event) {
@@ -102,6 +96,7 @@ export class TrainigComponent implements OnInit {
     if (!exercise) {
       return;
     }
+    
     const nTry = new MyTry();
     nTry.index = exercise.tryes.length;
     exercise.tryes.push(nTry);
@@ -117,7 +112,8 @@ export class TrainigComponent implements OnInit {
 
   trySave() {
     // todo: Проверить, всё ли заполнено, если да, то сохранить и перейти назад в навигаторе
-    console.log('trySave::', this.trainig);
+    console.log('trySave::', this.trainig, this.trainig.canComplete);
+
   }
 
 }

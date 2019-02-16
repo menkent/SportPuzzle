@@ -12,7 +12,8 @@ import { MatListModule, MatDividerModule, MatIconModule, MatExpansionModule, Mat
   MatButtonToggleModule,
   MatStepperModule,
   MatSelectModule,
-  MatRippleModule} from '@angular/material';
+  MatRippleModule,
+  MatDialogModule} from '@angular/material';
 import { TrainigInfoComponent } from './trainig-info/trainig-info.component';
 import { TrainigComponent } from './trainig/trainig.component';
 import { FormsModule } from '@angular/forms';
@@ -39,6 +40,7 @@ import { MyWarmComponent } from './my-warm/my-warm.component';
     MatStepperModule,
     MatSelectModule,
     MatRippleModule,
+    MatDialogModule,
 
     MatExpansionModule,
     MatIconModule,

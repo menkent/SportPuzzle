@@ -2,6 +2,7 @@ import { Exercise } from './exercise';
 import { Mappable } from './mappable';
 import { CardioInfo } from './cardio-info';
 import { ProtoTraining } from './proto-training';
+import { ProtoExercise } from './proto-exercise';
 
 export class Training extends Mappable {
     private _protoTrainig: ProtoTraining;
@@ -11,6 +12,7 @@ export class Training extends Mappable {
     private _cardioStart: CardioInfo;
     private _cardioEnd: CardioInfo;
     private _comment: string;
+    private _isCompleted: boolean = false; // Определет, что тренировка завершена, значит её можно использовать для анализа
 
     public get protoTrainig(): ProtoTraining {
         return this._protoTrainig;
@@ -61,6 +63,30 @@ export class Training extends Mappable {
         this._comment = value;
     }
 
+    public get isCompleted(): boolean {
+        return this._isCompleted;
+    }
+    public set isCompleted(value: boolean) {
+        this._isCompleted = value;
+    }
+
+    get canComplete() {
+        // Нужно, чтобы были выполнены все упражнения
+        if (this.protoTrainig.exercises.length === this.exercises.length) {
+            for(let i = 0; i < this.exercises.length; i++) {
+                if (!this.exercises[i].isCompleted) {
+                    return false;
+                }
+            }
+        }
+        // Минимум 1 кардио
+        if (!(this.cardioEnd.isCompleted || this.cardioStart.isCompleted)) {
+            return false;
+        }
+
+        return true;
+    }
+
     constructor(data?: any) {
         super(data);
         if (data) {
@@ -71,6 +97,7 @@ export class Training extends Mappable {
     init() {
         this.cardioStart = new CardioInfo();
         this.cardioEnd = new CardioInfo();
+        this.exercises = this.protoTrainig.exercises.map((exer: ProtoExercise) => new Exercise({protoLink: exer}));
     }
 
     getExercise(protoExercise) {
