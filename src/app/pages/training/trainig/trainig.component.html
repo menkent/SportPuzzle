@@ -77,13 +77,13 @@
                       <div class="exercise-label-icons">
                           <button mat-icon-button
                                   *ngIf="protoExercise.description"
-                                  (click)="openHelpDialogExercise(protoExercise)"
+                                  (click)="openHelpDialogExercise(protoExercise, $event);"
                           >
                               <mat-icon>help</mat-icon>
                           </button>
                           <button mat-icon-button
                                   *ngIf="protoExercise.videoLink"
-                                  (click)="openVideoLinkExercise(protoExercise)">
+                                  (click)="openVideoLinkExercise(protoExercise, $event)">
                               <mat-icon>videocam</mat-icon>
                           </button>
                           <!-- <button mat-icon-button>

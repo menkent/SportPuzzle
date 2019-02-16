@@ -8,26 +8,7 @@ import { MatCardModule, MatMenuModule, MatIconModule, MatButtonModule,
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { DemoMaterialModule } from './material-module.module';
-
-const modules = [
-
-  MatProgressBarModule,
-  MatCardModule,
-  MatMenuModule,
-  MatIconModule,
-  MatButtonModule,
-  MatToolbarModule,
-  MatListModule,
-  MatDividerModule,
-  // DemoMaterialModule,
-
-  BrowserModule,
-  AppRoutingModule,
-  BrowserAnimationsModule,
-  MatNativeDateModule,
-
-];
+import { SportCommonModule } from './sport-common/sport-common.module';
 
 @NgModule({
   declarations: [
@@ -37,6 +18,7 @@ const modules = [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    SportCommonModule,
 
     MatProgressBarModule,
     MatCardModule,

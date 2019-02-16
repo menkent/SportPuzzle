@@ -21,6 +21,7 @@ import { MyTryComponent } from './my-try/my-try.component';
 import { CardioTryComponent } from './cardio-try/cardio-try.component';
 import { MyStretchingComponent } from './my-stretching/my-stretching.component';
 import { MyWarmComponent } from './my-warm/my-warm.component';
+import { SportCommonModule } from 'src/app/sport-common/sport-common.module';
 
 @NgModule({
   declarations: [ProgramsComplexComponent, TrainigInfoComponent, TrainigComponent, MyTryComponent, CardioTryComponent, MyStretchingComponent, MyWarmComponent],
@@ -40,7 +41,7 @@ import { MyWarmComponent } from './my-warm/my-warm.component';
     MatStepperModule,
     MatSelectModule,
     MatRippleModule,
-    MatDialogModule,
+    SportCommonModule,
 
     MatExpansionModule,
     MatIconModule,

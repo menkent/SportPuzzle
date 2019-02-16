@@ -4,10 +4,11 @@ import { ProtoTraining } from 'src/app/classes/proto-training';
 import { Training } from 'src/app/classes/training';
 import { ProgramsService } from 'src/app/services/programs.service';
 import { mergeMap } from 'rxjs/operators';
-import { MatVerticalStepper } from '@angular/material';
+import { MatVerticalStepper, MatDialog } from '@angular/material';
 import { Exercise } from 'src/app/classes/exercise';
 import { ProtoExercise } from 'src/app/classes/proto-exercise';
 import { MyTry } from 'src/app/classes/my-try';
+import { DialogInfoService } from 'src/app/sport-common/dialog-info.service';
 
 @Component({
   selector: 'app-trainig',
@@ -21,7 +22,7 @@ export class TrainigComponent implements OnInit {
 
   @ViewChild(MatVerticalStepper) stepper: MatVerticalStepper;
 
-  constructor(private route: ActivatedRoute, private programService: ProgramsService) { }
+  constructor(private route: ActivatedRoute, private programService: ProgramsService, private dialogInfo: DialogInfoService) { }
 
   ngOnInit() {
 
@@ -47,6 +48,14 @@ export class TrainigComponent implements OnInit {
   showDebug() {
     console.log(this.protoTrainig);
     console.log(this.trainig);
+  }
+
+  openDialog(data, callback?): void {
+    this.dialogInfo.openDialog(data, (result) => {
+      if (callback) {
+        callback(result);
+      }
+    });
   }
 
   changeSelection(event) {
@@ -102,17 +111,36 @@ export class TrainigComponent implements OnInit {
     exercise.tryes.push(nTry);
   }
 
-  openHelpDialogExercise(protoExercise: ProtoExercise) {
-      console.log('openHelpDialogExercise::', protoExercise.description);
+  openHelpDialogExercise(protoExercise: ProtoExercise, event: MouseEvent) {
+      console.log('openHelpDialogExercise::', event);
+      event.stopPropagation();
+      this.openDialog({info: protoExercise.description});
   }
 
-  openVideoLinkExercise(protoExercise: ProtoExercise) {
+  openVideoLinkExercise(protoExercise: ProtoExercise, event: MouseEvent) {
     console.log('openVideoLinkExercise::', protoExercise.videoLink);
+    event.stopPropagation();
   }
+
+  private _closeTrainig() {
+    console.log('Close Trainig');
+  };
 
   trySave() {
     // todo: Проверить, всё ли заполнено, если да, то сохранить и перейти назад в навигаторе
     console.log('trySave::', this.trainig, this.trainig.canComplete);
+    if (!this.trainig.canComplete) {
+      this.openDialog({
+          info: 'Не все упрежнения выполнены. Завершить тренеровку?',
+          btnOk: true
+        }, (res) => {
+          if (res) {
+            this._closeTrainig();
+          }
+      });
+    } else {
+      this._closeTrainig();
+    }
 
   }
 
