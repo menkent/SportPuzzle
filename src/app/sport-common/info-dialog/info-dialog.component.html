@@ -1,6 +1,6 @@
 <h1 *ngIf="data.title" mat-dialog-title>{{data.title}}</h1>
 <div mat-dialog-content>
-  <p>{{ data.info }}</p>
+  <p innerHtml="{{ data.info }}"></p>
 </div>
 
 <mat-dialog-actions align="end" *ngIf="data.btnOk">

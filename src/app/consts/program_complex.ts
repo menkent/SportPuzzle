@@ -2,75 +2,71 @@ import { ProgramComplex } from '../classes/program-complex';
 import { ProtoTraining } from '../classes/proto-training';
 import { ProtoExercise } from '../classes/proto-exercise';
 import { User } from '../classes/user';
+import { protoExercisesAndrewDay1, protoExercisesAndrewDay2, protoExercisesAndrewDay3 } from './proto-exercises-andrew';
+import { protoExercisesVikaDay1, protoExercisesVikaDay2, protoExercisesVikaDay3 } from './proto-exercises-vika';
 
 
 
-const protoExercises = [
-    new ProtoExercise({
-        id: '111',
-        name: 'Жим ногами платформы лёжа',
-        description: 'жим ногами платформы лёжа на спине',
-        videoLink: 'https://youtu.be/B_9Vh-GiAcQ',
-    }),
-    new ProtoExercise({
-        id: '222',
-        name: 'Жим штанги от груди на горизонтальной скамье',
-        description: 'Жим штанги от груди на горизонтальной скамье',
-        videoLink: '',
-    }),
-    new ProtoExercise({
-        id: '333',
-        name: 'Становая тяга на прямых ногах (мёртвая тяга)',
-        description: 'ну короче тащи снизу вверху, сдирая колени',
-        videoLink: '',
-    }),
-    new ProtoExercise({
-        id: '444',
-        name: 'Тяга горизонтального блока к поясу (гребля)',
-        description: 'ну короче тащи на себя с прямой спиной',
-        videoLink: '',
-    }),
-    new ProtoExercise({
-        id: '555',
-        name: 'Французский жим',
-        description: 'фвфв',
-        videoLink: '',
-    }),
-    new ProtoExercise({
-        id: '666',
-        name: 'Разведение рук в тренажёре-бабочке',
-        description: 'Локти должны быть развёрнуты',
-        videoLink: '',
-    }),
-];
 
 
-const TestProtoTrainig = new ProtoTraining({
-    name: 'Тренеровка день 1: спина, трицепс',
+
+const TestProtoTrainigVika1 = new ProtoTraining({
+    name: 'ДЕНЬ 1: ноги, спина(широчайшие), бицепс',
     id: '1',
-    exercises: protoExercises,
+    exercises: protoExercisesVikaDay1,
 });
 
-const TestProtoTrainig2 = new ProtoTraining({
-    name: 'Тренеровка день 2: ноги, бицепс',
+const TestProtoTrainigVika2 = new ProtoTraining({
+    name: 'ДЕНЬ 2: грудь, орешек, трицепс',
     id: '2',
-    exercises: protoExercises,
+    exercises: protoExercisesVikaDay2,
 });
 
-export const PROGCOMPLEX = new ProgramComplex({
-    id: 'tasdtatdajhb',
+const TestProtoTrainigVika3 = new ProtoTraining({
+    name: 'ДЕНЬ 3: ноги, плечи(дельты), руки',
+    id: '1',
+    exercises: protoExercisesVikaDay3,
+});
+
+const TestProtoTrainigA1 = new ProtoTraining({
+    name: 'ДЕНЬ 1: ноги, спина(широчайшие), бицепс',
+    id: 'a1',
+    exercises: protoExercisesAndrewDay1,
+});
+
+const TestProtoTrainigA2 = new ProtoTraining({
+    name: 'ДЕНЬ 2: грудь, плечи+спина, трицепс',
+    id: 'a2',
+    exercises: protoExercisesAndrewDay2,
+});
+
+const TestProtoTrainigA3 = new ProtoTraining({
+    name: 'ДЕНЬ 3: ноги, плечи(дельты), руки',
+    id: 'a3',
+    exercises: protoExercisesAndrewDay3,
+});
+
+
+export const PROGCOMPLEX1 = new ProgramComplex({
+    id: 'adad13213',
     name: 'test 1',
-    protoTrainigs: [TestProtoTrainig, TestProtoTrainig2],
+    protoTrainigs: [TestProtoTrainigVika1, TestProtoTrainigVika2, TestProtoTrainigVika3],
+});
+
+export const PROGCOMPLEX2 = new ProgramComplex({
+    id: 'aasdadasdad123213',
+    name: 'Первый ОФП комплекс',
+    protoTrainigs: [TestProtoTrainigA1, TestProtoTrainigA2, TestProtoTrainigA3],
 });
 
 
 export const USER_LIST = [
     new User({
         id: 'vika',
-        programComplexes: [PROGCOMPLEX],
+        programComplexes: [PROGCOMPLEX1],
     }),
     new User({
         id: 'andrew',
-        programComplexes: [PROGCOMPLEX],
+        programComplexes: [PROGCOMPLEX2],
     }),
 ];

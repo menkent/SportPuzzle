@@ -179,7 +179,7 @@ export class TrainigComponent implements OnInit {
   openHelpDialogExercise(protoExercise: ProtoExercise, event: MouseEvent) {
       console.log('openHelpDialogExercise::', event);
       event.stopPropagation();
-      this.openDialog({info: protoExercise.description});
+      this.openDialog({info: protoExercise.description, title: protoExercise.name});
   }
 
   openVideoLinkExercise(protoExercise: ProtoExercise, event: MouseEvent) {
@@ -192,6 +192,7 @@ export class TrainigComponent implements OnInit {
     console.log('Close Trainig');
     this.trainig.isCompleted = true;
     this.programService.saveTrainig().subscribe();
+    this.router.navigate(['/']);
   };
 
   trySave() {

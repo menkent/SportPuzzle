@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { PROGCOMPLEX } from '../consts/program_complex';
 import { RestService } from './rest.service';
 import { ProgramComplex } from '../classes/program-complex';
-import { tap } from 'rxjs/operators';
 import { Training } from '../classes/training';
 import { ProtoTraining } from '../classes/proto-training';
 import { UserInfoService } from './user-info.service';
