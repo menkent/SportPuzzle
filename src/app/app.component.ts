@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RestService } from './services/rest.service';
+import { UserInfoService } from './services/user-info.service';
 
 @Component({
   selector: 'app-root',
@@ -13,5 +14,14 @@ export class AppComponent {
     return this.restService.isLoading;
   }
 
-  constructor(private restService: RestService) {}
+  get user() {
+    return this.userService.user$;
+  }
+
+  constructor(private restService: RestService, private userService: UserInfoService) {
+  }
+
+  quit() {
+    this.userService.qiut();
+  }
 }

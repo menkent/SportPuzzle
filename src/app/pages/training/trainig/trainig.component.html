@@ -1,18 +1,20 @@
 
 
 <mat-divider></mat-divider>
-<mat-toolbar>
+<!-- <mat-toolbar>
   <button (click)="showDebug()">Отобразить инфу!</button>
 
-</mat-toolbar>
+</mat-toolbar> -->
 <mat-divider></mat-divider>
 <form ngForm #f *ngIf="trainig">
   <div class="container">
-
+    <div class="row">
       <mat-form-field class="col-6 col-md-6">
         <input matInput [matDatepicker]="picker" placeholder="Дата тренеровки"
           name="trainingDate" 
-          [(ngModel)]="trainig.date"
+          [value]="getTrainigDate()"
+          (dateChange)="setTrainigDate($event)"
+          (dateInput)="setTrainigDate($event)"
         >
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
@@ -21,7 +23,7 @@
       <mat-form-field class="col-6 col-md-6">
           <input matInput type="number" min="30" max="150" placeholder="Вес" name="userWeight" [(ngModel)]="trainig.userWeight">
       </mat-form-field>
-
+    </div>
   </div>
   <mat-divider></mat-divider>
 
@@ -79,7 +81,7 @@
                                   *ngIf="protoExercise.description"
                                   (click)="openHelpDialogExercise(protoExercise, $event);"
                           >
-                              <mat-icon>help</mat-icon>
+                              <mat-icon>error_outline</mat-icon>
                           </button>
                           <button mat-icon-button
                                   *ngIf="protoExercise.videoLink"
@@ -93,6 +95,11 @@
 
                     </div>
                 </ng-template>
+
+                <div class="row">
+                  <div class="col-12 sub-header" innerHTML="{{ getPrevExercise(protoExercise) }}">
+                  </div>
+                </div>
 
                 <!-- список подходов, кнопка добавления подхода. По завершению этого - нужно убрать пустые подходы -->
                 <div class="row">

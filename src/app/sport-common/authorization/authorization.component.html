@@ -1,0 +1,10 @@
+<div class="container">
+  <div class="row">
+    <mat-form-field class="col-6">
+      <input matInput type="text" placeholder="Имя пользователя" name="userName" [(ngModel)]="userName">
+    </mat-form-field>
+    <div class="col-12">
+        <button mat-raised-button color="primary" (click)="authorize()">Authorize</button>
+    </div>
+  </div>
+</div>

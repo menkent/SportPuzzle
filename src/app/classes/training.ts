@@ -5,14 +5,22 @@ import { ProtoTraining } from './proto-training';
 import { ProtoExercise } from './proto-exercise';
 
 export class Training extends Mappable {
+    private _id: string;
     private _protoTrainig: ProtoTraining;
     private _exercises: Exercise[] = [];
-    private _date: string;
+    private _date: number;
     private _userWeight: number;
     private _cardioStart: CardioInfo;
     private _cardioEnd: CardioInfo;
     private _comment: string;
     private _isCompleted: boolean = false; // Определет, что тренировка завершена, значит её можно использовать для анализа
+
+    public get id(): string {
+        return this._id;
+    }
+    public set id(value: string) {
+        this._id = value;
+    }
 
     public get protoTrainig(): ProtoTraining {
         return this._protoTrainig;
@@ -28,10 +36,10 @@ export class Training extends Mappable {
         this._exercises = value;
     }
 
-    public get date(): string {
+    public get date(): number {
         return this._date;
     }
-    public set date(value: string) {
+    public set date(value: number) {
         this._date = value;
     }
 
@@ -87,10 +95,23 @@ export class Training extends Mappable {
         return true;
     }
 
+    set canComplete(value: any) {}
+
     constructor(data?: any) {
         super(data);
         if (data) {
             Object.assign(this, data);
+
+            if (data['cardioStart']) {
+                this.cardioStart = new CardioInfo(data['cardioStart']);
+            }
+            if (data['cardioEnd']) {
+                this.cardioEnd = new CardioInfo(data['cardioEnd']);
+            }
+
+            if (data['exercises']) {
+                this.exercises = data['exercises'].map(el => new Exercise(el));
+            }
         }
     }
 
@@ -101,10 +122,15 @@ export class Training extends Mappable {
     }
 
     getExercise(protoExercise) {
-        return this.exercises.find(ex => ex.protoLink === protoExercise);
+        return this.exercises.find(ex => ex.protoLink.id === protoExercise.id);
     }
 
     getExercises(protoExercise) {
-        return this.exercises.filter(ex => ex.protoLink === protoExercise);
+        return this.exercises.filter(ex => ex.protoLink.id === protoExercise.id);
     }
+
+    // public toMap(obj: any = this): any {
+    // }
+
+
 }

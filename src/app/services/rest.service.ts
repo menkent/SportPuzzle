@@ -16,7 +16,7 @@ export class RestService {
     console.log('RestService::');
   }
 
-  call(url: string, data: any) {
+  doCall(url: string, data: any) {
     this._countCallings++;
     return of(null).pipe(
       delay(500),

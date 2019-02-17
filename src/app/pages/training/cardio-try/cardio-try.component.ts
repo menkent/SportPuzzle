@@ -20,6 +20,7 @@ export class CardioTryComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.setViewTimer();
   }
 
   setViewTimer() {

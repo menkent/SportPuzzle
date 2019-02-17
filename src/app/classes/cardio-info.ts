@@ -38,11 +38,13 @@ export class CardioInfo extends Mappable {
     get isCompleted() {
         return this.time;
     }
+    set isCompleted(value: any) {}
 
     get typeName() {
         const finded = CardioTypesHB.find( ({sysname}) => sysname === this.cardioType);
         return finded && finded.name || '';
     }
+    set typeName(value) {}
 
     constructor(data?: any) {
         super(data);
