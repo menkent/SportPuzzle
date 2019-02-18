@@ -55,7 +55,7 @@ export class CardioTryComponent implements OnInit {
     if (this.timerIsActive) return;
     this.timerIsActive = true;
     this.timeStart = new Date().getTime();
-    this.timer = setInterval(() => this.setViewTimer(), 1000);
+    this.timer = setInterval(() => this.setViewTimer(), 330);
   }
 
   startStopClick() {
