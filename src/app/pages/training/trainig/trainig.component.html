@@ -43,9 +43,8 @@
     (selectionChange)="cardioStart.stop(); cardioEnd.stop(); changeSelection($event);"
     >
 
-        <mat-step>
+        <mat-step [completed]="trainig.cardioStart.isCompleted" [editable]="!trainig.cardioStart.isCompleted">
             <ng-template matStepLabel 
-                matStepLabel[completed]="true"
               >Стартовое кардио</ng-template>
             
             <app-cardio-try #cardioStart
@@ -71,7 +70,7 @@
 
         <!-- УПРАЖНЕНИЯ -->
         <ng-container *ngFor="let exercise of trainig.exercises; let last = last; ">
-            <mat-step>
+            <mat-step [completed]="exercise.isCompleted" [editable]="!exercise.isCompleted">
                 <ng-template matStepLabel>
                     <div class="exercise-label-wrapper">
                       <div class="exercise-label-name">{{ exercise.name }}</div>
@@ -141,7 +140,7 @@
             </div>
         </mat-step>
 
-        <mat-step>
+        <mat-step [completed]="trainig.cardioEnd.isCompleted" [editable]="!trainig.cardioEnd.isCompleted">
             <ng-template matStepLabel>Финальное кардио</ng-template>
 
             <app-cardio-try #cardioEnd

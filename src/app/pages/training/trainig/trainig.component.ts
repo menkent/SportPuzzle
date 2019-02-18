@@ -10,6 +10,7 @@ import { ProtoExercise } from 'src/app/classes/proto-exercise';
 import { MyTry } from 'src/app/classes/my-try';
 import { DialogInfoService } from 'src/app/sport-common/dialog-info.service';
 import { forkJoin, of } from 'rxjs';
+// import { STEP_STATE } from '@angular/cdk/stepper';  // todo: Это нужно, если требуется отображать статусы шагов
 
 @Component({
   selector: 'app-trainig',
