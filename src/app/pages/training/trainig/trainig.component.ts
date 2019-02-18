@@ -136,7 +136,7 @@ export class TrainigComponent implements OnInit {
         this.trainig.exercises.push(exercise);
       }
       if (!exercise.tryes.length) {
-        this.addNewTry(protoExercise);
+        this.addNewTry(exercise);
       }
     }
 
@@ -164,13 +164,10 @@ export class TrainigComponent implements OnInit {
     return this.trainig.getExercise(protoExercise);
   }
 
-  addNewTry(protoExercise: ProtoExercise) {
-    // console.log('addNewTry::', protoExercise);
-    const exercise = this.trainig.getExercise(protoExercise);
+  addNewTry(exercise: Exercise) {
     if (!exercise) {
       return;
     }
-    
     const nTry = new MyTry();
     nTry.index = exercise.tryes.length;
     exercise.tryes.push(nTry);

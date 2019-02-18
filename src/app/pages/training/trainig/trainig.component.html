@@ -70,22 +70,22 @@
         </mat-step>
 
         <!-- УПРАЖНЕНИЯ -->
-        <ng-container *ngFor="let protoExercise of protoTrainig.exercises; let last = last; ">
+        <ng-container *ngFor="let exercise of trainig.exercises; let last = last; ">
             <mat-step>
                 <ng-template matStepLabel>
                     <div class="exercise-label-wrapper">
-                      <div class="exercise-label-name">{{ protoExercise.name }}</div>
+                      <div class="exercise-label-name">{{ exercise.name }}</div>
                       
                       <div class="exercise-label-icons">
                           <button mat-icon-button
-                                  *ngIf="protoExercise.description"
-                                  (click)="openHelpDialogExercise(protoExercise, $event);"
+                                  *ngIf="exercise.description"
+                                  (click)="openHelpDialogExercise(exercise.protoLink, $event);"
                           >
                               <mat-icon>error_outline</mat-icon>
                           </button>
                           <button mat-icon-button
-                                  *ngIf="protoExercise.videoLink"
-                                  (click)="openVideoLinkExercise(protoExercise, $event)">
+                                  *ngIf="exercise.protoLink.videoLink"
+                                  (click)="openVideoLinkExercise(exercise.protoLink, $event)">
                               <mat-icon>videocam</mat-icon>
                           </button>
                           <!-- <button mat-icon-button>
@@ -99,15 +99,15 @@
                 <!-- Подходы из прошлой тренеровки -->
                 <!-- todo: Заменить проверку по prevTrainig, на проверку про прошлому Exercise -->
                 <div class="row" *ngIf="prevTrainig">
-                  <div class="col-10 sub-header" innerHTML="{{ getPrevExercise(protoExercise) }}"></div>
+                  <div class="col-10 sub-header" innerHTML="{{ getPrevExercise(exercise.protoLink) }}"></div>
                   <div class="col-2">
-                      <mat-icon (click)="userPrevTrainingExercise(protoExercise)">vertical_align_bottom</mat-icon>
+                      <mat-icon (click)="userPrevTrainingExercise(exercise.protoLink)">vertical_align_bottom</mat-icon>
                   </div>
                 </div>
 
                 <!-- список подходов, кнопка добавления подхода. По завершению этого - нужно убрать пустые подходы -->
                 <div class="row">
-                  <ng-container *ngFor="let oneTry of getTryesByProtoExercise(protoExercise); let index = index;">
+                  <ng-container *ngFor="let oneTry of exercise.tryes; let index = index;">
                     <app-my-try 
                       [namespace]="oneTry"
                     ></app-my-try>
@@ -117,7 +117,7 @@
                 <!-- Кнопки -->
                 <div class="row btns-row">
                   <button mat-fab color="basic" class="add-try-btn"
-                    (click)="addNewTry(protoExercise)"
+                    (click)="addNewTry(exercise)"
                   >
                     <mat-icon>add</mat-icon>
                   </button>
