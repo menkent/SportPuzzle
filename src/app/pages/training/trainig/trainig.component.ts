@@ -9,8 +9,7 @@ import { Exercise } from 'src/app/classes/exercise';
 import { ProtoExercise } from 'src/app/classes/proto-exercise';
 import { MyTry } from 'src/app/classes/my-try';
 import { DialogInfoService } from 'src/app/sport-common/dialog-info.service';
-import { forkJoin, of } from 'rxjs';
-// import { STEP_STATE } from '@angular/cdk/stepper';  // todo: Это нужно, если требуется отображать статусы шагов
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-trainig',
@@ -23,6 +22,8 @@ export class TrainigComponent implements OnInit {
   prevExercises: Exercise[] = [];
   protoTrainig: ProtoTraining = null;
   trainig: Training = null;
+  lastStepperEvent = null;
+  countStepBeforeExercises = 2;
 
   @ViewChild(MatVerticalStepper) stepper: MatVerticalStepper;
 
@@ -123,7 +124,8 @@ export class TrainigComponent implements OnInit {
 
   changeSelection(event) {
     // console.log('changeSelection', event);
-    const countStepBeforeExercises = 2;
+    this.lastStepperEvent = event;
+    const countStepBeforeExercises = this.countStepBeforeExercises;
     const selectedIndex = event.selectedIndex;
     const exerciseIndex = selectedIndex - countStepBeforeExercises;
     if (exerciseIndex >= 0 && exerciseIndex < this.protoTrainig.exercises.length) {
@@ -191,7 +193,7 @@ export class TrainigComponent implements OnInit {
     this.trainig.isCompleted = true;
     this.programService.saveTrainig().subscribe();
     this.router.navigate(['/']);
-  };
+  }
 
   trySave() {
     // todo: Проверить, всё ли заполнено, если да, то сохранить и перейти назад в навигаторе
@@ -237,4 +239,5 @@ export class TrainigComponent implements OnInit {
       exercise.tryes.push(nTry);
     });
   }
+
 }

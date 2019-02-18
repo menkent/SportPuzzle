@@ -36,7 +36,7 @@ export class CardioInfo extends Mappable {
     }
 
     get isCompleted() {
-        return this.time;
+        return !!this.time;
     }
     set isCompleted(value: any) {}
 
