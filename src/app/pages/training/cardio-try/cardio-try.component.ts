@@ -13,9 +13,9 @@ export class CardioTryComponent implements OnInit {
   CardioTypesHB = CardioTypesHB;
 
   private timeStart: number;
-  private timerIsActive: boolean = false;
-  protected timeToView: string = '00:00';
-  protected timer: any;
+  public timerIsActive: boolean = false;
+  public timeToView: string = '00:00';
+  public timer: any;
 
   constructor() { }
 

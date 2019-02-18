@@ -45,7 +45,7 @@ export class ProgramsService {
   adjunctionWithID(obj: Training | ProgramComplex | ProtoTraining) {
     obj.id = this.generateId();
     return obj.id;
-  } 
+  }
 
   getProgramComplex() {
     return this.rest.fakeCall('', {programComplexes: this.programComplexes});

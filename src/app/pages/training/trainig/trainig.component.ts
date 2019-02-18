@@ -75,7 +75,7 @@ export class TrainigComponent implements OnInit {
       // ищем все тренеровки, которые похожи на эту прото тренеровку
       const asProtoTrainigs = trainigs
         .filter((tr: Training) => tr.protoTrainig.id === this.protoTrainig.id)
-        .sort((a: Training, b: Training) => a.date - b.date);
+        .sort((a: Training, b: Training) => b.date - a.date);
       // console.log('asProtoTrainigs::', asProtoTrainigs);
       // ищем незаконченные тренеровки. Если есть незаконченная, то предлагаем её продолжить, иначе создаём новую
       const nowDate = new Date().getTime();
@@ -125,7 +125,7 @@ export class TrainigComponent implements OnInit {
     const countStepBeforeExercises = 2;
     const selectedIndex = event.selectedIndex;
     const exerciseIndex = selectedIndex - countStepBeforeExercises;
-    if (exerciseIndex >= 0 && selectedIndex < this.protoTrainig.exercises.length + countStepBeforeExercises) {
+    if (exerciseIndex >= 0 && exerciseIndex < this.protoTrainig.exercises.length) {
       const protoExercise = this.protoTrainig.exercises[exerciseIndex];
 
       let exercise = this.trainig.getExercise(protoExercise);
@@ -142,7 +142,7 @@ export class TrainigComponent implements OnInit {
 
     // Обработка предыдущего поля: удаление не заполненных траев
     const previouslySelectedIndex = event.previouslySelectedIndex - countStepBeforeExercises;
-    if (previouslySelectedIndex >= 0 && previouslySelectedIndex < this.protoTrainig.exercises.length + countStepBeforeExercises) {
+    if (previouslySelectedIndex >= 0 && previouslySelectedIndex < this.protoTrainig.exercises.length) {
       const exercise = this.trainig.getExercise(this.protoTrainig.exercises[previouslySelectedIndex]);
       if (exercise) {
         const filtered = exercise.tryes.filter((el: MyTry) => !el.isEmpty());
@@ -225,4 +225,18 @@ export class TrainigComponent implements OnInit {
     return `${countExercise} [${exercises.join(' - ')}]`;
   }
 
+
+  userPrevTrainingExercise(protoExercise: ProtoExercise) {
+    const exercise = this.trainig.getExercise(protoExercise);
+    const lastExercise = this.prevExercises.find((ex: Exercise) => ex.protoLink.id === protoExercise.id);
+    if (!exercise || !lastExercise || !lastExercise.haveNotEmprtyTryes()) {
+      return '';
+    }
+    exercise.tryes = [];
+    lastExercise.tryes.map((tr: MyTry) => {
+      const nTry = new MyTry(tr.toMap());
+      // nTry.index = exercise.tryes.length;
+      exercise.tryes.push(nTry);
+    });
+  }
 }

@@ -17,7 +17,10 @@
               (click)="trainigClick(trainig.id)"
               role="listitem"
             >
-            {{ trainig.name }}
+            <span matLine style="white-space: normal;"> {{ trainig.name }} </span>
+            <p matLine *ngIf="getLastTrainigDateByProto(trainig)">
+              <span class="sub-header">last: {{ getLastTrainigDateByProto(trainig) }}</span>
+            </p>
             </mat-list-item>
             <mat-divider *ngIf="!last"></mat-divider>
         </ng-container>

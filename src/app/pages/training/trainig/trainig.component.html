@@ -96,8 +96,12 @@
                     </div>
                 </ng-template>
 
-                <div class="row">
-                  <div class="col-12 sub-header" innerHTML="{{ getPrevExercise(protoExercise) }}">
+                <!-- Подходы из прошлой тренеровки -->
+                <!-- todo: Заменить проверку по prevTrainig, на проверку про прошлому Exercise -->
+                <div class="row" *ngIf="prevTrainig">
+                  <div class="col-10 sub-header" innerHTML="{{ getPrevExercise(protoExercise) }}"></div>
+                  <div class="col-2">
+                      <mat-icon (click)="userPrevTrainingExercise(protoExercise)">vertical_align_bottom</mat-icon>
                   </div>
                 </div>
 

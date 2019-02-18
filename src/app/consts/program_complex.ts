@@ -24,7 +24,7 @@ const TestProtoTrainigVika2 = new ProtoTraining({
 
 const TestProtoTrainigVika3 = new ProtoTraining({
     name: 'ДЕНЬ 3: ноги, плечи(дельты), руки',
-    id: '1',
+    id: '3',
     exercises: protoExercisesVikaDay3,
 });
 
