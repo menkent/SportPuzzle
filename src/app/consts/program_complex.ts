@@ -49,7 +49,7 @@ const TestProtoTrainigA3 = new ProtoTraining({
 
 export const PROGCOMPLEX1 = new ProgramComplex({
     id: 'adad13213',
-    name: 'test 1',
+    name: 'Первый ОФП комплекс (женский)',
     protoTrainigs: [TestProtoTrainigVika1, TestProtoTrainigVika2, TestProtoTrainigVika3],
 });
 
@@ -68,5 +68,13 @@ export const USER_LIST = [
     new User({
         id: 'andrew',
         programComplexes: [PROGCOMPLEX2],
+    }),
+    new User({
+        id: 'test',
+        programComplexes: [PROGCOMPLEX1, PROGCOMPLEX2],
+    }),
+    new User({
+        id: 'Test',
+        programComplexes: [PROGCOMPLEX1, PROGCOMPLEX2],
     }),
 ];
