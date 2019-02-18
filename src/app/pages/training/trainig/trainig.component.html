@@ -100,7 +100,7 @@
 
                 <!-- Подходы из прошлой тренеровки -->
                 <!-- todo: Заменить проверку по prevTrainig, на проверку про прошлому Exercise -->
-                <div class="row" *ngIf="prevTrainig">
+                <div class="row" *ngIf="getPrevExercise(exercise.protoLink)">
                   <div class="col-10 sub-header" innerHTML="{{ getPrevExercise(exercise.protoLink) }}"></div>
                   <div class="col-2">
                       <mat-icon (click)="userPrevTrainingExercise(exercise.protoLink)">vertical_align_bottom</mat-icon>

@@ -5,6 +5,8 @@ import { Training } from '../classes/training';
 import { ProtoTraining } from '../classes/proto-training';
 import { UserInfoService } from './user-info.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
+import { Exercise } from '../classes/exercise';
+import { ProtoExercise } from '../classes/proto-exercise';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +18,7 @@ export class ProgramsService {
   get programComplexes(): ProgramComplex[] {
     const user = this.userInfo.user;
     return user && user.programComplexes || [];
-  };
+  }
   // trainigs: Training[] = [];
   // Старые тренировки + текущая тренировка
   private _trainigs: BehaviorSubject<Training[]> = new BehaviorSubject([]);
@@ -60,7 +62,12 @@ export class ProgramsService {
     const trainigsString = JSON.stringify(this.trainigs.map((tr: Training) => {
       const m = tr.toMap();
       m['protoTrainig'] = tr.protoTrainig.id;
-      // todo: exercises -> to proto exercises_id
+      // exercises -> to proto exercises_id
+      m['exercises'] = tr.exercises.map((ex: Exercise) => {
+        const exMap = ex.toMap();
+        exMap['protoLink'] = ex.protoLink.id;
+        return exMap;
+      });
       return m;
     }));
 
@@ -81,9 +88,21 @@ export class ProgramsService {
       const trMaps = JSON.parse(trainigsString);
       // console.log('trMaps::', trMaps);
       const trainings = trMaps.map(trM => {
-        const protoTraining = this.getProtoTrainigById(trM['protoTrainig']);
+        const protoTraining: ProtoTraining = this.getProtoTrainigById(trM['protoTrainig']);
         delete trM['protoTrainig'];
-        // todo: proto_exercies -> exercises
+        // proto_exercies_id -> exercises
+        trM['exercises'] = trM['exercises'].map((exMap) => {
+          // Обратная совместимость
+          if (exMap['protoLink'] instanceof Object) {
+            return exMap;
+          }
+          const protoExerId = exMap['protoLink'];
+          const protoExercise = protoTraining.exercises.find((ex: ProtoExercise) => ex.id === protoExerId);
+          if (protoExercise) {
+            exMap['protoLink'] = protoExercise.toMap();
+          }
+          return exMap;
+        });
         // console.log('protoTraining::', protoTraining);
         const tr = new Training(trM);
         tr.protoTrainig = protoTraining;
@@ -95,7 +114,7 @@ export class ProgramsService {
     return of(this.trainigs);
   }
 
-  getProtoTrainigById(protoId: string) {
+  getProtoTrainigById(protoId: string): ProtoTraining {
     const trainigs = this.programComplexes.reduce(
       (accumulator: any, complex: ProgramComplex) => [...accumulator, ...complex.protoTrainigs],
       []

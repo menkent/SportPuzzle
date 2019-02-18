@@ -54,7 +54,15 @@ export class Exercise extends Mappable {
 
             if (data['tryes']) {
                 this.tryes = data['tryes'].map(el => new MyTry(el));
-            } 
+            }
         }
     }
+
+    public toMap(obj: any = this): any {
+        const m = super.toMap(obj);
+        delete m['name'];
+        delete m['description'];
+        delete m['isCompleted'];
+        return m;
+      }
 }
