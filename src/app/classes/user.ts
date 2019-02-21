@@ -32,6 +32,14 @@ export class User extends Mappable {
         super(data);
         if (data) {
             Object.assign(this, data);
+
+            if (data['programComplexes']) {
+                this.programComplexes = data['programComplexes'].map(el => new ProgramComplex(el));
+            }
+
+            if (data['trainigs']) {
+                this.trainigs = data['trainigs'].map(el => new Training(el));
+            }
         }
     }
 }

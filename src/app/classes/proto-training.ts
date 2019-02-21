@@ -31,6 +31,10 @@ export class ProtoTraining extends Mappable {
         super(data);
         if (data) {
             Object.assign(this, data);
+
+            if (data['exercises']) {
+                this.exercises = data['exercises'].map(el => new ProtoExercise(el));
+            }
         }
     }
 }

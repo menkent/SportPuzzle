@@ -39,6 +39,10 @@ export class ProgramComplex extends Mappable {
         super(data);
         if (data) {
             Object.assign(this, data);
+
+            if (data['protoTrainigs']) {
+                this.protoTrainigs = data['protoTrainigs'].map(el => new ProtoTraining(el));
+            }
         }
     }
 }

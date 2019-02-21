@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { RestService } from './rest.service';
 import { MyCookiesService } from './my-cookies.service';
 import { User } from '../classes/user';
-import { mergeMap, tap, map } from 'rxjs/operators';
+import { mergeMap, tap, map, switchMap } from 'rxjs/operators';
 import { of, BehaviorSubject, Observable, Subject } from 'rxjs';
 import { USER_LIST } from '../consts/program_complex';
 import { Router } from '@angular/router';
@@ -39,15 +39,45 @@ export class UserInfoService implements OnDestroy {
     );
   }
 
+  private getLocalStorageUserName(userId) {
+    return `user_${userId}`;
+  }
+
   loadUser(userId) {
-    const user = USER_LIST.find((u: User) => u.id === userId);
-    return this.rest.fakeCall('', {user: user}).pipe(
+    return of(USER_LIST.find((u: User) => u.id === userId)).pipe(
+      switchMap((user) => {
+        if (user) {
+          return of(user);
+        } else {
+          return this._loadUserFromLocalstorage(userId);
+        }
+      }),
+      switchMap((user) => this.rest.fakeCall('', {user: user})),
       map(({user}) => {
         this.user = user;
         return user;
       })
     );
+
     // попробовать загрузить юзера из локалстоража (или куков), если его там нет, то предложить выбрать (авторизоваться)
+  }
+
+  private _loadUserFromLocalstorage(userId) {
+    const userName = this.getLocalStorageUserName(userId);
+    const userStr = localStorage.getItem(userName);
+    if (userStr) {
+      const userMap = JSON.parse(userStr);
+      return of(new User(userMap));
+    } else {
+      return of(new User({id: userId}));
+    }
+  }
+
+  saveUser() {
+    const userName = this.getLocalStorageUserName(this.user.id);
+    const userStr = JSON.stringify(this.user.toMap());
+    localStorage.setItem(userName, userStr);
+    return of(true);
   }
 
   authorizeUser() {
