@@ -1,0 +1,25 @@
+<div class="container" *ngIf="training">
+  <p>{{ training.protoTrainig.name }}</p>
+  <p class="sub-header">{{ training.date | date:'dd.MM.yyyy' }}  /  {{ training.userWeight }}</p>
+  <mat-divider></mat-divider>
+  <div class="row" *ngIf="training.cardioStart && training.cardioStart.isCompleted">
+    <div class="col-6">{{ training.cardioStart.cardioType }}</div>
+    <div class="col-6">{{ training.cardioStart.time }}</div>
+  </div>
+
+  <ng-container *ngFor="let exercise of training.exercises">
+    <div class="row">
+      <div class="col-12">{{ exercise.name }}</div>      
+    </div>
+    <div class="row">
+        <div class="col-12" [innerHtml]="getExerciseTryes(exercise)"></div>      
+    </div>
+  </ng-container>
+  
+  <div class="row" *ngIf="training.cardioEnd && training.cardioEnd.isCompleted">
+    <div class="col-6">{{ training.cardioEnd.cardioType }}</div>
+    <div class="col-6">{{ training.cardioEnd.time }}</div>
+  </div>
+
+
+</div>

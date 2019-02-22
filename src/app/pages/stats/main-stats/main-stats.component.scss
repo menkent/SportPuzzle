@@ -1,0 +1,29 @@
+@import "~src/theme/variables";
+
+.card-wrap {
+    padding: 1rem 1rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    justify-content: space-between;
+
+    & .name {
+        min-width: 100%;
+    }
+
+    & .icon {
+        margin-right: 1rem;
+        color: $main-green;
+
+        &.fail {
+            color: $red;
+        }
+    }
+
+    & .sub-header {
+        font-size: 0.75rem;
+        margin: 0 1rem;
+    }
+}

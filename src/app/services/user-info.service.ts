@@ -40,7 +40,7 @@ export class UserInfoService implements OnDestroy {
   }
 
   private getLocalStorageUserName(userId) {
-    return `user_${userId}`;
+    return `saved_user_${userId}`;
   }
 
   loadUser(userId) {
@@ -52,7 +52,7 @@ export class UserInfoService implements OnDestroy {
           return this._loadUserFromLocalstorage(userId);
         }
       }),
-      switchMap((user) => this.rest.fakeCall('', {user: user})),
+      switchMap((user) => this.rest.fakeCall('', {user})),
       map(({user}) => {
         this.user = user;
         return user;

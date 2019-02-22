@@ -29,6 +29,13 @@ export class Training extends Mappable {
         this._protoTrainig = value;
     }
 
+    public get protoTraining(): ProtoTraining {
+        return this._protoTrainig;
+    }
+    public set protoTraining(value: ProtoTraining) {
+        this._protoTrainig = value;
+    }
+
     public get exercises(): Exercise[] {
         return this._exercises;
     }

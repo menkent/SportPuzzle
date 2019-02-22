@@ -9,7 +9,7 @@ export class DialogInfoService {
 
   constructor(public dialog: MatDialog) { }
 
-  openDialog(data, onClose): void {
+  openDialog(data, onClose?): void {
     const dialogRef = this.dialog.open(InfoDialogComponent, {
       width: '80%',
       data: data

@@ -7,6 +7,7 @@ import { UserInfoService } from './user-info.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Exercise } from '../classes/exercise';
 import { ProtoExercise } from '../classes/proto-exercise';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -121,5 +122,11 @@ export class ProgramsService {
     );
 
     return trainigs.find((tr: ProtoTraining) => tr.id === protoId);
+  }
+
+  getTrainigById(id: string) {
+    return this.loadTrainigs().pipe(
+      map(trainigs => trainigs.find(el => el.id === id))
+    );
   }
 }
