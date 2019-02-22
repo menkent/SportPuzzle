@@ -8,4 +8,13 @@
       </div>
       <!-- <mat-divider *ngIf="!last"></mat-divider> -->
   </ng-container>
+
+  <div class="row" *ngIf="(trainings$ | async).length == 0">
+    <div class="col-12">
+      <h2 class="sub-header">
+        Тренировки отсутствуют
+      </h2>
+    </div>
+  </div>
+ 
 </div>

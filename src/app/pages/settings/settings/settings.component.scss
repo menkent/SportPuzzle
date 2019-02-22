@@ -1,0 +1,15 @@
+@import "~src/theme/variables";
+
+.btns-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+
+    &.solo-btn {
+        justify-content: flex-end;
+    }
+}
+
+.info-btn {
+    cursor: pointer;
+}

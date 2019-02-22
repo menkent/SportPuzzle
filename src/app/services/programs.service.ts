@@ -8,6 +8,7 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Exercise } from '../classes/exercise';
 import { ProtoExercise } from '../classes/proto-exercise';
 import { map } from 'rxjs/operators';
+import { getAllContProtoExercise } from '@app/consts/exercises_conts';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ import { map } from 'rxjs/operators';
 export class ProgramsService {
 
   private isLoadTrainingsForUser: string = '';
+  private isLoadExercisesForUser: string = '';
 
   get programComplexes(): ProgramComplex[] {
     const user = this.userInfo.user;
@@ -36,6 +38,18 @@ export class ProgramsService {
     this.trainings = [...this.trainings, training];
   }
 
+
+  private _exercises: BehaviorSubject<ProtoExercise[]> = new BehaviorSubject([]);
+  exercises$: Observable<ProtoExercise[]> = this._exercises.asObservable();
+
+  public get exercises(): ProtoExercise[] {
+    return this._exercises.value;
+  }
+  public set exercises(value: ProtoExercise[]) {
+    this._exercises.next(value);
+  }
+
+
   constructor(private rest: RestService, private userInfo: UserInfoService) {
     console.log('ProgramsService:: INIT');
     this.getProgramComplex().subscribe();
@@ -56,6 +70,10 @@ export class ProgramsService {
 
   private get localStorageUserName() {
     return `user_${this.userInfo.user && this.userInfo.user.id}`;
+  }
+
+  private get localStorageUserNameForExercises() {
+    return `exercises_user_${this.userInfo.user && this.userInfo.user.id}`;
   }
 
   saveTraining() {
@@ -130,5 +148,29 @@ export class ProgramsService {
     return this.loadTrainings().pipe(
       map(trainings => trainings.find(el => el.id === id))
     );
+  }
+
+  loadProtoExercises() {
+    if (this.isLoadExercisesForUser === (this.userInfo.user && this.userInfo.user.id)) {
+      return of(this.exercises);
+    }
+    const exercisesString = localStorage.getItem(this.localStorageUserNameForExercises);
+    this.isLoadExercisesForUser = this.userInfo.user && this.userInfo.user.id || '';
+    let exercises = [];
+    if (exercisesString) {
+      const exMaps = JSON.parse(exercisesString);
+      exercises = exMaps.map(exMap => new ProtoExercise(exMap));
+    }
+    this.exercises = [...exercises, ...getAllContProtoExercise()];
+    return of(this.exercises);
+  }
+
+  saveProtoExercises() {
+    const fixEx = getAllContProtoExercise();
+    const exercises = this.exercises.filter((ex: ProtoExercise) => !fixEx.find(e => e.id !== ex.id));
+
+    const exString = JSON.stringify(this.exercises.map((ex: ProtoExercise) => ex.toMap()));
+    localStorage.setItem(this.localStorageUserNameForExercises, exString);
+    return of(true);
   }
 }

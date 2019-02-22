@@ -1,3 +1,57 @@
-<p>
-  settings works!
-</p>
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Программные комплексы
+    </mat-panel-title>
+    <mat-panel-description>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <mat-list role="list">
+      <ng-container *ngFor="let pc of programComplexes; let last = last">
+          <mat-list-item 
+            (click)="complexClick(pc.id)"
+            role="listitem"
+          >
+          <span matLine style="white-space: normal;"> {{ pc.name }} </span>
+          <p matLine *ngIf="pc.comment">
+            <span class="sub-header">{{ pc.comment }}</span>
+          </p>
+          </mat-list-item>
+          <mat-divider *ngIf="!last"></mat-divider>
+      </ng-container>
+  </mat-list>
+  <div class="row btns-row solo-btn">
+    <button mat-fab color="basic" class="add-try-btn" (click)="complexAdd()">
+        <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
+</mat-expansion-panel>
+
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Упражнения
+    </mat-panel-title>
+    <mat-panel-description>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <mat-list role="list">
+      <ng-container *ngFor="let exrcise of (programService.exercises$ | async); let last = last">
+          <mat-list-item 
+            (click)="exerciseClick(exrcise.id)"
+            role="listitem"
+          >
+          <span matLine style="white-space: normal;"> {{ exrcise.name }} </span>
+          <mat-icon class="info-btn" (click)="viewDescr(exrcise)">error_outline</mat-icon>
+          </mat-list-item>
+          <mat-divider *ngIf="!last"></mat-divider>
+      </ng-container>
+  </mat-list>
+  <div class="row btns-row solo-btn">
+    <button mat-fab color="basic" class="add-try-btn" (click)="addExercise()">
+        <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
+</mat-expansion-panel>
