@@ -4,7 +4,7 @@ import { Mappable } from './mappable';
 export class ProgramComplex extends Mappable {
     private _id: string;
     private _name: string;
-    private _protoTrainigs: ProtoTraining[] = [];
+    private _protoTrainings: ProtoTraining[] = [];
     private _comment: string;
 
     public get id(): string {
@@ -21,11 +21,11 @@ export class ProgramComplex extends Mappable {
         this._name = value;
     }
 
-    public get protoTrainigs(): ProtoTraining[] {
-        return this._protoTrainigs;
+    public get protoTrainings(): ProtoTraining[] {
+        return this._protoTrainings;
     }
-    public set protoTrainigs(value: ProtoTraining[]) {
-        this._protoTrainigs = value;
+    public set protoTrainings(value: ProtoTraining[]) {
+        this._protoTrainings = value;
     }
 
     public get comment(): string {
@@ -40,8 +40,13 @@ export class ProgramComplex extends Mappable {
         if (data) {
             Object.assign(this, data);
 
+            // todo: стереть потом, так как сохранение работает через protoTrainings
             if (data['protoTrainigs']) {
-                this.protoTrainigs = data['protoTrainigs'].map(el => new ProtoTraining(el));
+                this.protoTrainings = data['protoTrainigs'].map(el => new ProtoTraining(el));
+            }
+
+            if (data['protoTrainings']) {
+                this.protoTrainings = data['protoTrainings'].map(el => new ProtoTraining(el));
             }
         }
     }

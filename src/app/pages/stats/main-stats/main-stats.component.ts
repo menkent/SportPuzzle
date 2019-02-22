@@ -11,17 +11,17 @@ import { Router } from '@angular/router';
 })
 export class MainStatsComponent implements OnInit {
 
-  get trainigs$(): Observable<Training[]> {
-    return this.programService.trainigs$;
+  get trainings$(): Observable<Training[]> {
+    return this.programService.trainings$;
   }
 
   constructor(protected programService: ProgramsService, private router: Router) { }
 
   ngOnInit() {
-    this.programService.loadTrainigs().subscribe();
+    this.programService.loadTrainings().subscribe();
   }
 
   onClick(tr: Training) {
-    this.router.navigate(['stats/trainig', tr.id]);
+    this.router.navigate(['stats/training', tr.id]);
   }
 }

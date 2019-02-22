@@ -16,7 +16,7 @@ import { ProtoTraining } from 'src/app/classes/proto-training';
 export class ProgramsComplexComponent implements OnInit {
 
   programComplexes: ProgramComplex[] = [];
-  lastTrainigs: Training[] = [];
+  lastTrainings: Training[] = [];
 
   constructor(private programsService: ProgramsService, private router: Router) {
   }
@@ -26,25 +26,25 @@ export class ProgramsComplexComponent implements OnInit {
       switchMap(res => {
         this.programComplexes = res.programComplexes;
         console.log(this.programComplexes);
-        return this.programsService.loadTrainigs();
+        return this.programsService.loadTrainings();
       })
     ).subscribe((trainings: Training[]) => {
-      this.lastTrainigs = trainings
+      this.lastTrainings = trainings
         .filter((tr: Training) => tr.isCompleted)
         .sort((a: Training, b: Training) => b.date - a.date);
 
-      console.log(this.lastTrainigs);
+      console.log(this.lastTrainings);
     });
   }
 
-  getLastTrainigDateByProto(protoTrainig: ProtoTraining) {
-    const finded = this.lastTrainigs.find((tr: Training) => tr.protoTrainig.id === protoTrainig.id);
+  getLastTrainingDateByProto(protoTraining: ProtoTraining) {
+    const finded = this.lastTrainings.find((tr: Training) => tr.protoTraining.id === protoTraining.id);
     return finded && new Date(finded.date).toLocaleDateString() || '';
   }
 
-  trainigClick(trainigId: string) {
-    console.log('trainigClick::', trainigId);
-    this.router.navigate(['/trainig', trainigId]);
+  trainingClick(trainingId: string) {
+    console.log('trainingClick::', trainingId);
+    this.router.navigate(['/training', trainingId]);
   }
 
 }

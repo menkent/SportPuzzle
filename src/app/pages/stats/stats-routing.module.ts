@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { MainStatsComponent } from './main-stats/main-stats.component';
-import { StatTrainigComponent } from './stat-trainig/stat-trainig.component';
+import { StatTrainingComponent } from './stat-training/stat-training.component';
 
 const routes: Routes = [
   {
@@ -9,13 +9,13 @@ const routes: Routes = [
     component: MainStatsComponent,
   },
   {
-    path: 'trainig',
+    path: 'training',
     redirectTo: '/stats',
     pathMatch: 'full'
   },
   {
-    path: 'trainig/:id',
-    component: StatTrainigComponent,
+    path: 'training/:id',
+    component: StatTrainingComponent,
   }
 ];
 

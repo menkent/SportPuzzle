@@ -14,7 +14,7 @@ import { MatListModule, MatDividerModule, MatIconModule, MatExpansionModule, Mat
   MatSelectModule,
   MatRippleModule,
   MatDialogModule} from '@angular/material';
-import { TrainigComponent } from './trainig/trainig.component';
+import { TrainingComponent } from './training/training.component';
 import { FormsModule } from '@angular/forms';
 import { MyTryComponent } from './my-try/my-try.component';
 import { CardioTryComponent } from './cardio-try/cardio-try.component';
@@ -23,7 +23,7 @@ import { MyWarmComponent } from './my-warm/my-warm.component';
 import { SportCommonModule } from 'src/app/sport-common/sport-common.module';
 
 @NgModule({
-  declarations: [ProgramsComplexComponent, TrainigComponent, MyTryComponent, CardioTryComponent, MyStretchingComponent, MyWarmComponent],
+  declarations: [ProgramsComplexComponent, TrainingComponent, MyTryComponent, CardioTryComponent, MyStretchingComponent, MyWarmComponent],
   imports: [
     CommonModule,
     TrainingRoutingModule,
@@ -46,6 +46,6 @@ import { SportCommonModule } from 'src/app/sport-common/sport-common.module';
     MatIconModule,
     MatDatepickerModule,
   ],
-  exports: [ProgramsComplexComponent, TrainigComponent, MyTryComponent, CardioTryComponent, MyStretchingComponent, MyWarmComponent]
+  exports: [ProgramsComplexComponent, TrainingComponent, MyTryComponent, CardioTryComponent, MyStretchingComponent, MyWarmComponent]
 })
 export class TrainingModule { }

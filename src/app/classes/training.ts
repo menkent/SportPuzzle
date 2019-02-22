@@ -6,7 +6,7 @@ import { ProtoExercise } from './proto-exercise';
 
 export class Training extends Mappable {
     private _id: string;
-    private _protoTrainig: ProtoTraining;
+    private _protoTraining: ProtoTraining;
     private _exercises: Exercise[] = [];
     private _date: number;
     private _userWeight: number;
@@ -22,18 +22,11 @@ export class Training extends Mappable {
         this._id = value;
     }
 
-    public get protoTrainig(): ProtoTraining {
-        return this._protoTrainig;
-    }
-    public set protoTrainig(value: ProtoTraining) {
-        this._protoTrainig = value;
-    }
-
     public get protoTraining(): ProtoTraining {
-        return this._protoTrainig;
+        return this._protoTraining;
     }
     public set protoTraining(value: ProtoTraining) {
-        this._protoTrainig = value;
+        this._protoTraining = value;
     }
 
     public get exercises(): Exercise[] {
@@ -87,7 +80,7 @@ export class Training extends Mappable {
 
     get canComplete() {
         // Нужно, чтобы были выполнены все упражнения
-        if (this.protoTrainig.exercises.length === this.exercises.length) {
+        if (this.protoTraining.exercises.length === this.exercises.length) {
             for(let i = 0; i < this.exercises.length; i++) {
                 if (!this.exercises[i].isCompleted) {
                     return false;
@@ -125,7 +118,7 @@ export class Training extends Mappable {
     init() {
         this.cardioStart = new CardioInfo();
         this.cardioEnd = new CardioInfo();
-        this.exercises = this.protoTrainig.exercises.map((exer: ProtoExercise) => new Exercise({protoLink: exer}));
+        this.exercises = this.protoTraining.exercises.map((exer: ProtoExercise) => new Exercise({protoLink: exer}));
     }
 
     getExercise(protoExercise) {

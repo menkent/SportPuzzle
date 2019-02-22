@@ -12,45 +12,45 @@ import { DialogInfoService } from 'src/app/sport-common/dialog-info.service';
 import { of } from 'rxjs';
 
 @Component({
-  selector: 'app-trainig',
-  templateUrl: './trainig.component.html',
-  styleUrls: ['./trainig.component.scss']
+  selector: 'app-training',
+  templateUrl: './training.component.html',
+  styleUrls: ['./training.component.scss']
 })
-export class TrainigComponent implements OnInit {
+export class TrainingComponent implements OnInit {
 
-  prevTrainig: Training = null;
+  prevTraining: Training = null;
   prevExercises: Exercise[] = [];
-  protoTrainig: ProtoTraining = null;
-  trainig: Training = null;
+  protoTraining: ProtoTraining = null;
+  training: Training = null;
   lastStepperEvent = null;
   countStepBeforeExercises = 2;
 
   @ViewChild(MatVerticalStepper) stepper: MatVerticalStepper;
 
-  getTrainigDate() {
-    const d = this.trainig.date;
+  getTrainingDate() {
+    const d = this.training.date;
     return d ? new Date(d) : new Date();
   }
 
-  setTrainigDate(event) {
+  setTrainingDate(event) {
     const time = event.value && event.value.getTime();
     if (time) {
-      this.trainig.date = time;
+      this.training.date = time;
     }
   }
 
-  // todo: Сделать сохранение через поток: то есть вызывает next, а оно вызывает saveTrainig()
+  // todo: Сделать сохранение через поток: то есть вызывает next, а оно вызывает saveTraining()
 
   constructor(private route: ActivatedRoute, private router: Router, private programService: ProgramsService, private dialogInfo: DialogInfoService) { }
 
-  private _createNewTrainig() {
-    this.trainig = new Training({
-      protoTrainig: this.protoTrainig,
+  private _createNewTraining() {
+    this.training = new Training({
+      protoTraining: this.protoTraining,
       date: new Date().getTime(),
     });
-    this.trainig.init();
-    this.programService.adjunctionWithID(this.trainig);
-    this.programService.addTrainig(this.trainig);
+    this.training.init();
+    this.programService.adjunctionWithID(this.training);
+    this.programService.addTraining(this.training);
   }
 
   ngOnInit() {
@@ -58,12 +58,12 @@ export class TrainigComponent implements OnInit {
     this.programService.getProgramComplex().pipe(
       mergeMap(() => this.route.paramMap),
       map((params: ParamMap) => {
-        this.protoTrainig = this.programService.getProtoTrainigById(params.get('protoid'));
-        return this.protoTrainig;
+        this.protoTraining = this.programService.getProtoTrainingById(params.get('protoid'));
+        return this.protoTraining;
       }),
       mergeMap(() => {
-        if (this.protoTrainig) {
-          return this.programService.loadTrainigs();
+        if (this.protoTraining) {
+          return this.programService.loadTrainings();
         } else {
           // 
           this.openDialog({info: 'Программа не найдена. Попробуйте ещё раз!'}, () => {
@@ -73,21 +73,21 @@ export class TrainigComponent implements OnInit {
         }
         }),
         filter((el) => !!el),
-    ).subscribe((trainigs: Training[]) => {
+    ).subscribe((trainings: Training[]) => {
       // ищем все тренеровки, которые похожи на эту прото тренеровку
-      const asProtoTrainigs = trainigs
-        .filter((tr: Training) => tr.protoTrainig.id === this.protoTrainig.id)
+      const asProtoTrainings = trainings
+        .filter((tr: Training) => tr.protoTraining.id === this.protoTraining.id)
         .sort((a: Training, b: Training) => b.date - a.date);
-      // console.log('asProtoTrainigs::', asProtoTrainigs);
+      // console.log('asProtoTrainings::', asProtoTrainings);
       // ищем незаконченные тренеровки. Если есть незаконченная, то предлагаем её продолжить, иначе создаём новую
       const nowDate = new Date().getTime();
       const hours12ms = 12 * 60 * 60 * 1000;
       // Последняя незавершённая тренировка, не страше 12 часов
-      const findLastNotCompleted = asProtoTrainigs.find((tr: Training) => !tr.isCompleted && (nowDate - tr.date < hours12ms));
+      const findLastNotCompleted = asProtoTrainings.find((tr: Training) => !tr.isCompleted && (nowDate - tr.date < hours12ms));
 
       // Последняя завершённая тренировка
-      this.prevTrainig = asProtoTrainigs.find((tr: Training) => tr.isCompleted);
-      this.prevExercises = this.prevTrainig && this.prevTrainig.exercises || [];
+      this.prevTraining = asProtoTrainings.find((tr: Training) => tr.isCompleted);
+      this.prevExercises = this.prevTraining && this.prevTraining.exercises || [];
 
       // Если есть последня незавершённая тренировка, то предложить её продолжить
       if (findLastNotCompleted) {
@@ -96,22 +96,22 @@ export class TrainigComponent implements OnInit {
             btnOk: true
           }, (res) => {
             if (res) {
-              this.trainig = findLastNotCompleted;
+              this.training = findLastNotCompleted;
             } else {
-              this._createNewTrainig();
+              this._createNewTraining();
             }
           }
         );
       } else {
-        this._createNewTrainig();
+        this._createNewTraining();
       }
     });
   }
 
   showDebug() {
-    console.log(this.protoTrainig);
-    console.log(this.trainig);
-    console.log(this.prevTrainig);
+    console.log(this.protoTraining);
+    console.log(this.training);
+    console.log(this.prevTraining);
   }
 
   openDialog(data, callback?): void {
@@ -128,15 +128,15 @@ export class TrainigComponent implements OnInit {
     const countStepBeforeExercises = this.countStepBeforeExercises;
     const selectedIndex = event.selectedIndex;
     const exerciseIndex = selectedIndex - countStepBeforeExercises;
-    if (exerciseIndex >= 0 && exerciseIndex < this.protoTrainig.exercises.length) {
-      const protoExercise = this.protoTrainig.exercises[exerciseIndex];
+    if (exerciseIndex >= 0 && exerciseIndex < this.protoTraining.exercises.length) {
+      const protoExercise = this.protoTraining.exercises[exerciseIndex];
 
-      let exercise = this.trainig.getExercise(protoExercise);
+      let exercise = this.training.getExercise(protoExercise);
       if (!exercise) {
         exercise = new Exercise({
           protoLink: protoExercise
         });
-        this.trainig.exercises.push(exercise);
+        this.training.exercises.push(exercise);
       }
       if (!exercise.tryes.length) {
         this.addNewTry(exercise);
@@ -145,8 +145,8 @@ export class TrainigComponent implements OnInit {
 
     // Обработка предыдущего поля: удаление не заполненных траев
     const previouslySelectedIndex = event.previouslySelectedIndex - countStepBeforeExercises;
-    if (previouslySelectedIndex >= 0 && previouslySelectedIndex < this.protoTrainig.exercises.length) {
-      const exercise = this.trainig.getExercise(this.protoTrainig.exercises[previouslySelectedIndex]);
+    if (previouslySelectedIndex >= 0 && previouslySelectedIndex < this.protoTraining.exercises.length) {
+      const exercise = this.training.getExercise(this.protoTraining.exercises[previouslySelectedIndex]);
       if (exercise) {
         const filtered = exercise.tryes.filter((el: MyTry) => !el.isEmpty());
         exercise.tryes = filtered;
@@ -155,16 +155,16 @@ export class TrainigComponent implements OnInit {
     }
 
     // Сохраняем текущую тренеровку: 
-    this.programService.saveTrainig().subscribe();
+    this.programService.saveTraining().subscribe();
   }
 
   getTryesByProtoExercise(protoExercise: ProtoExercise) {
-    const exercise = this.trainig.getExercise(protoExercise);
+    const exercise = this.training.getExercise(protoExercise);
     return exercise && exercise.tryes || [];
   }
 
   getExerciseByProtoExercise(protoExercise: ProtoExercise) {
-    return this.trainig.getExercise(protoExercise);
+    return this.training.getExercise(protoExercise);
   }
 
   addNewTry(exercise: Exercise) {
@@ -188,29 +188,29 @@ export class TrainigComponent implements OnInit {
     window.open(protoExercise.videoLink, '_blank');
   }
 
-  private _closeTrainig() {
-    console.log('Close Trainig');
-    this.trainig.isCompleted = true;
-    this.programService.saveTrainig().subscribe();
+  private _closeTraining() {
+    console.log('Close Training');
+    this.training.isCompleted = true;
+    this.programService.saveTraining().subscribe();
     this.router.navigate(['/']);
   }
 
   trySave() {
     // todo: Проверить, всё ли заполнено, если да, то сохранить и перейти назад в навигаторе
     this.showDebug();
-    this.programService.saveTrainig().subscribe();
-    // console.log('trySave::', this.trainig, this.trainig.canComplete);
-    if (!this.trainig.canComplete) {
+    this.programService.saveTraining().subscribe();
+    // console.log('trySave::', this.training, this.training.canComplete);
+    if (!this.training.canComplete) {
       this.openDialog({
           info: 'Не все упрежнения выполнены. Завершить тренеровку?',
           btnOk: true
         }, (res) => {
           if (res) {
-            this._closeTrainig();
+            this._closeTraining();
           }
       });
     } else {
-      this._closeTrainig();
+      this._closeTraining();
     }
 
   }
@@ -227,7 +227,7 @@ export class TrainigComponent implements OnInit {
 
 
   userPrevTrainingExercise(protoExercise: ProtoExercise) {
-    const exercise = this.trainig.getExercise(protoExercise);
+    const exercise = this.training.getExercise(protoExercise);
     const lastExercise = this.prevExercises.find((ex: Exercise) => ex.protoLink.id === protoExercise.id);
     if (!exercise || !lastExercise || !lastExercise.haveNotEmprtyTryes()) {
       return '';

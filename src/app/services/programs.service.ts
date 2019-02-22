@@ -14,26 +14,26 @@ import { map } from 'rxjs/operators';
 })
 export class ProgramsService {
 
-  private isLoadTrainigsForUser: string = '';
+  private isLoadTrainingsForUser: string = '';
 
   get programComplexes(): ProgramComplex[] {
     const user = this.userInfo.user;
     return user && user.programComplexes || [];
   }
-  // trainigs: Training[] = [];
+  // trainings: Training[] = [];
   // Старые тренировки + текущая тренировка
-  private _trainigs: BehaviorSubject<Training[]> = new BehaviorSubject([]);
-  trainigs$: Observable<Training[]> = this._trainigs.asObservable();
+  private _trainings: BehaviorSubject<Training[]> = new BehaviorSubject([]);
+  trainings$: Observable<Training[]> = this._trainings.asObservable();
 
-  public get trainigs(): Training[] {
-    return this._trainigs.value;
+  public get trainings(): Training[] {
+    return this._trainings.value;
   }
-  public set trainigs(value: Training[]) {
-    this._trainigs.next(value);
+  public set trainings(value: Training[]) {
+    this._trainings.next(value);
   }
 
-  addTrainig(trainig) {
-    this.trainigs = [...this.trainigs, trainig];
+  addTraining(training) {
+    this.trainings = [...this.trainings, training];
   }
 
   constructor(private rest: RestService, private userInfo: UserInfoService) {
@@ -58,11 +58,12 @@ export class ProgramsService {
     return `user_${this.userInfo.user && this.userInfo.user.id}`;
   }
 
-  saveTrainig() {
+  saveTraining() {
     // localStorage.setItem('whatever', 'something');
-    const trainigsString = JSON.stringify(this.trainigs.map((tr: Training) => {
+    const trainingsString = JSON.stringify(this.trainings.map((tr: Training) => {
       const m = tr.toMap();
-      m['protoTrainig'] = tr.protoTrainig.id;
+      m['protoTraining'] = tr.protoTraining.id;
+      m['protoTrainig'] = tr.protoTraining.id;
       // exercises -> to proto exercises_id
       m['exercises'] = tr.exercises.map((ex: Exercise) => {
         const exMap = ex.toMap();
@@ -73,23 +74,24 @@ export class ProgramsService {
     }));
 
 
-    // console.log('saveTrainig::', trainigsString);
-    localStorage.setItem(this.localStorageUserName, trainigsString);
+    // console.log('saveTraining::', trainingsString);
+    localStorage.setItem(this.localStorageUserName, trainingsString);
     return of(true);
   }
 
-  loadTrainigs() {
-    if (this.isLoadTrainigsForUser === (this.userInfo.user && this.userInfo.user.id)) {
-      return of(this.trainigs);
+  loadTrainings() {
+    if (this.isLoadTrainingsForUser === (this.userInfo.user && this.userInfo.user.id)) {
+      return of(this.trainings);
     }
-    const trainigsString = localStorage.getItem(this.localStorageUserName);
-    // console.log('loadTrainigs::', trainigsString);
-    this.isLoadTrainigsForUser = this.userInfo.user && this.userInfo.user.id || '';
-    if (trainigsString) {
-      const trMaps = JSON.parse(trainigsString);
+    const trainingsString = localStorage.getItem(this.localStorageUserName);
+    // console.log('loadTrainings::', trainingsString);
+    this.isLoadTrainingsForUser = this.userInfo.user && this.userInfo.user.id || '';
+    if (trainingsString) {
+      const trMaps = JSON.parse(trainingsString);
       // console.log('trMaps::', trMaps);
       const trainings = trMaps.map(trM => {
-        const protoTraining: ProtoTraining = this.getProtoTrainigById(trM['protoTrainig']);
+        const protoTraining: ProtoTraining = this.getProtoTrainingById(trM['protoTrainig'] || trM['protoTraining']);
+        delete trM['protoTraining'];
         delete trM['protoTrainig'];
         // proto_exercies_id -> exercises
         trM['exercises'] = trM['exercises'].map((exMap) => {
@@ -106,27 +108,27 @@ export class ProgramsService {
         });
         // console.log('protoTraining::', protoTraining);
         const tr = new Training(trM);
-        tr.protoTrainig = protoTraining;
+        tr.protoTraining = protoTraining;
         return tr;
       });
       // console.log('trainings::', trainings);
-      this.trainigs = trainings;
+      this.trainings = trainings;
     }
-    return of(this.trainigs);
+    return of(this.trainings);
   }
 
-  getProtoTrainigById(protoId: string): ProtoTraining {
-    const trainigs = this.programComplexes.reduce(
-      (accumulator: any, complex: ProgramComplex) => [...accumulator, ...complex.protoTrainigs],
+  getProtoTrainingById(protoId: string): ProtoTraining {
+    const trainings = this.programComplexes.reduce(
+      (accumulator: any, complex: ProgramComplex) => [...accumulator, ...complex.protoTrainings],
       []
     );
 
-    return trainigs.find((tr: ProtoTraining) => tr.id === protoId);
+    return trainings.find((tr: ProtoTraining) => tr.id === protoId);
   }
 
-  getTrainigById(id: string) {
-    return this.loadTrainigs().pipe(
-      map(trainigs => trainigs.find(el => el.id === id))
+  getTrainingById(id: string) {
+    return this.loadTrainings().pipe(
+      map(trainings => trainings.find(el => el.id === id))
     );
   }
 }

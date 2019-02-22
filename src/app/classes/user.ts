@@ -5,7 +5,7 @@ import { Mappable } from './mappable';
 export class User extends Mappable {
     private _id: string;
     private _programComplexes: ProgramComplex[] = [];
-    private _trainigs: Training[] = [];
+    private _trainings: Training[] = [];
 
     public get id(): string {
         return this._id;
@@ -21,11 +21,11 @@ export class User extends Mappable {
         this._programComplexes = value;
     }
 
-    public get trainigs(): Training[] {
-        return this._trainigs;
+    public get trainings(): Training[] {
+        return this._trainings;
     }
-    public set trainigs(value: Training[]) {
-        this._trainigs = value;
+    public set trainings(value: Training[]) {
+        this._trainings = value;
     }
 
     constructor(data?: any) {
@@ -37,8 +37,8 @@ export class User extends Mappable {
                 this.programComplexes = data['programComplexes'].map(el => new ProgramComplex(el));
             }
 
-            if (data['trainigs']) {
-                this.trainigs = data['trainigs'].map(el => new Training(el));
+            if (data['trainings']) {
+                this.trainings = data['trainings'].map(el => new Training(el));
             }
         }
     }

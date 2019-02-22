@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ProgramsComplexComponent } from './programs-complex/programs-complex.component';
-import { TrainigComponent } from './trainig/trainig.component';
+import { TrainingComponent } from './training/training.component';
 
 const routes: Routes = [
   {
@@ -9,13 +9,13 @@ const routes: Routes = [
     component: ProgramsComplexComponent
   },
   {
-    path: 'trainig',
+    path: 'training',
     redirectTo: '',
     pathMatch: 'full'
   },
   {
-    path: 'trainig/:protoid',
-    component: TrainigComponent,
+    path: 'training/:protoid',
+    component: TrainingComponent,
   }
 ];
 

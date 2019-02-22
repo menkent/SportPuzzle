@@ -7,11 +7,11 @@ import { DialogInfoService } from '@app/sport-common/dialog-info.service';
 import { MyTry } from '@app/classes/my-try';
 
 @Component({
-  selector: 'app-stat-trainig',
-  templateUrl: './stat-trainig.component.html',
-  styleUrls: ['./stat-trainig.component.scss']
+  selector: 'app-stat-training',
+  templateUrl: './stat-training.component.html',
+  styleUrls: ['./stat-training.component.scss']
 })
-export class StatTrainigComponent implements OnInit {
+export class StatTrainingComponent implements OnInit {
 
   training: Training = null;
 
@@ -23,7 +23,7 @@ export class StatTrainigComponent implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.pipe(
-      mergeMap((params: ParamMap) => this.programService.getTrainigById(params.get('id'))),
+      mergeMap((params: ParamMap) => this.programService.getTrainingById(params.get('id'))),
     ).subscribe(training => {
       this.training = training;
       if (!training) {

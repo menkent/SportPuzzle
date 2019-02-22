@@ -1,5 +1,5 @@
 <div class="container" *ngIf="training">
-  <p>{{ training.protoTrainig.name }}</p>
+  <p>{{ training.protoTraining.name }}</p>
   <p class="sub-header">{{ training.date | date:'dd.MM.yyyy' }}  /  {{ training.userWeight }}</p>
   <mat-divider></mat-divider>
   <div class="row" *ngIf="training.cardioStart && training.cardioStart.isCompleted">

@@ -6,22 +6,22 @@
 
 </mat-toolbar> -->
 <mat-divider></mat-divider>
-<form ngForm #f *ngIf="trainig" style="padding-top: 1rem;">
+<form ngForm #f *ngIf="training" style="padding-top: 1rem;">
   <div class="container">
     <div class="row">
       <mat-form-field class="col-6 col-md-6">
         <input matInput [matDatepicker]="picker" placeholder="Дата тренеровки"
           name="trainingDate" 
-          [value]="getTrainigDate()"
-          (dateChange)="setTrainigDate($event)"
-          (dateInput)="setTrainigDate($event)"
+          [value]="getTrainingDate()"
+          (dateChange)="setTrainingDate($event)"
+          (dateInput)="setTrainingDate($event)"
         >
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field class="col-6 col-md-6">
-          <input matInput type="number" min="30" max="150" placeholder="Вес" name="userWeight" [(ngModel)]="trainig.userWeight">
+          <input matInput type="number" min="30" max="150" placeholder="Вес" name="userWeight" [(ngModel)]="training.userWeight">
       </mat-form-field>
     </div>
   </div>
@@ -43,12 +43,12 @@
     (selectionChange)="cardioStart.stop(); cardioEnd.stop(); changeSelection($event);"
     >
 
-        <mat-step [completed]="trainig.cardioStart.isCompleted">
+        <mat-step [completed]="training.cardioStart.isCompleted">
             <ng-template matStepLabel 
               >Стартовое кардио</ng-template>
             
             <app-cardio-try #cardioStart
-              [namespace]="trainig.cardioStart"
+              [namespace]="training.cardioStart"
             ></app-cardio-try>
 
             
@@ -72,7 +72,7 @@
         </mat-step>
 
         <!-- УПРАЖНЕНИЯ -->
-        <ng-container *ngFor="let exercise of trainig.exercises; let last = last; let index = index;">
+        <ng-container *ngFor="let exercise of training.exercises; let last = last; let index = index;">
             <mat-step [completed]="exercise.isCompleted">
                 <ng-template matStepLabel>
                     <div class="exercise-label-wrapper">
@@ -99,7 +99,7 @@
                 </ng-template>
 
                 <!-- Подходы из прошлой тренеровки -->
-                <!-- todo: Заменить проверку по prevTrainig, на проверку про прошлому Exercise -->
+                <!-- todo: Заменить проверку по prevTraining, на проверку про прошлому Exercise -->
                 <div class="row" *ngIf="getPrevExercise(exercise.protoLink)">
                   <div class="col-10 sub-header" innerHTML="{{ getPrevExercise(exercise.protoLink) }}"></div>
                   <div class="col-2">
@@ -146,11 +146,11 @@
             </div>
         </mat-step>
 
-        <mat-step [completed]="trainig.cardioEnd.isCompleted">
+        <mat-step [completed]="training.cardioEnd.isCompleted">
             <ng-template matStepLabel>Финальное кардио</ng-template>
 
             <app-cardio-try #cardioEnd
-              [namespace]="trainig.cardioEnd"
+              [namespace]="training.cardioEnd"
             ></app-cardio-try>
            
         </mat-step>
@@ -162,12 +162,12 @@
   <div class="container">
     <div class="row">
       <mat-form-field class="" class="col-12" style="padding-top: 1rem;">
-        <textarea matInput name="commentTrainig" placeholder="Comment to Training" [(ngModel)]="trainig.comment"></textarea>
+        <textarea matInput name="commentTraining" placeholder="Comment to Training" [(ngModel)]="training.comment"></textarea>
       </mat-form-field>
     </div>
   </div>
 
-  <div class="container final-trainig-wrapper">
+  <div class="container final-training-wrapper">
     <div class="row btns-row solo-btn final">
         <button mat-fab color="basic" class="green-btn" (click)="trySave()">
             <mat-icon>check</mat-icon>
