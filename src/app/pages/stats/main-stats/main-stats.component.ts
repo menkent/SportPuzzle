@@ -3,6 +3,7 @@ import { ProgramsService } from '@app/services/programs.service';
 import { Training } from '@app/classes/training';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { DialogInfoService } from '@app/sport-common/dialog-info.service';
 
 @Component({
   selector: 'app-main-stats',
@@ -15,7 +16,7 @@ export class MainStatsComponent implements OnInit {
     return this.programService.trainings$;
   }
 
-  constructor(protected programService: ProgramsService, private router: Router) { }
+  constructor(protected programService: ProgramsService, private router: Router, private dialog: DialogInfoService) { }
 
   ngOnInit() {
     this.programService.loadTrainings().subscribe();
@@ -23,5 +24,15 @@ export class MainStatsComponent implements OnInit {
 
   onClick(tr: Training) {
     this.router.navigate(['stats/training', tr.id]);
+  }
+
+  deleteTrainig(training: Training) {
+    this.dialog.openDialog({info: 'Удалить тренировку?', btnOk: true},
+      (res) => {
+        if (res) {
+          this.programService.delTraining(training);
+          this.programService.saveTraining().subscribe();
+        }
+    });
   }
 }

@@ -38,6 +38,12 @@ export class ProgramsService {
     this.trainings = [...this.trainings, training];
   }
 
+  delTraining(training) {
+    const index = this.trainings.findIndex(el => el === training);
+    if (index >= 0) {
+      this.trainings.splice(index, 1);
+    }
+  }
 
   private _exercises: BehaviorSubject<ProtoExercise[]> = new BehaviorSubject([]);
   exercises$: Observable<ProtoExercise[]> = this._exercises.asObservable();
@@ -131,6 +137,8 @@ export class ProgramsService {
       });
       // console.log('trainings::', trainings);
       this.trainings = trainings;
+    } else {
+      this.trainings = [];
     }
     return of(this.trainings);
   }

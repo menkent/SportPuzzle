@@ -1,12 +1,20 @@
 <div class="container">
   <ng-container *ngFor="let training of (trainings$ | async); let last = last">
-      <div class="row card-wrap" (click)="onClick(training)">
+      <div class="row card-wrap">
           <div *ngIf="training.isCompleted"><mat-icon class="icon">check_circle_outline</mat-icon></div>
           <div *ngIf="!training.isCompleted"><mat-icon class="icon fail">remove_circle_outline</mat-icon></div>
           <div class="sub-header">({{ training.date | date:'dd.MM.yyyy' }})</div>
-          <div class="name">{{ training.protoTraining.name }}</div>
+          <div class="name" (click)="onClick(training)">{{ training.protoTraining.name }}</div>
+          <div class="btns-wrapper">
+            <button mat-stroked-button disabled color="basic">
+              edit
+            </button>
+            <button mat-stroked-button color="basic" (click)="deleteTrainig(training)">
+              delete
+            </button>
+          </div>
       </div>
-      <!-- <mat-divider *ngIf="!last"></mat-divider> -->
+      <mat-divider *ngIf="!last"></mat-divider>
   </ng-container>
 
   <div class="row" *ngIf="(trainings$ | async).length == 0">

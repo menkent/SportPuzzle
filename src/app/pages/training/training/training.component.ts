@@ -200,19 +200,14 @@ export class TrainingComponent implements OnInit {
     this.showDebug();
     this.programService.saveTraining().subscribe();
     // console.log('trySave::', this.training, this.training.canComplete);
-    if (!this.training.canComplete) {
-      this.openDialog({
-          info: 'Не все упрежнения выполнены. Завершить тренеровку?',
-          btnOk: true
-        }, (res) => {
-          if (res) {
-            this._closeTraining();
-          }
-      });
-    } else {
-      this._closeTraining();
-    }
-
+    const text = this.training.canComplete ? 'Завершить тренеровку?' : 'Не все упрежнения выполнены. Завершить тренеровку?';
+    this.openDialog(
+      {info: text, btnOk: true},
+      (res) => {
+        if (res) {
+          this._closeTraining();
+        }
+    });
   }
 
   getPrevExercise(protoExercise) {
