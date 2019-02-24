@@ -6,10 +6,10 @@
           <div class="sub-header">({{ training.date | date:'dd.MM.yyyy' }})</div>
           <div class="name" (click)="onClick(training)">{{ training.protoTraining.name }}</div>
           <div class="btns-wrapper">
-            <button mat-stroked-button disabled color="basic">
+            <button mat-stroked-button color="basic" (click)="editTraining(training)">
               edit
             </button>
-            <button mat-stroked-button color="basic" (click)="deleteTrainig(training)">
+            <button mat-stroked-button color="basic" (click)="deleteTraining(training)">
               delete
             </button>
           </div>

@@ -26,7 +26,7 @@ export class MainStatsComponent implements OnInit {
     this.router.navigate(['stats/training', tr.id]);
   }
 
-  deleteTrainig(training: Training) {
+  deleteTraining(training: Training) {
     this.dialog.openDialog({info: 'Удалить тренировку?', btnOk: true},
       (res) => {
         if (res) {
@@ -34,5 +34,9 @@ export class MainStatsComponent implements OnInit {
           this.programService.saveTraining().subscribe();
         }
     });
+  }
+
+  editTraining(training: Training) {
+    this.router.navigate(['training', training.protoTraining.id], { queryParams: { id: training.id } });
   }
 }

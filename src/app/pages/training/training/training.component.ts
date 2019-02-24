@@ -3,13 +3,13 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { ProtoTraining } from 'src/app/classes/proto-training';
 import { Training } from 'src/app/classes/training';
 import { ProgramsService } from 'src/app/services/programs.service';
-import { mergeMap, concat, merge, map, filter } from 'rxjs/operators';
+import { mergeMap, concat, merge, map, filter, tap, combineLatest, zipAll } from 'rxjs/operators';
 import { MatVerticalStepper, MatDialog } from '@angular/material';
 import { Exercise } from 'src/app/classes/exercise';
 import { ProtoExercise } from 'src/app/classes/proto-exercise';
 import { MyTry } from 'src/app/classes/my-try';
 import { DialogInfoService } from 'src/app/sport-common/dialog-info.service';
-import { of } from 'rxjs';
+import { of, forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-training',
@@ -55,24 +55,46 @@ export class TrainingComponent implements OnInit {
 
   ngOnInit() {
     // todo: реализвать через merge или forkJoin, чтобы все обсёрваблы сразу выполнились
-    this.programService.getProgramComplex().pipe(
-      mergeMap(() => this.route.paramMap),
-      map((params: ParamMap) => {
-        this.protoTraining = this.programService.getProtoTrainingById(params.get('protoid'));
-        return this.protoTraining;
-      }),
-      mergeMap(() => {
-        if (this.protoTraining) {
-          return this.programService.loadTrainings();
-        } else {
-          // 
-          this.openDialog({info: 'Программа не найдена. Попробуйте ещё раз!'}, () => {
-            this.router.navigate(['']);
+    of(null).pipe(
+      combineLatest(
+        this.programService.getProgramComplex(),
+        this.route.paramMap,
+        this.route.queryParamMap
+      ),
+      tap((r) => console.warn(r)),
+      map(([n, complexes, params, queryParamMap]) => {
+        // console.log('1::', params, queryParamMap);
+        const id = queryParamMap.get('id');
+        const protoid = params.get('protoid');
+        console.log('2::', protoid, id);
+
+        if (id) {
+          // значит это попытка редактирования программы
+          this.programService.getTrainingById(params.get('id')).subscribe(res => {
+            console.log('!!!! === !!!!', res, params);
           });
-          return of(null);
+        } 
+
+        if (protoid) {
+          this.protoTraining = this.programService.getProtoTrainingById(params.get('protoid'));
+          return of(this.protoTraining).pipe(
+            mergeMap(() => {
+              if (this.protoTraining) {
+                return this.programService.loadTrainings();
+              } else {
+                // Найдена старая программа
+                this.openDialog({info: 'Программа не найдена. Попробуйте ещё раз!'}, () => {
+                  this.router.navigate(['']);
+                });
+                return of(null);
+              }
+              })
+            )
         }
-        }),
-        filter((el) => !!el),
+        
+       
+      }),
+      filter((el) => !!el),
     ).subscribe((trainings: Training[]) => {
       // ищем все тренеровки, которые похожи на эту прото тренеровку
       const asProtoTrainings = trainings
