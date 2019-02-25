@@ -3,7 +3,7 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { ProtoTraining } from 'src/app/classes/proto-training';
 import { Training } from 'src/app/classes/training';
 import { ProgramsService } from 'src/app/services/programs.service';
-import { mergeMap, concat, merge, map, filter, tap, combineLatest, zipAll } from 'rxjs/operators';
+import { mergeMap, concat, merge, map, filter, tap, combineLatest, zipAll, switchMap } from 'rxjs/operators';
 import { MatVerticalStepper, MatDialog } from '@angular/material';
 import { Exercise } from 'src/app/classes/exercise';
 import { ProtoExercise } from 'src/app/classes/proto-exercise';
@@ -53,6 +53,65 @@ export class TrainingComponent implements OnInit {
     this.programService.addTraining(this.training);
   }
 
+  private _editMode(id: string) {
+    return this.programService.getTrainingById(id).pipe(tap((tr: Training) => {
+      this.training = tr;
+      this.protoTraining = tr.protoTraining;
+    }));
+  }
+
+  private _currentMode(protoid: string) {
+    this.protoTraining = this.programService.getProtoTrainingById(protoid);
+    console.log(this.protoTraining);
+    return of(null).pipe(
+      mergeMap(() => {
+        if (this.protoTraining) {
+          return this.programService.loadTrainings();
+        } else {
+          // Найдена старая программа
+          this.openDialog({info: 'Программа не найдена. Попробуйте ещё раз!'}, () => {
+            this.router.navigate(['']);
+          });
+          return of(null);
+        }
+        }),
+        filter(e => !!e),
+        map((trainings: Training[]) => {
+          // ищем все тренеровки, которые похожи на эту прото тренеровку
+          const asProtoTrainings = trainings
+            .filter((tr: Training) => tr.protoTraining.id === this.protoTraining.id)
+            .sort((a: Training, b: Training) => b.date - a.date);
+          // console.log('asProtoTrainings::', asProtoTrainings);
+          // ищем незаконченные тренеровки. Если есть незаконченная, то предлагаем её продолжить, иначе создаём новую
+          const nowDate = new Date().getTime();
+          const hours12ms = 12 * 60 * 60 * 1000;
+          // Последняя незавершённая тренировка, не страше 12 часов
+          const findLastNotCompleted = asProtoTrainings.find((tr: Training) => !tr.isCompleted && (nowDate - tr.date < hours12ms));
+
+          // Последняя завершённая тренировка
+          this.prevTraining = asProtoTrainings.find((tr: Training) => tr.isCompleted);
+          this.prevExercises = this.prevTraining && this.prevTraining.exercises || [];
+
+          // Если есть последня незавершённая тренировка, то предложить её продолжить
+          if (findLastNotCompleted) {
+            this.openDialog({
+                info: 'Найдена предыдущая незавершённая тренеровка. Продолжить её?',
+                btnOk: true
+              }, (res) => {
+                if (res) {
+                  this.training = findLastNotCompleted;
+                } else {
+                  this._createNewTraining();
+                }
+              }
+            );
+          } else {
+            this._createNewTraining();
+          }
+        })
+      );
+  }
+
   ngOnInit() {
     // todo: реализвать через merge или forkJoin, чтобы все обсёрваблы сразу выполнились
     of(null).pipe(
@@ -62,72 +121,22 @@ export class TrainingComponent implements OnInit {
         this.route.queryParamMap
       ),
       tap((r) => console.warn(r)),
-      map(([n, complexes, params, queryParamMap]) => {
-        // console.log('1::', params, queryParamMap);
-        const id = queryParamMap.get('id');
+      switchMap((value: any, index) => {
+        const params = value[2];
+        const queryParamMap = value[3];
         const protoid = params.get('protoid');
-        console.log('2::', protoid, id);
+        const id = queryParamMap.get('id');
 
-        if (id) {
-          // значит это попытка редактирования программы
-          this.programService.getTrainingById(params.get('id')).subscribe(res => {
-            console.log('!!!! === !!!!', res, params);
-          });
-        } 
-
-        if (protoid) {
-          this.protoTraining = this.programService.getProtoTrainingById(params.get('protoid'));
-          return of(this.protoTraining).pipe(
-            mergeMap(() => {
-              if (this.protoTraining) {
-                return this.programService.loadTrainings();
-              } else {
-                // Найдена старая программа
-                this.openDialog({info: 'Программа не найдена. Попробуйте ещё раз!'}, () => {
-                  this.router.navigate(['']);
-                });
-                return of(null);
-              }
-              })
-            )
+        if (id) {  // значит это попытка редактирования программы
+          return this._editMode(id);
+        } else if (protoid) { // Попытка создания новой программы или продолжение недавней
+          return this._currentMode(protoid);
+        } else {
+          this.router.navigate(['/']);
+          return of(null);
         }
-        
-       
       }),
-      filter((el) => !!el),
-    ).subscribe((trainings: Training[]) => {
-      // ищем все тренеровки, которые похожи на эту прото тренеровку
-      const asProtoTrainings = trainings
-        .filter((tr: Training) => tr.protoTraining.id === this.protoTraining.id)
-        .sort((a: Training, b: Training) => b.date - a.date);
-      // console.log('asProtoTrainings::', asProtoTrainings);
-      // ищем незаконченные тренеровки. Если есть незаконченная, то предлагаем её продолжить, иначе создаём новую
-      const nowDate = new Date().getTime();
-      const hours12ms = 12 * 60 * 60 * 1000;
-      // Последняя незавершённая тренировка, не страше 12 часов
-      const findLastNotCompleted = asProtoTrainings.find((tr: Training) => !tr.isCompleted && (nowDate - tr.date < hours12ms));
-
-      // Последняя завершённая тренировка
-      this.prevTraining = asProtoTrainings.find((tr: Training) => tr.isCompleted);
-      this.prevExercises = this.prevTraining && this.prevTraining.exercises || [];
-
-      // Если есть последня незавершённая тренировка, то предложить её продолжить
-      if (findLastNotCompleted) {
-        this.openDialog({
-            info: 'Найдена предыдущая незавершённая тренеровка. Продолжить её?',
-            btnOk: true
-          }, (res) => {
-            if (res) {
-              this.training = findLastNotCompleted;
-            } else {
-              this._createNewTraining();
-            }
-          }
-        );
-      } else {
-        this._createNewTraining();
-      }
-    });
+    ).subscribe();
   }
 
   showDebug() {

@@ -1,10 +1,11 @@
 <div class="container" *ngIf="training">
   <p>{{ training.protoTraining.name }}</p>
-  <p class="sub-header">{{ training.date | date:'dd.MM.yyyy' }}  /  {{ training.userWeight }}</p>
+  <p class="sub-header">{{ training.date | date:'dd.MM.yyyy' }}  /  {{ training.userWeight || 0 }}kg</p>
+  <p *ngIf="training.comment">{{ training.comment }}</p>
   <mat-divider></mat-divider>
   <div class="row" *ngIf="training.cardioStart && training.cardioStart.isCompleted">
-    <div class="col-6">{{ training.cardioStart.cardioType }}</div>
-    <div class="col-6">{{ training.cardioStart.time }}</div>
+    <div class="col-6">{{ getCardioNameByType(training.cardioStart.cardioType) }}</div>
+    <div class="col-6">{{ training.cardioStart.time * 1000 | date:'mm.ss' }}</div>
   </div>
 
   <ng-container *ngFor="let exercise of training.exercises">
@@ -17,8 +18,8 @@
   </ng-container>
   
   <div class="row" *ngIf="training.cardioEnd && training.cardioEnd.isCompleted">
-    <div class="col-6">{{ training.cardioEnd.cardioType }}</div>
-    <div class="col-6">{{ training.cardioEnd.time }}</div>
+    <div class="col-6">{{ getCardioNameByType(training.cardioEnd.cardioType) }}</div>
+    <div class="col-6">{{ training.cardioEnd.time * 1000 | date:'mm.ss' }}</div>
   </div>
 
 

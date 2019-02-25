@@ -5,6 +5,7 @@ import { mergeMap, filter } from 'rxjs/operators';
 import { Training } from '@app/classes/training';
 import { DialogInfoService } from '@app/sport-common/dialog-info.service';
 import { MyTry } from '@app/classes/my-try';
+import { CardioTypesHB } from '@app/classes/cardio-types.enum';
 
 @Component({
   selector: 'app-stat-training',
@@ -34,6 +35,10 @@ export class StatTrainingComponent implements OnInit {
     });
   }
 
+  getCardioNameByType(type) {
+    const t = CardioTypesHB.find(el => el.sysname === type);
+    return t && t.name || '<неизвестно>';
+  }
 
   getExerciseTryes(exercise) {
     const countExercise = exercise.tryes.length;

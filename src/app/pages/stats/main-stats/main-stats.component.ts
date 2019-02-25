@@ -4,6 +4,7 @@ import { Training } from '@app/classes/training';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { DialogInfoService } from '@app/sport-common/dialog-info.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-main-stats',
@@ -13,7 +14,9 @@ import { DialogInfoService } from '@app/sport-common/dialog-info.service';
 export class MainStatsComponent implements OnInit {
 
   get trainings$(): Observable<Training[]> {
-    return this.programService.trainings$;
+    return this.programService.trainings$.pipe(
+      map(trainings => trainings.sort((a, b) => b.date - a.date))
+    );
   }
 
   constructor(protected programService: ProgramsService, private router: Router, private dialog: DialogInfoService) { }
