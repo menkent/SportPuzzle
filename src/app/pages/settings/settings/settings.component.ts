@@ -16,7 +16,7 @@ export class SettingsComponent implements OnInit {
     return this.programService.programComplexes;
   }
 
-  constructor(protected programService: ProgramsService, private router: Router, private dialog: DialogInfoService) { }
+  constructor(public programService: ProgramsService, private router: Router, private dialog: DialogInfoService) { }
 
   ngOnInit() {
     this.programService.loadProtoExercises().subscribe();
