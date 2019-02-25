@@ -1,0 +1,27 @@
+
+<form ngForm #f *ngIf="exercise" style="padding-top: 1rem;">
+  <div class="container">
+    <div class="row">
+      <mat-form-field class="col-12">
+        <input matInput type="text" placeholder="Name" name="exName" [(ngModel)]="exercise.name" required>
+      </mat-form-field>
+      
+      <mat-form-field class="col-12">
+          <textarea matInput type="text" placeholder="Description" name="exDescr" [(ngModel)]="exercise.description"></textarea>
+      </mat-form-field>
+
+      <mat-form-field class="col-12">
+        <input matInput type="text" placeholder="VideoLink" name="exLink" [(ngModel)]="exercise.videoLink">
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="container final-training-wrapper">
+    <div class="row btns-row solo-btn final">
+        <button mat-fab color="basic" class="green-btn" (click)="trySave()">
+            <mat-icon>check</mat-icon>
+        </button>
+    </div>
+  </div>
+  
+</form>

@@ -1,4 +1,4 @@
-@import "~src/theme/variables";
+
 
 .btns-row {
     display: flex;
@@ -10,11 +10,6 @@
     }
 }
 
-.info-btn {
-    cursor: pointer;
-    margin-left: 1rem;
-
-    &:first-child {
-        
-    }
+.final-training-wrapper {
+    padding: 0.25rem 0;
 }

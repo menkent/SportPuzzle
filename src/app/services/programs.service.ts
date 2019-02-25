@@ -175,10 +175,33 @@ export class ProgramsService {
 
   saveProtoExercises() {
     const fixEx = getAllContProtoExercise();
-    const exercises = this.exercises.filter((ex: ProtoExercise) => !fixEx.find(e => e.id !== ex.id));
-
-    const exString = JSON.stringify(this.exercises.map((ex: ProtoExercise) => ex.toMap()));
+    const exercises = this.exercises.filter((ex: ProtoExercise) => !fixEx.find(e => e.id === ex.id));
+    console.log('exercises to save:', exercises, fixEx.length, this.exercises.length);
+    const exString = JSON.stringify(exercises.map((ex: ProtoExercise) => ex.toMap()));
     localStorage.setItem(this.localStorageUserNameForExercises, exString);
     return of(true);
   }
+
+  getProtoExerciseById(id: string) {
+    return this.loadProtoExercises().pipe(
+      map(exercises => exercises.find(el => el.id === id))
+    );
+  }
+
+  addProtoExercise(ex: ProtoExercise) {
+    const index = this.exercises.findIndex(el => el.id === ex.id);
+    if (index >= 0) {
+      this.exercises[index] = ex;
+    } else {
+      this.exercises = [ex, ...this.exercises];
+    }
+  }
+
+  delProtoExercise(ex: ProtoExercise) {
+    const index = this.exercises.findIndex(el => el.id === ex.id);
+    if (index >= 0) {
+      this.exercises.splice(index, 1);
+    }
+  }
+
 }
