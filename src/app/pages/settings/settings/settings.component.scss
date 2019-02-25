@@ -14,7 +14,11 @@
     cursor: pointer;
     margin-left: 1rem;
 
-    &:first-child {
-        
+    &.info {
+        color: $main-blue;
+    }
+
+    &.delete {
+        color: $red;
     }
 }

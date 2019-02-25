@@ -42,9 +42,9 @@
             (click)="exerciseClick(exrcise.id)"
             role="listitem"
           >
-          <span matLine style="white-space: normal;"> {{ exrcise.name }} </span>
-          <mat-icon class="info-btn" (click)="viewDescr(exrcise, $event)">error_outline</mat-icon>
-          <mat-icon class="info-btn" (click)="delExercise(exrcise, $event)">delete_outline</mat-icon>
+            <span matLine style="white-space: normal;"> {{ exrcise.name }} </span>
+            <mat-icon class="info-btn info" (click)="viewDescr(exrcise, $event)">error_outline</mat-icon>
+            <mat-icon class="info-btn delete" (click)="delExercise(exrcise, $event)">delete_outline</mat-icon>
           </mat-list-item>
           <mat-divider *ngIf="!last"></mat-divider>
       </ng-container>

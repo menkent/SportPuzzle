@@ -43,6 +43,9 @@ export class SettingsComponent implements OnInit {
   }
 
   delExercise(exercise: ProtoExercise, event: MouseEvent) {
+    if (getAllContProtoExercise().find(ex => ex.id === exercise.id)) {
+      return;
+    }
     this.programService.delProtoExercise(exercise);
     event.stopPropagation();
     this.programService.saveProtoExercises().subscribe();
