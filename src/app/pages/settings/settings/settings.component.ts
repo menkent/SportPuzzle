@@ -24,11 +24,11 @@ export class SettingsComponent implements OnInit {
   }
 
   complexClick(complexId) {
-    this.router.navigate(['settings/complex', complexId]);
+    this.router.navigate(['settings/program-complex-edit'], { queryParams: { complexId } });
   }
 
   complexAdd() {
-    this.router.navigate(['settings/complex/add']);
+    this.router.navigate(['settings/program-complex-edit']);
   }
 
   exerciseClick(exerciseId) {

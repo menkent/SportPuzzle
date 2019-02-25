@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SettingsComponent } from './settings/settings.component';
 import { ExerciseEditComponent } from './exercise-edit/exercise-edit.component';
+import { ProgramComplexEditComponent } from './program-complex-edit/program-complex-edit.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
   {
     path: "exercise-edit",
     component: ExerciseEditComponent,
+  },
+  {
+    path: "program-complex-edit",
+    component: ProgramComplexEditComponent,
   },
 ];
 

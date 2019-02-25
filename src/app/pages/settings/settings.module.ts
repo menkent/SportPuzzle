@@ -6,9 +6,11 @@ import { SettingsComponent } from './settings/settings.component';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule, MatButtonToggleModule, MatDividerModule, MatIconModule, MatToolbarModule, MatExpansionModule, MatListModule, MatInputModule } from '@angular/material';
 import { ExerciseEditComponent } from './exercise-edit/exercise-edit.component';
+import { ProgramComplexEditComponent } from './program-complex-edit/program-complex-edit.component';
+import { ProtoTrainigEditComponent } from './proto-trainig-edit/proto-trainig-edit.component';
 
 @NgModule({
-  declarations: [SettingsComponent, ExerciseEditComponent],
+  declarations: [SettingsComponent, ExerciseEditComponent, ProgramComplexEditComponent, ProtoTrainigEditComponent],
   imports: [
     CommonModule,
     SettingsRoutingModule,
@@ -22,6 +24,6 @@ import { ExerciseEditComponent } from './exercise-edit/exercise-edit.component';
     MatListModule,
     MatInputModule,
   ],
-  exports: [SettingsComponent, ExerciseEditComponent]
+  exports: [SettingsComponent, ExerciseEditComponent, ProgramComplexEditComponent]
 })
 export class SettingsModule { }

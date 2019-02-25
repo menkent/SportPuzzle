@@ -1,0 +1,72 @@
+<form ngForm #f *ngIf="namespace">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+         {{ namespace.name }}
+        </mat-panel-title>
+        <mat-panel-description>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="container">
+        <div class="row">
+          <mat-form-field class="col-12">
+              <input matInput type="text" placeholder="Name" name="trName" [(ngModel)]="namespace.name" required>
+          </mat-form-field>
+        </div>
+        <ng-container *ngFor="let exercise of namespace.exercises; let last = last; let index = index;">
+            <div class="row">
+              <div class="col-12">
+                <p>{{ index }}</p>
+                <p>{{ exercise.name }}</p>
+              </div>
+            </div>
+            <mat-divider *ngIf="!last"></mat-divider>
+        </ng-container>
+        <!-- <mat-list role="list">
+            <ng-container *ngFor="let exercise of namespace.exercises; let last = last; let index = index;">
+                <mat-list-item role="listitem">
+                <p mat-line>{{ index }}</p>
+                <p mat-line>{{ exercise.name }}</p>
+                </mat-list-item>
+                <mat-divider *ngIf="!last"></mat-divider>
+            </ng-container>
+        </mat-list> -->
+        <div class="row btns-row solo-btn">
+          <button mat-fab color="basic" class="add-try-btn" (click)="exerciseAdd()">
+              <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </div>
+    </mat-expansion-panel>
+
+  <!-- <div class="container">
+    <div class="row">
+      <mat-form-field class="col-12">
+        <input matInput type="text" placeholder="Name" name="exName" [(ngModel)]="programComplex.name" required>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+      <ng-container *ngFor="let training of programComplex.protoTrainings">
+        <app-proto-trainig-edit
+          
+        ></app-proto-trainig-edit>
+
+      </ng-container>
+      
+     
+
+      <mat-divider></mat-divider>
+      <mat-form-field class="col-12">
+        <input matInput type="text" placeholder="VideoLink" name="exLink" [(ngModel)]="programComplex.comment">
+      </mat-form-field>
+    </div>
+  </div> -->
+
+  <!-- <div class="container final-training-wrapper">
+    <div class="row btns-row solo-btn final">
+        <button mat-fab color="basic" class="green-btn" (click)="trySave()">
+            <mat-icon>check</mat-icon>
+        </button>
+    </div>
+  </div> -->
+  
+</form>

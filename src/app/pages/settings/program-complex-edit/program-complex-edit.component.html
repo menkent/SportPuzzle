@@ -1,0 +1,32 @@
+
+<form ngForm #f *ngIf="programComplex" style="padding-top: 1rem;">
+  <div class="container">
+    <div class="row">
+      <mat-form-field class="col-12">
+        <input matInput type="text" placeholder="Name" name="exName" [(ngModel)]="programComplex.name" required>
+      </mat-form-field>
+      <mat-form-field class="col-12">
+          <input matInput type="text" placeholder="comment" name="comment" [(ngModel)]="programComplex.comment">
+      </mat-form-field>
+      <mat-divider></mat-divider>
+      <ng-container *ngFor="let training of programComplex.protoTrainings">
+        <app-proto-trainig-edit
+          [namespace]="training"
+        ></app-proto-trainig-edit>
+
+      </ng-container>
+
+      <mat-divider></mat-divider>
+     
+    </div>
+  </div>
+
+  <div class="container final-training-wrapper">
+    <div class="row btns-row solo-btn final">
+        <button mat-fab color="basic" class="green-btn" (click)="trySave()">
+            <mat-icon>check</mat-icon>
+        </button>
+    </div>
+  </div>
+  
+</form>
