@@ -43,10 +43,14 @@ export class UserInfoService implements OnDestroy {
     return `saved_user_${userId}`;
   }
 
+  private checkUserSaveInLocalStorage(userId) {
+    return !!localStorage.getItem(this.getLocalStorageUserName(userId));
+  }
+
   loadUser(userId) {
     return of(USER_LIST.find((u: User) => u.id === userId)).pipe(
       switchMap((user) => {
-        if (user) {
+        if (user && !this.checkUserSaveInLocalStorage(userId)) {
           return of(user);
         } else {
           return this._loadUserFromLocalstorage(userId);
@@ -67,7 +71,10 @@ export class UserInfoService implements OnDestroy {
     const userStr = localStorage.getItem(userName);
     if (userStr) {
       const userMap = JSON.parse(userStr);
-      return of(new User(userMap));
+
+      console.log('userMap::', userMap);
+
+      return of(new User(userMap)).pipe(tap(console.warn));
     } else {
       return of(new User({id: userId}));
     }

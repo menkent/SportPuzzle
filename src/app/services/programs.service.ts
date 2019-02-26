@@ -22,6 +22,14 @@ export class ProgramsService {
     const user = this.userInfo.user;
     return user && user.programComplexes || [];
   }
+
+  set programComplexes(value: ProgramComplex[]) {
+    const user = this.userInfo.user;
+    if (user) {
+      user.programComplexes = value;
+    }
+  }
+
   // trainings: Training[] = [];
   // Старые тренировки + текущая тренировка
   private _trainings: BehaviorSubject<Training[]> = new BehaviorSubject([]);
@@ -201,6 +209,26 @@ export class ProgramsService {
     const index = this.exercises.findIndex(el => el.id === ex.id);
     if (index >= 0) {
       this.exercises.splice(index, 1);
+    }
+  }
+
+  /**
+   * Работа с ProgramComplexes
+   */
+
+  addProgramComplex(pc: ProgramComplex) {
+    const index = this.programComplexes.findIndex(el => el.id === pc.id);
+    if (index >= 0) {
+      this.programComplexes[index] = pc;
+    } else {
+      this.programComplexes = [pc, ...this.programComplexes];
+    }
+  }
+
+  delProgramComplex(pc: ProgramComplex) {
+    const index = this.programComplexes.findIndex(el => el.id === pc.id);
+    if (index >= 0) {
+      this.programComplexes.splice(index, 1);
     }
   }
 

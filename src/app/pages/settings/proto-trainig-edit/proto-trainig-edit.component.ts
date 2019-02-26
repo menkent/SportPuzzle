@@ -1,6 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ProtoTraining } from '@app/classes/proto-training';
 import { ProtoExercise } from '@app/classes/proto-exercise';
+import { ProgramsService } from '@app/services/programs.service';
+import { DialogInfoService } from '@app/sport-common/dialog-info.service';
 
 @Component({
   selector: 'app-proto-trainig-edit',
@@ -9,15 +11,55 @@ import { ProtoExercise } from '@app/classes/proto-exercise';
 })
 export class ProtoTrainigEditComponent implements OnInit {
 
-  @Input() namespace: ProtoTraining;
+  // tslint:disable-next-line:variable-name
+  private _namespace: ProtoTraining;
+  get namespace(): ProtoTraining {
+    return this._namespace;
+  }
+  @Input() set namespace(value: ProtoTraining) {
+    this._namespace = value;
+    if (!value.exercises.length) {
+      this.exerciseAdd();
+    }
+  }
 
-  constructor() { }
+  protoExercises: ProtoExercise[] = [];
+  @Output() deleteTraining: EventEmitter<any> = new EventEmitter();
+
+  constructor(private programServise: ProgramsService, private dialog: DialogInfoService) { }
 
   ngOnInit() {
+    this.programServise.loadProtoExercises().subscribe(res => this.protoExercises = res);
   }
 
   exerciseAdd() {
     this.namespace.exercises.push(new ProtoExercise());
+  }
+
+  exerciseDel(index) {
+    if (this.namespace.exercises.length > 1) {
+      this.namespace.exercises.splice(index, 1);
+    } else {
+      this.dialog.openDialog({info: 'Нельзя удалять последнее упражнение из тренировки'});
+    }
+  }
+
+  selectionChange({value}, index) {
+    // console.log('selectionChange::', value);
+    this.getExerciseById(value).subscribe(res => this.namespace.exercises[index] = new ProtoExercise(res.toMap()));
+  }
+
+  getExerciseById(id: string) {
+    return this.programServise.getProtoExerciseById(id);
+  }
+
+  deleteTrainig(event) {
+    event.stopPropagation();
+    this.dialog.openDialog({info: 'Уверены, что хотите удалить тренировку?', btnOk: true}, (res) => {
+      if (res) {
+        this.deleteTraining.emit(this.namespace);
+      }
+    });
   }
 
 }

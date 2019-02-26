@@ -34,6 +34,10 @@ export class ProtoExercise extends Mappable {
         this._videoLink = value;
     }
 
+    isEmpty() {
+        return !this.id || !this.name;
+    }
+
     constructor(data?: any) {
         super(data);
         if (data) {

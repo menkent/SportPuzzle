@@ -30,5 +30,15 @@
   <mat-divider *ngIf="!last"></mat-divider>
 </ng-container>
 
+<div class="container" *ngIf="programComplexes.length === 0">
+  <div class="row" >
+    <div class="col-12">
+      <h2 class="sub-header">
+        Программные комплексы отсутствуют. Добавьте новый через настройки.
+      </h2>
+    </div>
+  </div>
+</div>
+
 
 

@@ -27,6 +27,16 @@ export class ProtoTraining extends Mappable {
         this._exercises = value;
     }
 
+    isEmpty() {
+        // this.clearEmptyExercises();
+        const isValid = this.exercises.reduce((acc, cur) => acc = acc && !cur.isEmpty(), true);
+        return !this.id || !this.name || !isValid || this.exercises.length === 0;
+    }
+
+    clearEmptyExercises() {
+        this.exercises = this.exercises.filter(ex => !ex.isEmpty());
+    }
+
     constructor(data?: any) {
         super(data);
         if (data) {

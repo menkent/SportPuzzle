@@ -4,7 +4,8 @@
         <mat-panel-title>
          {{ namespace.name }}
         </mat-panel-title>
-        <mat-panel-description>
+        <mat-panel-description class="mat-panel-descr-to-right">
+            <mat-icon class="delete" (click)="deleteTrainig($event)">delete_outline</mat-icon>
         </mat-panel-description>
       </mat-expansion-panel-header>
       <div class="container">
@@ -13,25 +14,29 @@
               <input matInput type="text" placeholder="Name" name="trName" [(ngModel)]="namespace.name" required>
           </mat-form-field>
         </div>
+        <mat-divider></mat-divider>
         <ng-container *ngFor="let exercise of namespace.exercises; let last = last; let index = index;">
-            <div class="row">
+            <div class="row exercise-row">
               <div class="col-12">
-                <p>{{ index }}</p>
-                <p>{{ exercise.name }}</p>
+                <div class="col-1 number-of-exercise"><p>{{ index + 1 }}</p></div>
+                <mat-form-field class="col-9">
+                  <mat-select [placeholder]="'Exercise #' + (index + 1)" [value]="namespace.exercises[index].id" (selectionChange)="selectionChange($event, index)">
+                      <ng-container *ngFor="let ex of protoExercises">
+                          <mat-option [value]="ex.id">
+                              {{ ex.name }}
+                          </mat-option>
+                      </ng-container>
+                    
+                  </mat-select>
+                </mat-form-field>
+                <div class="col-2">
+                    <mat-icon class="info-btn delete" (click)="exerciseDel(index)">delete_outline</mat-icon>
+                </div>
               </div>
             </div>
             <mat-divider *ngIf="!last"></mat-divider>
         </ng-container>
-        <!-- <mat-list role="list">
-            <ng-container *ngFor="let exercise of namespace.exercises; let last = last; let index = index;">
-                <mat-list-item role="listitem">
-                <p mat-line>{{ index }}</p>
-                <p mat-line>{{ exercise.name }}</p>
-                </mat-list-item>
-                <mat-divider *ngIf="!last"></mat-divider>
-            </ng-container>
-        </mat-list> -->
-        <div class="row btns-row solo-btn">
+        <div class="row add-btn-row">
           <button mat-fab color="basic" class="add-try-btn" (click)="exerciseAdd()">
               <mat-icon>add</mat-icon>
           </button>

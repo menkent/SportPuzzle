@@ -35,6 +35,11 @@ export class ProgramComplex extends Mappable {
         this._comment = value;
     }
 
+    isEmpty() {
+        const isValidPT = this.protoTrainings.reduce((acc, cur) => acc = acc && !cur.isEmpty(), true);
+        return !this.id || !this.name || !isValidPT || this.protoTrainings.length === 0;
+    }
+
     constructor(data?: any) {
         super(data);
         if (data) {

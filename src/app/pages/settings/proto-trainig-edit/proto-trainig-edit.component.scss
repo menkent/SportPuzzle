@@ -1,0 +1,29 @@
+@import "~src/theme/variables";
+
+.exercise-row {
+    margin-top: 1rem;
+}
+
+.number-of-exercise {
+    padding-top: 1.0rem;
+    font-weight: bold;
+    font-size: 1.0rem;
+}
+
+.add-btn-row {
+    flex-direction: row-reverse;
+    padding: 0 2rem;
+}
+
+.info-btn {
+    padding-top: 1rem;
+    text-align: right;
+}
+
+.delete {
+    color: $red;
+}
+
+.mat-panel-descr-to-right {
+    flex-grow: 0;
+}
