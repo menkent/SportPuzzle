@@ -44,7 +44,7 @@
           >
             <span matLine style="white-space: normal;"> {{ exrcise.name }} </span>
             <mat-icon class="info-btn info" (click)="viewDescr(exrcise, $event)">error_outline</mat-icon>
-            <mat-icon class="info-btn delete" (click)="delExercise(exrcise, $event)">delete_outline</mat-icon>
+            <mat-icon class="info-btn delete" [ngClass]="{'disabled': exrcise.basic}" (click)="delExercise(exrcise, $event)">delete_outline</mat-icon>
           </mat-list-item>
           <mat-divider *ngIf="!last"></mat-divider>
       </ng-container>

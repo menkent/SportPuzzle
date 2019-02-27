@@ -5,6 +5,7 @@ import { getAllContProtoExercise } from '@app/consts/exercises_conts';
 import { ProtoExercise } from '@app/classes/proto-exercise';
 import { DialogInfoService } from '@app/sport-common/dialog-info.service';
 import { query } from '@angular/animations';
+import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-settings',
@@ -43,12 +44,21 @@ export class SettingsComponent implements OnInit {
   }
 
   delExercise(exercise: ProtoExercise, event: MouseEvent) {
+    event.stopPropagation();
     if (getAllContProtoExercise().find(ex => ex.id === exercise.id)) {
       return;
     }
-    this.programService.delProtoExercise(exercise);
-    event.stopPropagation();
-    this.programService.saveProtoExercises().subscribe();
+    this.dialog.openDialog({info: 'Уверены, что хотите удалить упражнение? Оно будет удалено из все тренеровок.', btnOk: true}, (res) => {
+      if (res) {
+        this.programService.delProtoExercise(exercise);
+        this.programService.saveProtoExercises()
+        .pipe(mergeMap(() => {
+          this.programService.resetCash(true, true);
+          return this.programService.loadTrainings();
+        }))
+        .subscribe();
+      }
+    });
   }
 
   viewDescr(exercise: ProtoExercise, event: MouseEvent) {

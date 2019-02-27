@@ -8,7 +8,15 @@ import { UserInfoService } from './services/user-info.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'SportPuzzle';
+  private _title = 'SportPuzzle';
+
+  public get title() {
+    return this.userService.user && this.userService.user.id || this._title;
+  }
+  public set title(value) {
+    this._title = value;
+  }
+
 
   get viewLoadBar() {
     return this.restService.isLoading;

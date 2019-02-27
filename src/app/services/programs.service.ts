@@ -78,6 +78,11 @@ export class ProgramsService {
     return obj.id;
   }
 
+  resetCash(trainigsReset = false, exercisesReset = false) {
+    if (trainigsReset) { this.isLoadTrainingsForUser = ''; }
+    if (exercisesReset) { this.isLoadExercisesForUser = ''; }
+  }
+
   getProgramComplex() {
     return this.rest.fakeCall('', {programComplexes: this.programComplexes});
   }
@@ -123,6 +128,9 @@ export class ProgramsService {
       // console.log('trMaps::', trMaps);
       const trainings = trMaps.map(trM => {
         const protoTraining: ProtoTraining = this.getProtoTrainingById(trM['protoTrainig'] || trM['protoTraining']);
+        if (!protoTraining) {
+          return null;
+        }
         delete trM['protoTraining'];
         delete trM['protoTrainig'];
         // proto_exercies_id -> exercises
@@ -135,14 +143,17 @@ export class ProgramsService {
           const protoExercise = protoTraining.exercises.find((ex: ProtoExercise) => ex.id === protoExerId);
           if (protoExercise) {
             exMap['protoLink'] = protoExercise.toMap();
+          } else {
+            // Если в данной тренеровке нет больше таких упражнений, то они отбрасываются
+            return null;
           }
           return exMap;
-        });
+        }).filter(e => !!e);
         // console.log('protoTraining::', protoTraining);
         const tr = new Training(trM);
         tr.protoTraining = protoTraining;
         return tr;
-      });
+      }).filter(e => !!e);
       // console.log('trainings::', trainings);
       this.trainings = trainings;
     } else {

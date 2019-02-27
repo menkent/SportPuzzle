@@ -41,7 +41,12 @@ export class TrainingComponent implements OnInit {
 
   // todo: Сделать сохранение через поток: то есть вызывает next, а оно вызывает saveTraining()
 
-  constructor(private route: ActivatedRoute, private router: Router, private programService: ProgramsService, private dialogInfo: DialogInfoService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private programService: ProgramsService,
+    private dialogInfo: DialogInfoService
+    ) { }
 
   private _createNewTraining() {
     this.training = new Training({

@@ -72,9 +72,7 @@ export class UserInfoService implements OnDestroy {
     if (userStr) {
       const userMap = JSON.parse(userStr);
 
-      console.log('userMap::', userMap);
-
-      return of(new User(userMap)).pipe(tap(console.warn));
+      return of(new User(userMap));
     } else {
       return of(new User({id: userId}));
     }

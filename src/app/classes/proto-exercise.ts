@@ -5,6 +5,7 @@ export class ProtoExercise extends Mappable {
     private _name: string;
     private _description: string;
     private _videoLink: string;
+    private _basic: boolean = true;
 
     public get id(): string {
         return this._id;
@@ -32,6 +33,13 @@ export class ProtoExercise extends Mappable {
     }
     public set videoLink(value: string) {
         this._videoLink = value;
+    }
+
+    public get basic(): boolean {
+        return this._basic;
+    }
+    public set basic(value: boolean) {
+        this._basic = value;
     }
 
     isEmpty() {

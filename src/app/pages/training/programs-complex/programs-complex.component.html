@@ -30,11 +30,31 @@
   <mat-divider *ngIf="!last"></mat-divider>
 </ng-container>
 
-<div class="container" *ngIf="programComplexes.length === 0">
+<div class="container" *ngIf="programComplexes.length === 0 && isLoaded">
   <div class="row" >
     <div class="col-12">
       <h2 class="sub-header">
-        Программные комплексы отсутствуют. Добавьте новый через настройки.
+        Программные комплексы отсутствуют. Создайте свой.
+      </h2>
+    </div>
+  </div>
+
+  <div class="row" >
+    <div class="col-12 btns">
+        <button mat-fab color="basic" class="add-try-btn"
+                    (click)="addNewComplex()"
+                  >
+          <mat-icon>add</mat-icon>
+        </button>
+    </div>
+  </div>
+</div>
+
+<div class="container" *ngIf="!isLoaded">
+  <div class="row" >
+    <div class="col-12">
+      <h2 class="sub-header">
+        Загрузка ...
       </h2>
     </div>
   </div>

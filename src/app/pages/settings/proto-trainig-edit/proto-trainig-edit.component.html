@@ -17,21 +17,23 @@
         <mat-divider></mat-divider>
         <ng-container *ngFor="let exercise of namespace.exercises; let last = last; let index = index;">
             <div class="row exercise-row">
-              <div class="col-12">
-                <div class="col-1 number-of-exercise"><p>{{ index + 1 }}</p></div>
-                <mat-form-field class="col-9">
-                  <mat-select [placeholder]="'Exercise #' + (index + 1)" [value]="namespace.exercises[index].id" (selectionChange)="selectionChange($event, index)">
-                      <ng-container *ngFor="let ex of protoExercises">
-                          <mat-option [value]="ex.id">
-                              {{ ex.name }}
-                          </mat-option>
-                      </ng-container>
-                    
-                  </mat-select>
-                </mat-form-field>
-                <div class="col-2">
-                    <mat-icon class="info-btn delete" (click)="exerciseDel(index)">delete_outline</mat-icon>
-                </div>
+              <div class="col-1 number-of-exercise"><p>{{ index + 1 }}</p></div>
+              <mat-form-field class="col-8">
+                <mat-select 
+                  [placeholder]="'Exercise #' + (index + 1)"
+                  [value]="namespace.exercises[index].id"
+                  (selectionChange)="selectionChange($event, index)"
+                  required>
+                    <ng-container *ngFor="let ex of protoExercises">
+                        <mat-option [value]="ex.id">
+                            {{ ex.name }}
+                        </mat-option>
+                    </ng-container>
+                  
+                </mat-select>
+              </mat-form-field>
+              <div class="col-2">
+                  <mat-icon class="info-btn delete" (click)="exerciseDel(index)">delete_outline</mat-icon>
               </div>
             </div>
             <mat-divider *ngIf="!last"></mat-divider>

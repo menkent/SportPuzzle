@@ -36,7 +36,7 @@ export class ExerciseEditComponent implements OnInit {
           }
         })
       ).subscribe((prEx: ProtoExercise) => {
-        this.exercise = prEx || new ProtoExercise({id: this.programService.generateId()});
+        this.exercise = prEx || new ProtoExercise({id: this.programService.generateId(), basic: false});
       });
 
   }

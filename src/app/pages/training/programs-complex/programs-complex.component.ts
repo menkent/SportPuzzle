@@ -17,6 +17,7 @@ export class ProgramsComplexComponent implements OnInit {
 
   programComplexes: ProgramComplex[] = [];
   lastTrainings: Training[] = [];
+  isLoaded = false;
 
   constructor(private programsService: ProgramsService, private router: Router) {
   }
@@ -25,15 +26,13 @@ export class ProgramsComplexComponent implements OnInit {
     this.programsService.getProgramComplex().pipe(
       switchMap(res => {
         this.programComplexes = res.programComplexes;
-        console.log(this.programComplexes);
         return this.programsService.loadTrainings();
       })
     ).subscribe((trainings: Training[]) => {
       this.lastTrainings = trainings
         .filter((tr: Training) => tr.isCompleted)
         .sort((a: Training, b: Training) => b.date - a.date);
-
-      console.log(this.lastTrainings);
+      this.isLoaded = true;
     });
   }
 
@@ -43,8 +42,11 @@ export class ProgramsComplexComponent implements OnInit {
   }
 
   trainingClick(trainingId: string) {
-    console.log('trainingClick::', trainingId);
     this.router.navigate(['/training', trainingId]);
+  }
+
+  addNewComplex() {
+    this.router.navigate(['/settings/program-complex-edit']);
   }
 
 }

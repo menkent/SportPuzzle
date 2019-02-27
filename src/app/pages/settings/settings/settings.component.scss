@@ -20,5 +20,9 @@
 
     &.delete {
         color: $red;
+
+        &.disabled {
+            color: $grey;
+        }
     }
 }
