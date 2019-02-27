@@ -1,3 +1,17 @@
-<p>
-  my-warm works!
-</p>
+<div class="row" *ngFor="let item of prevWarmUp">
+    <span class="sub-header">{{ item }}</span>
+</div>
+
+<ng-container *ngFor="let warm of namespace; let index = index; trackBy:trackByIndex;">
+  <div class="row" style="align-items: center;">
+      <div class="col-2 vert-align">
+          <span class="mat-title sub-header">{{ index + 1 }}</span>
+      </div>
+      <mat-form-field class="col-10">
+          <input matInput type="text" placeholder="Warm-Up descr" [name]="'warm' + index" [(ngModel)]="namespace[index]">
+          <button mat-button *ngIf="namespace[index]" matSuffix mat-icon-button aria-label="Clear" (click)="namespace[index]=''">
+              <mat-icon>close</mat-icon>
+          </button>
+      </mat-form-field>
+  </div>
+</ng-container>

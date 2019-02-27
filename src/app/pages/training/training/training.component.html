@@ -62,12 +62,17 @@
     
         <mat-step>
             <ng-template matStepLabel>Разминка</ng-template>
-            <app-my-warm></app-my-warm>
+            <app-my-warm [namespace]="training.warm_up" [prevWarmUp]="prevTraining && prevTraining.warm_up || []"></app-my-warm>
             <!-- Кнопки -->
-            <div class="row btns-row solo-btn">
-              <button mat-fab matStepperNext color="primary">
-                  <mat-icon>arrow_forward</mat-icon>
-              </button>
+            <div class="row btns-row">
+                <button mat-fab color="basic" class="add-try-btn"
+                  (click)="training.warm_up.push('')"
+                  >
+                  <mat-icon>add</mat-icon>
+                </button>
+                <button mat-fab matStepperNext color="primary">
+                    <mat-icon>arrow_forward</mat-icon>
+                </button>
             </div>
         </mat-step>
 

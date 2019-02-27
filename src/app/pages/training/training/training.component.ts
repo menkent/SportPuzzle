@@ -145,9 +145,9 @@ export class TrainingComponent implements OnInit {
   }
 
   showDebug() {
-    console.log(this.protoTraining);
-    console.log(this.training);
-    console.log(this.prevTraining);
+    console.log('proto::', this.protoTraining);
+    console.log('current::', this.training);
+    console.log('prev::', this.prevTraining);
   }
 
   openDialog(data, callback?): void {
@@ -190,7 +190,16 @@ export class TrainingComponent implements OnInit {
       }
     }
 
-    // Сохраняем текущую тренеровку: 
+    // Если предыдущий шаг был разминкой, то очистить пустые строки
+    if (event.previouslySelectedIndex === 1) {
+      this.training.warm_up = this.training.warm_up.filter(el => !!el);
+    }
+    // Если текущий шаг - разминка и нет ни одного комментария, то добавить хоть 1
+    if (event.selectedIndex === 1 && this.training.warm_up.length === 0) {
+      this.training.warm_up.push('');
+    }
+
+    // Сохраняем текущую тренеровку:
     this.programService.saveTraining().subscribe();
   }
 

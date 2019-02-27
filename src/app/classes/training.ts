@@ -14,6 +14,7 @@ export class Training extends Mappable {
     private _cardioEnd: CardioInfo;
     private _comment: string;
     private _isCompleted: boolean = false; // Определет, что тренировка завершена, значит её можно использовать для анализа
+    private _warm_up: string[];
 
     public get id(): string {
         return this._id;
@@ -97,6 +98,14 @@ export class Training extends Mappable {
 
     set canComplete(value: any) {}
 
+
+    public get warm_up(): string[] {
+        return this._warm_up;
+    }
+    public set warm_up(value: string[]) {
+        this._warm_up = value;
+    }
+
     constructor(data?: any) {
         super(data);
         if (data) {
@@ -119,6 +128,7 @@ export class Training extends Mappable {
         this.cardioStart = new CardioInfo();
         this.cardioEnd = new CardioInfo();
         this.exercises = this.protoTraining.exercises.map((exer: ProtoExercise) => new Exercise({protoLink: exer}));
+        this.warm_up = [];
     }
 
     getExercise(protoExercise) {
