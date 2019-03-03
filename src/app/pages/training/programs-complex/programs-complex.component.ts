@@ -36,9 +36,8 @@ export class ProgramsComplexComponent implements OnInit {
     });
   }
 
-  getLastTrainingDateByProto(protoTraining: ProtoTraining) {
-    const finded = this.lastTrainings.find((tr: Training) => tr.protoTraining.id === protoTraining.id);
-    return finded && new Date(finded.date).toLocaleDateString() || '';
+  private getLastTrainigByProto(protoTraining: ProtoTraining) {
+    return this.lastTrainings.find((tr: Training) => tr.protoTraining.id === protoTraining.id);
   }
 
   trainingClick(trainingId: string) {
@@ -47,6 +46,27 @@ export class ProgramsComplexComponent implements OnInit {
 
   addNewComplex() {
     this.router.navigate(['/settings/program-complex-edit']);
+  }
+
+  /**
+   * Возвращает список тренеровок данного комплекса, сортированный по последним выполненным тренеровкам.
+   * @param complex: ProgramComplex
+   */
+  getComplexTrainigByDate(complex: ProgramComplex): Array<{protoTr: ProtoTraining, lastTr: Training | null}> {
+    return complex.protoTrainings.map(x => {
+      return {
+        protoTr: x,
+        lastTr: this.getLastTrainigByProto(x),
+      }
+    }).sort((a, b) => {
+      if (a.lastTr && b.lastTr) {
+        return a.lastTr.date - b.lastTr.date;
+      }
+      if (!b.lastTr) {
+        return 1;
+      }
+      return -1; 
+    });
   }
 
 }

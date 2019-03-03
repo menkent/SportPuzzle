@@ -12,14 +12,14 @@
     </mat-expansion-panel-header>
     {{ complex.comment }}
     <mat-list role="list">
-        <ng-container *ngFor="let training of complex.protoTrainings; let last = last">
+        <ng-container *ngFor="let item of getComplexTrainigByDate(complex); let last = last">
             <mat-list-item 
-              (click)="trainingClick(training.id)"
+              (click)="trainingClick(item.protoTr.id)"
               role="listitem"
             >
-            <span matLine style="white-space: normal;"> {{ training.name }} </span>
-            <p matLine *ngIf="getLastTrainingDateByProto(training)">
-              <span class="sub-header">last: {{ getLastTrainingDateByProto(training) }}</span>
+            <span matLine style="white-space: normal;"> {{ item.protoTr.name }} </span>
+            <p matLine *ngIf="item.lastTr?.date">
+              <span class="sub-header">last: {{ item.lastTr.date | date:'dd.MM.yyyy' }}</span>
             </p>
             </mat-list-item>
             <mat-divider *ngIf="!last"></mat-divider>
