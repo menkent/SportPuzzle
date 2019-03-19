@@ -7,7 +7,7 @@ import { UserInfoService } from './user-info.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Exercise } from '../classes/exercise';
 import { ProtoExercise } from '../classes/proto-exercise';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { getAllContProtoExercise } from '@app/consts/exercises_conts';
 
 @Injectable({
@@ -177,6 +177,17 @@ export class ProgramsService {
     );
   }
 
+  getProgramComplexByProtoTrainig(protoTrainigId: string) {
+    return this.programComplexes.find((complex: ProgramComplex) => !!complex.protoTrainings.find(pt => pt.id === protoTrainigId));
+  }
+
+  getLastTrainigByComplex(complex: ProgramComplex) {
+    const asProtoTrainings = this.trainings
+            .filter((tr: Training) => tr.isCompleted && !!complex.protoTrainings.find(pr => pr.id === tr.protoTraining.id))
+            .sort((a: Training, b: Training) => b.date - a.date);
+    return asProtoTrainings.length && asProtoTrainings[0];
+  }
+
   loadProtoExercises() {
     if (this.isLoadExercisesForUser === (this.userInfo.user && this.userInfo.user.id)) {
       return of(this.exercises);
@@ -241,6 +252,31 @@ export class ProgramsService {
     if (index >= 0) {
       this.programComplexes.splice(index, 1);
     }
+  }
+
+  /**
+   * Получение списка последних подходов по данным упражнениям
+   */
+  getPrevExercises(protoExercises: ProtoExercise[]) {
+    return this.rest.fakeCall('', '').pipe(
+      switchMap(() => this.loadTrainings()),
+      map((trs: Training[]) =>
+        trs
+          .filter((tr: Training) => tr.isCompleted)
+          .sort((a: Training, b: Training) => b.date - a.date)
+          ),
+      map((trs: Training[]) => {
+        return protoExercises.map((protoExercise: ProtoExercise) => {
+          for (let i = 0; i < trs.length; i++) {
+            const ex = trs[i].exercises.find((ex1: Exercise) => ex1.protoLink.id === protoExercise.id);
+            if (ex) {
+              return ex;
+            }
+          }
+          return null;
+        }).filter(e => !!e);
+      }),
+    );
   }
 
 }

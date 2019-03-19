@@ -13,7 +13,8 @@ import { MatListModule, MatDividerModule, MatIconModule, MatExpansionModule, Mat
   MatStepperModule,
   MatSelectModule,
   MatRippleModule,
-  MatDialogModule} from '@angular/material';
+  MatDialogModule,
+  MatMenuModule} from '@angular/material';
 import { TrainingComponent } from './training/training.component';
 import { FormsModule } from '@angular/forms';
 import { MyTryComponent } from './my-try/my-try.component';
@@ -41,6 +42,7 @@ import { SportCommonModule } from 'src/app/sport-common/sport-common.module';
     MatSelectModule,
     MatRippleModule,
     SportCommonModule,
+    MatMenuModule,
 
     MatExpansionModule,
     MatIconModule,

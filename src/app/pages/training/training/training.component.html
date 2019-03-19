@@ -62,7 +62,7 @@
     
         <mat-step>
             <ng-template matStepLabel>Разминка</ng-template>
-            <app-my-warm [namespace]="training.warm_up" [prevWarmUp]="prevTraining && prevTraining.warm_up || []"></app-my-warm>
+            <app-my-warm [namespace]="training.warm_up" [prevWarmUp]="prevWarmUp"></app-my-warm>
             <!-- Кнопки -->
             <div class="row btns-row">
                 <button mat-fab color="basic" class="add-try-btn"
@@ -82,8 +82,17 @@
                 <ng-template matStepLabel>
                     <div class="exercise-label-wrapper">
                       <div class="exercise-label-name">{{ exercise.name }}</div>
-                      
+
                       <div class="exercise-label-icons">
+                          <button mat-icon-button (click)="$event.stopPropagation()" [matMenuTriggerFor]="menu">
+                              <mat-icon>swap_horiz</mat-icon>
+                          </button>
+                          <mat-menu #menu="matMenu">
+                              <button mat-menu-item *ngFor="let protoExercise of (programService.exercises$ | async)">
+                                <span (click)="swapProtoExercise(exercise, protoExercise)">{{ protoExercise.name }}</span>
+                              </button>
+                          </mat-menu>
+
                           <button mat-icon-button
                                   *ngIf="exercise.description"
                                   (click)="openHelpDialogExercise(exercise.protoLink, $event);"
@@ -95,20 +104,16 @@
                                   (click)="openVideoLinkExercise(exercise.protoLink, $event)">
                               <mat-icon>videocam</mat-icon>
                           </button>
-                          <!-- <button mat-icon-button>
-                              <mat-icon>find_replace</mat-icon>
-                          </button> -->
                       </div>
 
                     </div>
                 </ng-template>
 
                 <!-- Подходы из прошлой тренеровки -->
-                <!-- todo: Заменить проверку по prevTraining, на проверку про прошлому Exercise -->
                 <div class="row" *ngIf="getPrevExercise(exercise.protoLink)">
                   <div class="col-10 sub-header" innerHTML="{{ getPrevExercise(exercise.protoLink) }}"></div>
                   <div class="col-2">
-                      <mat-icon (click)="userPrevTrainingExercise(exercise.protoLink)">vertical_align_bottom</mat-icon>
+                      <mat-icon (click)="userPrevExercise(exercise.protoLink)">vertical_align_bottom</mat-icon>
                   </div>
                 </div>
 
@@ -173,7 +178,16 @@
   </div>
 
   <div class="container final-training-wrapper">
-    <div class="row btns-row solo-btn final">
+    <div class="row btns-row final">
+        <button mat-fab color="basic" class="green-btn" [matMenuTriggerFor]="menuAdd">
+            <mat-icon>add</mat-icon>
+        </button>
+        <mat-menu #menuAdd="matMenu">
+            <button mat-menu-item *ngFor="let protoExercise of (programService.exercises$ | async)">
+              <span (click)="addProtoExercise(protoExercise)">{{ protoExercise.name }}</span>
+            </button>
+        </mat-menu>
+
         <button mat-fab color="basic" class="green-btn" (click)="trySave()">
             <mat-icon>check</mat-icon>
         </button>

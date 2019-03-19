@@ -1,29 +1,49 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { ProtoTraining } from 'src/app/classes/proto-training';
 import { Training } from 'src/app/classes/training';
 import { ProgramsService } from 'src/app/services/programs.service';
-import { mergeMap, concat, merge, map, filter, tap, combineLatest, zipAll, switchMap } from 'rxjs/operators';
+import { mergeMap, concat, merge, map, filter, tap, combineLatest, zipAll, switchMap, takeUntil } from 'rxjs/operators';
 import { MatVerticalStepper, MatDialog } from '@angular/material';
 import { Exercise } from 'src/app/classes/exercise';
 import { ProtoExercise } from 'src/app/classes/proto-exercise';
 import { MyTry } from 'src/app/classes/my-try';
 import { DialogInfoService } from 'src/app/sport-common/dialog-info.service';
-import { of, forkJoin } from 'rxjs';
+import { of, forkJoin, BehaviorSubject, Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-training',
   templateUrl: './training.component.html',
   styleUrls: ['./training.component.scss']
 })
-export class TrainingComponent implements OnInit {
+export class TrainingComponent implements OnInit, OnDestroy {
 
+  onDestroy$ = new Subject<void>();
   prevTraining: Training = null;
   prevExercises: Exercise[] = [];
   protoTraining: ProtoTraining = null;
-  training: Training = null;
   lastStepperEvent = null;
   countStepBeforeExercises = 2;
+  prevWarmUp: string[] = [];
+
+  private _training: Training = null;
+  public get training(): Training {
+    return this._training;
+  }
+  public set training(value: Training) {
+    this._training = value;
+    if (value) {
+      this.protoExercises = this.training.exercises.map((e: Exercise) => e.protoLink);
+    }
+  }
+
+  private _protoExercises: BehaviorSubject<ProtoExercise[]> = new BehaviorSubject([]);
+  public get protoExercises(): ProtoExercise[] {
+    return this._protoExercises.value;
+  }
+  public set protoExercises(value: ProtoExercise[]) {
+    this._protoExercises.next(value);
+  }
 
   @ViewChild(MatVerticalStepper) stepper: MatVerticalStepper;
 
@@ -49,13 +69,14 @@ export class TrainingComponent implements OnInit {
     ) { }
 
   private _createNewTraining() {
-    this.training = new Training({
+    const training = new Training({
       protoTraining: this.protoTraining,
       date: new Date().getTime(),
     });
-    this.training.init();
-    this.programService.adjunctionWithID(this.training);
-    this.programService.addTraining(this.training);
+    training.init();
+    this.programService.adjunctionWithID(training);
+    this.programService.addTraining(training);
+    this.training = training;
   }
 
   private _editMode(id: string) {
@@ -67,13 +88,11 @@ export class TrainingComponent implements OnInit {
 
   private _currentMode(protoid: string) {
     this.protoTraining = this.programService.getProtoTrainingById(protoid);
-    console.log(this.protoTraining);
     return of(null).pipe(
       mergeMap(() => {
         if (this.protoTraining) {
           return this.programService.loadTrainings();
         } else {
-          // Найдена старая программа
           this.openDialog({info: 'Программа не найдена. Попробуйте ещё раз!'}, () => {
             this.router.navigate(['']);
           });
@@ -93,9 +112,13 @@ export class TrainingComponent implements OnInit {
           // Последняя незавершённая тренировка, не страше 12 часов
           const findLastNotCompleted = asProtoTrainings.find((tr: Training) => !tr.isCompleted && (nowDate - tr.date < hours12ms));
 
-          // Последняя завершённая тренировка
+          // Последняя завершённая тренировка (из неё будем использовать разминку. Хотя можно взять просто последнюю тренеровку)
           this.prevTraining = asProtoTrainings.find((tr: Training) => tr.isCompleted);
-          this.prevExercises = this.prevTraining && this.prevTraining.exercises || [];
+
+          // Поиск последней разминки во всём комплексе
+          const complex = this.programService.getProgramComplexByProtoTrainig(this.protoTraining.id);
+          const lastComplexTrainig = complex && this.programService.getLastTrainigByComplex(complex);
+          this.prevWarmUp = lastComplexTrainig && lastComplexTrainig.warm_up || [];
 
           // Если есть последня незавершённая тренировка, то предложить её продолжить
           if (findLastNotCompleted) {
@@ -125,7 +148,6 @@ export class TrainingComponent implements OnInit {
         this.route.paramMap,
         this.route.queryParamMap
       ),
-      tap((r) => console.warn(r)),
       switchMap((value: any, index) => {
         const params = value[2];
         const queryParamMap = value[3];
@@ -142,6 +164,24 @@ export class TrainingComponent implements OnInit {
         }
       }),
     ).subscribe();
+
+    // Получение списка последних Упражнений по текущей тренеровке
+    this._protoExercises.asObservable().pipe(
+      takeUntil(this.onDestroy$),
+      filter((v: ProtoExercise[]) => !!v.length),
+      map((protoExercises: ProtoExercise[]) => protoExercises.filter((prEx: ProtoExercise) =>
+        !this.prevExercises.find((el: Exercise) => el.protoLink.id === prEx.id))
+      ),
+      switchMap((protoExercises: ProtoExercise[]) => this.programService.getPrevExercises(protoExercises)),
+      map((exercises: Exercise[]) => this.prevExercises = [...exercises, ...this.prevExercises]),
+    ).subscribe();
+
+    this.programService.loadProtoExercises().subscribe();
+  }
+
+  ngOnDestroy() {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
   }
 
   showDebug() {
@@ -203,15 +243,6 @@ export class TrainingComponent implements OnInit {
     this.programService.saveTraining().subscribe();
   }
 
-  getTryesByProtoExercise(protoExercise: ProtoExercise) {
-    const exercise = this.training.getExercise(protoExercise);
-    return exercise && exercise.tryes || [];
-  }
-
-  getExerciseByProtoExercise(protoExercise: ProtoExercise) {
-    return this.training.getExercise(protoExercise);
-  }
-
   addNewTry(exercise: Exercise) {
     if (!exercise) {
       return;
@@ -266,7 +297,7 @@ export class TrainingComponent implements OnInit {
   }
 
 
-  userPrevTrainingExercise(protoExercise: ProtoExercise) {
+  userPrevExercise(protoExercise: ProtoExercise) {
     const exercise = this.training.getExercise(protoExercise);
     const lastExercise = this.prevExercises.find((ex: Exercise) => ex.protoLink.id === protoExercise.id);
     if (!exercise || !lastExercise || !lastExercise.haveNotEmprtyTryes()) {
@@ -280,4 +311,21 @@ export class TrainingComponent implements OnInit {
     });
   }
 
+
+  swapProtoExercise(exercise: Exercise, protoExercise: ProtoExercise) {
+    const index = this.training.exercises.indexOf(exercise);
+    if (index < 0) {
+      return;
+    }
+    this.training.exercises[index] = new Exercise({protoLink: protoExercise});
+    this.addNewTry(this.training.exercises[index]);
+    this.protoExercises = this.training.exercises.map((e: Exercise) => e.protoLink);
+  }
+
+  addProtoExercise(protoExercise: ProtoExercise) {
+    const exercise = new Exercise({protoLink: protoExercise});
+    this.training.exercises.push(exercise);
+    this.addNewTry(exercise);
+    this.protoExercises = this.training.exercises.map((e: Exercise) => e.protoLink);
+  }
 }

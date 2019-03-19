@@ -10,7 +10,7 @@
     position: absolute;
     display: block;
     float: left;
-    width: calc(100% - 135px);
+    width: calc(100% - 170px);
     top: 28px;
 }
 
@@ -34,4 +34,8 @@
 
 .final-training-wrapper {
     padding: 0.25rem 0;
+}
+
+.swap-exercise-menu {
+    max-height: 50%;
 }
