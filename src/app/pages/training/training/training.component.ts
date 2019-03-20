@@ -311,8 +311,13 @@ export class TrainingComponent implements OnInit, OnDestroy {
     });
   }
 
-
   swapProtoExercise(exercise: Exercise, protoExercise: ProtoExercise) {
+    if (this.training.getExercise(protoExercise)) {
+      this.openDialog(
+        {info: 'Упражнение уже присутствует в тренеровке'}, () => {});
+      return;
+    }
+
     const index = this.training.exercises.indexOf(exercise);
     if (index < 0) {
       return;
@@ -323,9 +328,28 @@ export class TrainingComponent implements OnInit, OnDestroy {
   }
 
   addProtoExercise(protoExercise: ProtoExercise) {
+    if (this.training.getExercise(protoExercise)) {
+      this.openDialog(
+        {info: 'Упражнение уже присутствует в тренеровке'}, () => {});
+      return;
+    }
     const exercise = new Exercise({protoLink: protoExercise});
     this.training.exercises.push(exercise);
     this.addNewTry(exercise);
     this.protoExercises = this.training.exercises.map((e: Exercise) => e.protoLink);
+  }
+
+  deleteExercise(exercise: Exercise) {
+    const index = this.training.exercises.indexOf(exercise);
+    if (index < 0) {
+      return;
+    }
+    this.openDialog(
+      {info: 'Удалить упражнение?', btnOk: true},
+      (res) => {
+        if (res) {
+          this.training.exercises.splice(index, 1);
+        }
+    });
   }
 }

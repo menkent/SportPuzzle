@@ -5,20 +5,12 @@
 }
 
 .exercise-label-name {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    position: absolute;
-    display: block;
-    float: left;
-    width: calc(100% - 170px);
-    top: 28px;
+    white-space: normal
 }
 
 .exercise-label-icons {
-    display: block;
-    position: absolute;
-    right: 0;
-    top: 15px;
+    padding-bottom: 1rem;
+    justify-content: space-around;
 }
 
 
