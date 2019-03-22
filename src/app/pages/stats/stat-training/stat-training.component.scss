@@ -1,0 +1,12 @@
+
+
+.exercise-element {
+    padding: 0.5rem 0;
+}
+
+.flex-right {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    flex-direction: row-reverse;
+}

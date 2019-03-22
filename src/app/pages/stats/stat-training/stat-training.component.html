@@ -1,26 +1,49 @@
 <div class="container" *ngIf="training">
-  <p>{{ training.protoTraining.name }}</p>
-  <p class="sub-header">{{ training.date | date:'dd.MM.yyyy' }}  /  {{ training.userWeight || 0 }}kg</p>
-  <p *ngIf="training.comment">{{ training.comment }}</p>
+
+  <div class="row exercise-element">
+    <div class="col-10">
+        <p>{{ training.protoTraining.name }}</p>
+        <p class="sub-header">{{ training.date | date:'dd.MM.yyyy' }}  /  {{ training.userWeight || 0 }}kg</p>
+        <p *ngIf="training.comment">{{ training.comment }}</p>
+    </div>
+    <div class="col-2 flex-right">
+      <mat-icon (click)="editTraining(training)">edit</mat-icon>
+    </div>
+  </div>
+  
+  <!--  -->
+
   <mat-divider></mat-divider>
-  <div class="row" *ngIf="training.cardioStart && training.cardioStart.isCompleted">
-    <div class="col-6">{{ getCardioNameByType(training.cardioStart.cardioType) }}</div>
-    <div class="col-6">{{ training.cardioStart.time * 1000 | date:'mm.ss' }}</div>
+
+  <div class="row exercise-element" *ngIf="training.cardioStart || training.cardioEnd">
+    <div class="col-12">
+        <p class="sub-header">Cardio</p>
+      </div>
+    <div class="col-6" *ngIf="training.cardioStart && training.cardioStart.isCompleted">
+      {{ getCardioNameByType(training.cardioStart.cardioType) }} / {{ training.cardioStart.time * 1000 | date:'mm' }} min
+    </div>
+    <div class="col-6" *ngIf="training.cardioEnd && training.cardioEnd.isCompleted">
+      {{ getCardioNameByType(training.cardioEnd.cardioType) }} / {{ training.cardioEnd.time * 1000 | date:'mm' }} min
+    </div>
   </div>
 
-  <ng-container *ngFor="let exercise of training.exercises">
-    <div class="row">
-      <div class="col-12">{{ exercise.name }}</div>      
+  <div class="row exercise-element" *ngIf="training.warm_up">
+    <div class="col-12">
+        <p class="sub-header">Warp-Up</p>
+      </div>
+    <div class="col-12" *ngFor="let item of training.warm_up">
+      {{ item }}
     </div>
-    <div class="row">
-        <div class="col-12" [innerHtml]="getExerciseTryes(exercise)"></div>      
+  </div>
+
+  <ng-container *ngIf="training.exercises">
+    <div class="row exercise-element">
+      <div class="col-12"><p class="sub-header">Exercises</p></div>  
+    </div>
+    <div class="row exercise-element" *ngFor="let exercise of training.exercises">
+      <div class="col-12">{{ exercise.name }}</div>      
+      <div class="col-12" [innerHtml]="getExerciseTryes(exercise)"></div>      
     </div>
   </ng-container>
-  
-  <div class="row" *ngIf="training.cardioEnd && training.cardioEnd.isCompleted">
-    <div class="col-6">{{ getCardioNameByType(training.cardioEnd.cardioType) }}</div>
-    <div class="col-6">{{ training.cardioEnd.time * 1000 | date:'mm.ss' }}</div>
-  </div>
-
 
 </div>

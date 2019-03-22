@@ -46,4 +46,8 @@ export class StatTrainingComponent implements OnInit {
     return `${countExercise} [${exercises.join(' - ')}]`;
   }
 
+  editTraining(training: Training) {
+    this.router.navigate(['training', training.protoTraining.id], { queryParams: { id: training.id } });
+  }
+
 }
