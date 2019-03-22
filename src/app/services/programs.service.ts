@@ -120,46 +120,46 @@ export class ProgramsService {
     if (this.isLoadTrainingsForUser === (this.userInfo.user && this.userInfo.user.id)) {
       return of(this.trainings);
     }
-    const trainingsString = localStorage.getItem(this.localStorageUserName);
-    // console.log('loadTrainings::', trainingsString);
-    this.isLoadTrainingsForUser = this.userInfo.user && this.userInfo.user.id || '';
-    if (trainingsString) {
-      const trMaps = JSON.parse(trainingsString);
-      // console.log('trMaps::', trMaps);
-      const trainings = trMaps.map(trM => {
-        const protoTraining: ProtoTraining = this.getProtoTrainingById(trM['protoTrainig'] || trM['protoTraining']);
-        if (!protoTraining) {
-          return null;
-        }
-        delete trM['protoTraining'];
-        delete trM['protoTrainig'];
-        // proto_exercies_id -> exercises
-        trM['exercises'] = trM['exercises'].map((exMap) => {
-          // Обратная совместимость
-          if (exMap['protoLink'] instanceof Object) {
-            return exMap;
-          }
-          const protoExerId = exMap['protoLink'];
-          const protoExercise = protoTraining.exercises.find((ex: ProtoExercise) => ex.id === protoExerId);
-          if (protoExercise) {
-            exMap['protoLink'] = protoExercise.toMap();
-          } else {
-            // Если в данной тренеровке нет больше таких упражнений, то они отбрасываются
+    return this.loadProtoExercises().pipe(map(() => {
+      const trainingsString = localStorage.getItem(this.localStorageUserName);
+      this.isLoadTrainingsForUser = this.userInfo.user && this.userInfo.user.id || '';
+      if (trainingsString) {
+        const trMaps = JSON.parse(trainingsString);
+        const trainings = trMaps.map(trM => {
+          const protoTraining: ProtoTraining = this.getProtoTrainingById(trM['protoTrainig'] || trM['protoTraining']);
+          if (!protoTraining) {
             return null;
           }
-          return exMap;
+          delete trM['protoTraining'];
+          delete trM['protoTrainig'];
+          // proto_exercies_id -> exercises
+          trM['exercises'] = trM['exercises'].map((exMap) => {
+            // Обратная совместимость
+            if (exMap['protoLink'] instanceof Object) {
+              return exMap;
+            }
+            const protoExerId = exMap['protoLink'];
+            const protoExercise = protoTraining.exercises.find((ex: ProtoExercise) => ex.id === protoExerId) ||
+              this.exercises.find((ex: ProtoExercise) => ex.id === protoExerId);
+            if (protoExercise) {
+              exMap['protoLink'] = protoExercise.toMap();
+            } else {
+              // Если в данной тренеровке нет больше таких упражнений, то они отбрасываются
+              return null;
+            }
+            return exMap;
+          }).filter(e => !!e);
+          const tr = new Training(trM);
+          tr.protoTraining = protoTraining;
+          return tr;
         }).filter(e => !!e);
-        // console.log('protoTraining::', protoTraining);
-        const tr = new Training(trM);
-        tr.protoTraining = protoTraining;
-        return tr;
-      }).filter(e => !!e);
-      // console.log('trainings::', trainings);
-      this.trainings = trainings;
-    } else {
-      this.trainings = [];
-    }
-    return of(this.trainings);
+        this.trainings = trainings;
+      } else {
+        this.trainings = [];
+      }
+
+      return this.trainings;
+    }));
   }
 
   getProtoTrainingById(protoId: string): ProtoTraining {
