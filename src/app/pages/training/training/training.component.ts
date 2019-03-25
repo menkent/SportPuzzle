@@ -204,16 +204,8 @@ export class TrainingComponent implements OnInit, OnDestroy {
     const countStepBeforeExercises = this.countStepBeforeExercises;
     const selectedIndex = event.selectedIndex;
     const exerciseIndex = selectedIndex - countStepBeforeExercises;
-    if (exerciseIndex >= 0 && exerciseIndex < this.protoTraining.exercises.length) {
-      const protoExercise = this.protoTraining.exercises[exerciseIndex];
-
-      let exercise = this.training.getExercise(protoExercise);
-      if (!exercise) {
-        exercise = new Exercise({
-          protoLink: protoExercise
-        });
-        this.training.exercises.push(exercise);
-      }
+    if (exerciseIndex >= 0 && exerciseIndex < this.training.exercises.length) {
+      const exercise = this.training.exercises[exerciseIndex];
       if (!exercise.tryes.length) {
         this.addNewTry(exercise);
       }
@@ -221,8 +213,8 @@ export class TrainingComponent implements OnInit, OnDestroy {
 
     // Обработка предыдущего поля: удаление не заполненных траев
     const previouslySelectedIndex = event.previouslySelectedIndex - countStepBeforeExercises;
-    if (previouslySelectedIndex >= 0 && previouslySelectedIndex < this.protoTraining.exercises.length) {
-      const exercise = this.training.getExercise(this.protoTraining.exercises[previouslySelectedIndex]);
+    if (previouslySelectedIndex >= 0 && previouslySelectedIndex < this.training.exercises.length) {
+      const exercise = this.training.exercises[previouslySelectedIndex];
       if (exercise) {
         const filtered = exercise.tryes.filter((el: MyTry) => !el.isEmpty());
         exercise.tryes = filtered;
