@@ -1,0 +1,15 @@
+image: trion/ng-cli
+
+cache:
+  paths:
+    - node_modules/
+
+deploy_stage:
+  stage: deploy
+  environment: Stage
+  only:
+    - master
+  script:
+    - rm ./package-lock.json
+    - npm install
+    - npm run toprod
