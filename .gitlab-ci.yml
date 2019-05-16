@@ -1,11 +1,23 @@
 image: trion/ng-cli
 
+stages:
+  - build
+  - upload
+
 cache:
   paths:
     - node_modules/
 
-deploy_stage:
-  stage: deploy
+install_dependencies:
+  stage: build
+  script:
+    - npm install
+  artifacts:
+    paths:
+      - node_modules/
+
+build_stage:
+  stage: build
   environment: Stage
   only:
     - master
@@ -15,4 +27,4 @@ deploy_stage:
     - npm run toprod
   artifacts:
     paths:
-      - dist/
+      - dist/SportPuzzle/
