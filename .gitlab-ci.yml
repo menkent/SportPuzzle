@@ -13,3 +13,6 @@ deploy_stage:
     - rm ./package-lock.json
     - npm install
     - npm run toprod
+  artifacts:
+    paths:
+      - dist/
