@@ -1,9 +1,10 @@
-ng new NAME --routing=true --style=scss
 
-ng g module NAME --routing=true
-ng g service NAME --skipTests=true
-ng g component NAME --export=true --skipTests=true
-ng g class NAME --export=true --skipTests=true
+# NG-CLI Commands
+	Project: 	ng new NAME --routing=true --style=scss
+	Module: 	ng g module NAME --routing=true
+	Service: 	ng g service NAME --skipTests=true
+	Component: 	ng g component NAME --export=true --skipTests=true
+	ModelClass:	ng g class NAME --export=true --skipTests=true
 
 
 # Angular Material USE
@@ -41,15 +42,11 @@ ng g class NAME --export=true --skipTests=true
 
 
 # Архитектура проекта
-
-	Разминка
+## Нужно доделать:
 	Растяжка
-	Кнопка Аналоги для упражнения - предлагает заменить текущее упражнение на другие - по группам мышц
+	Объединение списка упражнений по группам мышц
 
-	разминка -
-		1 - список упражнений для разминки
-		2 - Просто было или не было Потом расширить для подходов
-
+## Главная страница: Тренеровка
 	степпер
 		Подгрузка прошлых весов (желательно с двух-трёх тренеровок и если веса там одинаковые, то рекомендовать повышение)
 		ПОДХОД
