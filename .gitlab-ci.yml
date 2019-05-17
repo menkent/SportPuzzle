@@ -14,9 +14,8 @@ node_modules:
   environment: Stage
   only:
     - master
-  script:
-    - rm ./package-lock.json
-    - npm install
+  only:
+    - master
 
 build_stage:
   stage: build
@@ -29,3 +28,16 @@ build_stage:
     expire_in: 1 day
     paths:
       - dist/SportPuzzle/
+
+deploy:
+  stage: upload
+  environment: Stage
+  only:
+    - master
+  script:
+    - echo "$SSH_PRIVATE_KEY" > gitlab.key
+    # - ssh -i gitlab.key menkent.dev -- не доделано
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - ssh_key.key
