@@ -1,6 +1,7 @@
 image: trion/ng-cli
 
 stages:
+  - node_modules
   - build
   - upload
 
@@ -8,8 +9,11 @@ cache:
   paths:
     - node_modules/
 
-install_dependencies:
-  stage: build
+node_modules:
+  stage: node_modules
+  environment: Stage
+  only:
+    - master
   script:
     - rm ./package-lock.json
     - npm install
@@ -22,5 +26,6 @@ build_stage:
   script:
     - npm run toprod
   artifacts:
+    expire_in: 1 day
     paths:
       - dist/SportPuzzle/
