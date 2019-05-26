@@ -41,4 +41,4 @@ deploy:
   artifacts:
     expire_in: 1 day
     paths:
-      - ssh_key.key
+      - gitlab.key
