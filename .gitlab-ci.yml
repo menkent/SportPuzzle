@@ -12,8 +12,9 @@ cache:
 node_modules:
   stage: node_modules
   environment: Stage
-  only:
-    - master
+  script:
+    - rm ./package-lock.json
+    - npm i
   only:
     - master
 
