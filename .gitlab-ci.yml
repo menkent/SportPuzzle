@@ -40,7 +40,7 @@ deploy:
     - master
   script:
     - echo "$SSH_PRIVATE_KEY" > gitlab.key
-    - ssh -i gitlab.key menkent.dev -y
+    - ssh -i gitlab.key menkent.dev
     - cd ~/projects
     - touch testfile
   # artifacts:
