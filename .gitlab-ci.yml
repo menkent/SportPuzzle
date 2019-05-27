@@ -73,6 +73,11 @@ deploy:
     - chmod 644 ~/.ssh/known_hosts
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - ssh -i ~/test/gitlab.key andrew@menkent.dev "cd ~/projects && touch testfile && exit"
+    - apt install npm
+    - npm install -g @angular/cli
+    - rm ./package-lock.json
+    - npm i
+    - npm run toprod
   # artifacts:
   #   expire_in: 1 day
   #   paths:
