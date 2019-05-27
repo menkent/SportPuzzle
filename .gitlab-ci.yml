@@ -1,5 +1,5 @@
-# image: trion/ng-cli
-image: ubuntu
+image: trion/ng-cli
+# image: ubuntu
 
 stages:
   # - node_modules
