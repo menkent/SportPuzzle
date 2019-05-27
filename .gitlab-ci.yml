@@ -60,6 +60,7 @@ deploy:
     # - cd ~/projects
     # - touch testfile
     # - ssh andrew@menkent.dev "cd ~/projects && touch testfile && exit"
+    - apt-get update -qq && apt-get install -y -qq ssh
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
