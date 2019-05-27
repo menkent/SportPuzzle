@@ -70,7 +70,7 @@ deploy:
     - chmod 600 ~/test/gitlab.key
     - ssh-keyscan menkent.dev >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
-    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - ssh -i ~/test/gitlab.key andrew@menkent.dev "cd ~/projects && touch testfile && exit"
   # artifacts:
   #   expire_in: 1 day
