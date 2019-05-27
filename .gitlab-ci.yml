@@ -36,13 +36,16 @@ deploy:
   only:
     - master
   script:
-    - apt-get update -qq && apt-get install -y -qq ssh
+    - apt-get update -qq && apt-get install -y -qq ssh rsync
     - mkdir -p ~/.ssh && chmod 700 ~/.ssh
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - cd /home
     - echo "$SSH_PRIVATE_KEY" > gitlab.key
-    - ssh -i gitlab.key andrew@menkent.dev
-    - cd ~/projects
-    - touch testfile
+    # - ssh -i gitlab.key andrew@menkent.dev "cd ~/projects && touch testfile && exit"
+    - touch testfff
+    - rsync -avz -e "ssh -i gitlab.key" /home/ andrew@menkent.dev:/home/andrew/projects/
+    # - cd ~/projects
+    # - touch testfile
   # artifacts:
   #   expire_in: 1 day
   #   paths:
