@@ -1,46 +1,46 @@
 image: trion/ng-cli
 
 stages:
-  - node_modules
-  - build
+  # - node_modules
+  # - build
   - upload
 
-cache:
-  paths:
-    - node_modules/
+# cache:
+#   paths:
+#     - node_modules/
 
-before_script:
-  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
-  - eval $(ssh-agent -s)
-  - echo "$SSH_PRIVATE_FILE" | tr -d '\r' | ssh-add - > /dev/null
-  - mkdir -p ~/.ssh
-  - chmod 700 ~/.ssh
-  - ssh-keyscan menkent.dev >> ~/.ssh/known_hosts
-  - chmod 644 ~/.ssh/known_hosts
-  # - echo "$SSH_SERVER_HOSTKEYS" > ~/.ssh/known_hosts'
-  # - chmod 644 ~/.ssh/known_hosts
-  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+# before_script:
+#   - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
+#   - eval $(ssh-agent -s)
+#   - echo "$SSH_PRIVATE_FILE" | tr -d '\r' | ssh-add - > /dev/null
+#   - mkdir -p ~/.ssh
+#   - chmod 700 ~/.ssh
+#   - ssh-keyscan menkent.dev >> ~/.ssh/known_hosts
+#   - chmod 644 ~/.ssh/known_hosts
+#   # - echo "$SSH_SERVER_HOSTKEYS" > ~/.ssh/known_hosts'
+#   # - chmod 644 ~/.ssh/known_hosts
+#   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
-node_modules:
-  stage: node_modules
-  environment: Stage
-  script:
-    - rm ./package-lock.json
-    - npm i
-  only:
-    - master
+# node_modules:
+#   stage: node_modules
+#   environment: Stage
+#   script:
+#     - rm ./package-lock.json
+#     - npm i
+#   only:
+#     - master
 
-build_stage:
-  stage: build
-  environment: Stage
-  only:
-    - master
-  script:
-    - npm run toprod
-  artifacts:
-    expire_in: 1 day
-    paths:
-      - dist/SportPuzzle/
+# build_stage:
+#   stage: build
+#   environment: Stage
+#   only:
+#     - master
+#   script:
+#     - npm run toprod
+#   artifacts:
+#     expire_in: 1 day
+#     paths:
+#       - dist/SportPuzzle/
 
 deploy:
   stage: upload
@@ -58,6 +58,14 @@ deploy:
     # - rsync -avz -e "ssh -i ~/test/gitlab.key" ~/test/ andrew@menkent.dev:/home/andrew/projects/
     # - cd ~/projects
     # - touch testfile
+    # - ssh andrew@menkent.dev "cd ~/projects && touch testfile && exit"
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
+    - eval $(ssh-agent -s)
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan menkent.dev >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - ssh andrew@menkent.dev "cd ~/projects && touch testfile && exit"
   # artifacts:
   #   expire_in: 1 day
