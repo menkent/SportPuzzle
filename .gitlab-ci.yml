@@ -13,9 +13,6 @@ node_modules:
   stage: node_modules
   environment: Stage
   script:
-    - apt-get update -qq && apt-get install -y -qq ssh
-    - mkdir -p ~/.ssh && chmod 700 ~/.ssh
-    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - rm ./package-lock.json
     - npm i
   only:
@@ -39,6 +36,9 @@ deploy:
   only:
     - master
   script:
+    - apt-get update -qq && apt-get install -y -qq ssh
+    - mkdir -p ~/.ssh && chmod 700 ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - echo "$SSH_PRIVATE_KEY" > gitlab.key
     - ssh -i gitlab.key andrew@menkent.dev
     - cd ~/projects
