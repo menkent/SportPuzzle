@@ -9,6 +9,18 @@ cache:
   paths:
     - node_modules/
 
+before_script:
+  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - ssh-keyscan menkent.dev >> ~/.ssh/known_hosts
+  - chmod 644 ~/.ssh/known_hosts
+  # - echo "$SSH_SERVER_HOSTKEYS" > ~/.ssh/known_hosts'
+  # - chmod 644 ~/.ssh/known_hosts
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+
 node_modules:
   stage: node_modules
   environment: Stage
@@ -36,16 +48,17 @@ deploy:
   only:
     - master
   script:
-    - apt-get update -qq && apt-get install -y -qq ssh rsync
-    - mkdir -p ~/.ssh && chmod 700 ~/.ssh
-    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-    - mkdir -p ~/test && chmod 700 ~/test
-    - echo "$SSH_PRIVATE_KEY" > ~/test/gitlab.key
+    # - apt-get update -qq && apt-get install -y -qq ssh rsync
+    # - mkdir -p ~/.ssh && chmod 700 ~/.ssh
+    # - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    # - mkdir -p ~/test && chmod 700 ~/test
+    # - echo "$SSH_PRIVATE_KEY" > ~/test/gitlab.key
     # - ssh -i gitlab.key andrew@menkent.dev "cd ~/projects && touch testfile && exit"
-    - touch ~/test/testfff
-    - rsync -avz -e "ssh -i ~/test/gitlab.key" ~/test/ andrew@menkent.dev:/home/andrew/projects/
+    # - touch ~/test/testfff
+    # - rsync -avz -e "ssh -i ~/test/gitlab.key" ~/test/ andrew@menkent.dev:/home/andrew/projects/
     # - cd ~/projects
     # - touch testfile
+    - ssh andrew@menkent.dev "cd ~/projects && touch testfile && exit"
   # artifacts:
   #   expire_in: 1 day
   #   paths:
