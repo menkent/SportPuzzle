@@ -1,47 +1,49 @@
-# image: trion/ng-cli
 image: ubuntu
 
 stages:
-  # - node_modules
-  # - build
+  - node_modules
+  - build
   - upload
 
-# cache:
-#   paths:
-#     - node_modules/
+cache:
+  paths:
+    - node_modules/
 
-# before_script:
-#   - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
-#   - eval $(ssh-agent -s)
-#   - echo "$SSH_PRIVATE_FILE" | tr -d '\r' | ssh-add - > /dev/null
-#   - mkdir -p ~/.ssh
-#   - chmod 700 ~/.ssh
-#   - ssh-keyscan menkent.dev >> ~/.ssh/known_hosts
-#   - chmod 644 ~/.ssh/known_hosts
-#   # - echo "$SSH_SERVER_HOSTKEYS" > ~/.ssh/known_hosts'
-#   # - chmod 644 ~/.ssh/known_hosts
-#   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+before_script:
+  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
+  - eval $(ssh-agent -s)
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - chmod 755 ~/.ssh
+  - mkdir -p ~/test
+  - echo "${SSH_PRIVATE_KEY}" > ~/test/gitlab.key
+  - chmod 600 ~/test/gitlab.key
+  - ssh-keyscan menkent.dev >> ~/.ssh/known_hosts
+  - chmod 644 ~/.ssh/known_hosts
+  - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+  - apt install npm -y -qq
+  - npm install -g @angular/cli -y -qq
 
-# node_modules:
-#   stage: node_modules
-#   environment: Stage
-#   script:
-#     - rm ./package-lock.json
-#     - npm i
-#   only:
-#     - master
+node_modules:
+  stage: node_modules
+  environment: Stage
+  script:
+    - rm ./package-lock.json
+    - npm i
+  only:
+    - master
 
-# build_stage:
-#   stage: build
-#   environment: Stage
-#   only:
-#     - master
-#   script:
-#     - npm run toprod
-#   artifacts:
-#     expire_in: 1 day
-#     paths:
-#       - dist/SportPuzzle/
+build_stage:
+  stage: build
+  environment: Stage
+  only:
+    - master
+  script:
+    - npm run toprod
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - dist/SportPuzzle/
 
 deploy:
   stage: upload
@@ -49,38 +51,12 @@ deploy:
   only:
     - master
   script:
-    # - apt-get update -qq && apt-get install -y -qq ssh rsync
-    # - mkdir -p ~/.ssh && chmod 700 ~/.ssh
-    # - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-    # - mkdir -p ~/test && chmod 700 ~/test
-    # - echo "$SSH_PRIVATE_KEY" > ~/test/gitlab.key
-    # - ssh -i gitlab.key andrew@menkent.dev "cd ~/projects && touch testfile && exit"
-    # - touch ~/test/testfff
-    # - rsync -avz -e "ssh -i ~/test/gitlab.key" ~/test/ andrew@menkent.dev:/home/andrew/projects/
-    # - cd ~/projects
-    # - touch testfile
-    # - ssh andrew@menkent.dev "cd ~/projects && touch testfile && exit"
-    # - apt-get update -qq && apt-get install -y -qq ssh
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
-    - eval $(ssh-agent -s)
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - chmod 755 ~/.ssh
-    - mkdir -p ~/test
-    - echo "${SSH_PRIVATE_KEY}" > ~/test/gitlab.key
-    - chmod 600 ~/test/gitlab.key
-    - ssh-keyscan menkent.dev >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-    - ssh -i ~/test/gitlab.key andrew@menkent.dev "cd ~/projects && touch testfile && exit"
-    - apt install npm -y -qq
-    - npm install -g @angular/cli -y -qq
-    - rm ./package-lock.json
-    - npm i
-    - npm run toprod
+    # Пример команды через ssh
+    # - ssh -i ~/test/gitlab.key andrew@menkent.dev "cd ~/projects && touch testfile && exit"
+    # нужно удалить папку, прежде чем копировать новую туда
+    - ssh -i ~/test/gitlab.key andrew@menkent.dev "cd ~/projects/nginx/src && rm -rf dist && exit"
+    # копирование файлов
     - scp -i ~/test/gitlab.key -r dist/ andrew@menkent.dev:/home/andrew/projects/nginx/src/
+    # нужно сделать настройки для сабдомена nginx, затем так же копировать их в нужную папку
+    # todo: нужно вызвать какой-то restart.nginx.sh для добавления и обновления сабдоменов
     - echo 'Build copied to server'
-  # artifacts:
-  #   expire_in: 1 day
-  #   paths:
-  #     - gitlab.key
