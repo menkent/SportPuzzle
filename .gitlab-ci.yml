@@ -21,13 +21,13 @@ before_script:
   - ssh-keyscan menkent.dev >> ~/.ssh/known_hosts
   - chmod 644 ~/.ssh/known_hosts
   - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-  - apt install npm -y -qq
-  - npm install -g @angular/cli -y -qq
 
 node_modules:
   stage: node_modules
   environment: Stage
   script:
+    - apt install npm -y -qq
+    - npm install -g @angular/cli -y -qq
     - rm ./package-lock.json
     - npm i
   only:
