@@ -48,6 +48,6 @@ deploy:
     # нужно сделать настройки для сабдомена nginx, затем так же копировать их в нужную папку
     - scp -i ~/test/gitlab.key deploy-info/nginx-sportpuzzle.conf andrew@menkent.dev:/home/andrew/projects/nginx/config/subdomains/
     # нужно вызвать какой-то restart.nginx.sh для добавления и обновления сабдоменов
-    - ssh -i ~/test/gitlab.key andrew@menkent.dev "bash ~/projects/nginx/restart.sh && exit"
+    - ssh -i ~/test/gitlab.key andrew@menkent.dev "cd ~/projects/nginx && bash restart.sh && exit"
     # Удачное завершение deploy
     - echo 'Build copied to server'
