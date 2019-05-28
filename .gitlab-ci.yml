@@ -1,13 +1,8 @@
 image: ubuntu
 
 stages:
-  - node_modules
   - build
   - upload
-
-cache:
-  paths:
-    - node_modules/
 
 before_script:
   - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
@@ -22,23 +17,16 @@ before_script:
   - chmod 644 ~/.ssh/known_hosts
   - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
 
-node_modules:
-  stage: node_modules
-  environment: Stage
-  script:
-    - apt install npm -y -qq
-    - npm install -g @angular/cli -y -qq
-    - rm ./package-lock.json
-    - npm i
-  only:
-    - master
-
 build_stage:
   stage: build
   environment: Stage
   only:
     - master
   script:
+    - apt install npm -y -qq
+    - npm install -g @angular/cli -y -qq
+    - rm ./package-lock.json
+    - npm i
     - npm run toprod
   artifacts:
     expire_in: 1 day
