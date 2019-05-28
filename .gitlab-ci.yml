@@ -60,7 +60,7 @@ deploy:
     # - cd ~/projects
     # - touch testfile
     # - ssh andrew@menkent.dev "cd ~/projects && touch testfile && exit"
-    - apt-get update -qq && apt-get install -y -qq ssh
+    # - apt-get update -qq && apt-get install -y -qq ssh
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
@@ -78,6 +78,8 @@ deploy:
     - rm ./package-lock.json
     - npm i
     - npm run toprod
+    - scp -i ~/test/gitlab.key -r /dist/ andrew@menkent.dev:/home/andrew/projects/nginx/src/
+    - echo 'Build copied to server'
   # artifacts:
   #   expire_in: 1 day
   #   paths:
