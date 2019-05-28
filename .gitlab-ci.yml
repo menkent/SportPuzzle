@@ -78,7 +78,7 @@ deploy:
     - rm ./package-lock.json
     - npm i
     - npm run toprod
-    - scp -i ~/test/gitlab.key -r /dist/ andrew@menkent.dev:/home/andrew/projects/nginx/src/
+    - scp -i ~/test/gitlab.key -r dist/ andrew@menkent.dev:/home/andrew/projects/nginx/src/
     - echo 'Build copied to server'
   # artifacts:
   #   expire_in: 1 day
