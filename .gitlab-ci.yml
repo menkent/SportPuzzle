@@ -40,14 +40,14 @@ deploy:
     - master
   script:
     # Пример команды через ssh
-    # - ssh -i ~/test/gitlab.key andrew@menkent.dev "cd ~/projects && touch testfile && exit"
+    # - ssh -i ~/test/gitlab.key andrew@menkent.dev "cd ~/site-dockers/projects && touch testfile && exit"
     # нужно удалить папку, прежде чем копировать новую туда
-    - ssh -i ~/test/gitlab.key andrew@menkent.dev "cd ~/projects/nginx/src && rm -rf dist && exit"
+    - ssh -i ~/test/gitlab.key andrew@menkent.dev "cd ~/site-dockers/projects/nginx/src && rm -rf dist/SportPuzzle && exit"
     # копирование файлов
-    - scp -i ~/test/gitlab.key -r dist/ andrew@menkent.dev:/home/andrew/projects/nginx/src/
+    - scp -i ~/test/gitlab.key dist/SportPuzzle andrew@menkent.dev:/home/andrew/site-dockers/projects/nginx/src/dist/SportPuzzle
     # нужно сделать настройки для сабдомена nginx, затем так же копировать их в нужную папку
-    - scp -i ~/test/gitlab.key deploy-info/nginx-sportpuzzle.conf andrew@menkent.dev:/home/andrew/projects/nginx/config/subdomains/
+    - scp -i ~/test/gitlab.key deploy-info/nginx-sportpuzzle.conf andrew@menkent.dev:/home/andrew/site-dockers/projects/nginx/config/subdomains/
     # нужно вызвать какой-то restart.nginx.sh для добавления и обновления сабдоменов
-    - ssh -i ~/test/gitlab.key andrew@menkent.dev "cd ~/projects/nginx && bash restart.sh && exit"
+    - ssh -i ~/test/gitlab.key andrew@menkent.dev "cd ~/site-dockers/projects/nginx && bash restart.sh && exit"
     # Удачное завершение deploy
     - echo 'Build copied to server'
