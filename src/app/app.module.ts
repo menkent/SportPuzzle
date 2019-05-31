@@ -9,6 +9,8 @@ import { MatCardModule, MatMenuModule, MatIconModule, MatButtonModule,
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SportCommonModule } from './sport-common/sport-common.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,7 @@ import { SportCommonModule } from './sport-common/sport-common.module';
     MatIconModule,
     MatButtonModule,
     MatToolbarModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   // exports: [...modules],
   providers: [],
