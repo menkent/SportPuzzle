@@ -5,7 +5,10 @@ import { StatsRoutingModule } from './stats-routing.module';
 import { MainStatsComponent } from './main-stats/main-stats.component';
 import { StatTrainingComponent } from './stat-training/stat-training.component';
 import { FormsModule } from '@angular/forms';
-import { MatButtonModule, MatButtonToggleModule, MatDividerModule, MatIconModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [MainStatsComponent, StatTrainingComponent],

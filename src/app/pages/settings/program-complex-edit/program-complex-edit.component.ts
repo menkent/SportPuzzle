@@ -16,7 +16,7 @@ import { ProtoTraining } from '@app/classes/proto-training';
 export class ProgramComplexEditComponent implements OnInit {
 
   programComplex: ProgramComplex = null;
-  @ViewChild(NgForm) f;
+  @ViewChild(NgForm, { static: false }) f;
 
   constructor(
     private route: ActivatedRoute,

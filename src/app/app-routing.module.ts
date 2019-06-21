@@ -6,17 +6,17 @@ import { AuthorizationComponent } from './sport-common/authorization/authorizati
 const routes: Routes = [
   {
     path: "",
-    loadChildren: "../app/pages/training/training.module#TrainingModule",
+    loadChildren: () => import('../app/pages/training/training.module').then(m => m.TrainingModule),
     canActivate: [AuthorizationGuard], 
   },
   {
     path: "settings",
-    loadChildren: "../app/pages/settings/settings.module#SettingsModule",
+    loadChildren: () => import('../app/pages/settings/settings.module').then(m => m.SettingsModule),
     canActivate: [AuthorizationGuard], 
   },
   {
     path: "stats",
-    loadChildren: "../app/pages/stats/stats.module#StatsModule",
+    loadChildren: () => import('../app/pages/stats/stats.module').then(m => m.StatsModule),
     canActivate: [AuthorizationGuard], 
   },
   {

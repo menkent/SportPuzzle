@@ -15,7 +15,7 @@ import { NgForm } from '@angular/forms';
 export class ExerciseEditComponent implements OnInit {
 
   exercise: ProtoExercise = null;
-  @ViewChild(NgForm) f;
+  @ViewChild(NgForm, { static: false }) f;
   public canSave = false;
 
   constructor(
