@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
 import { UserInfoService } from 'src/app/services/user-info.service';
-import { Route } from '@angular/compiler/src/core';
 import { Router } from '@angular/router';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-authorization',

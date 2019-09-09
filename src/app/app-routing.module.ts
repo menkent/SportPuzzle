@@ -5,19 +5,19 @@ import { AuthorizationComponent } from './sport-common/authorization/authorizati
 
 const routes: Routes = [
   {
-    path: "",
+    path: '',
     loadChildren: () => import('../app/pages/training/training.module').then(m => m.TrainingModule),
-    canActivate: [AuthorizationGuard], 
+    canActivate: [AuthorizationGuard],
   },
   {
-    path: "settings",
+    path: 'settings',
     loadChildren: () => import('../app/pages/settings/settings.module').then(m => m.SettingsModule),
-    canActivate: [AuthorizationGuard], 
+    canActivate: [AuthorizationGuard],
   },
   {
-    path: "stats",
+    path: 'stats',
     loadChildren: () => import('../app/pages/stats/stats.module').then(m => m.StatsModule),
-    canActivate: [AuthorizationGuard], 
+    canActivate: [AuthorizationGuard],
   },
   {
     path: 'login',
