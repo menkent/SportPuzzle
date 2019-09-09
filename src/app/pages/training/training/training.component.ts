@@ -1,23 +1,22 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProtoTraining } from 'src/app/classes/proto-training';
 import { Training } from 'src/app/classes/training';
 import { ProgramsService } from 'src/app/services/programs.service';
-import { mergeMap, concat, merge, map, filter, tap, combineLatest, zipAll, switchMap, takeUntil } from 'rxjs/operators';
-import { MatDialog } from '@angular/material/dialog';
+import { mergeMap, map, filter, tap, combineLatest, switchMap, takeUntil } from 'rxjs/operators';
 import { MatVerticalStepper } from '@angular/material/stepper';
 import { Exercise } from 'src/app/classes/exercise';
 import { ProtoExercise } from 'src/app/classes/proto-exercise';
 import { MyTry } from 'src/app/classes/my-try';
 import { DialogInfoService } from 'src/app/sport-common/dialog-info.service';
-import { of, forkJoin, BehaviorSubject, Observable, Subject } from 'rxjs';
+import { of, BehaviorSubject, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-training',
   templateUrl: './training.component.html',
   styleUrls: ['./training.component.scss']
 })
-export class TrainingComponent implements OnInit, OnDestroy {
+export class TrainingComponent implements OnDestroy {
 
   onDestroy$ = new Subject<void>();
   prevTraining: Training = null;
@@ -67,7 +66,9 @@ export class TrainingComponent implements OnInit, OnDestroy {
     private router: Router,
     private programService: ProgramsService,
     private dialogInfo: DialogInfoService
-    ) { }
+    ) {
+      this.initData();
+    }
 
   private _createNewTraining() {
     const training = new Training({
@@ -141,8 +142,7 @@ export class TrainingComponent implements OnInit, OnDestroy {
       );
   }
 
-  ngOnInit() {
-    // todo: реализвать через merge или forkJoin, чтобы все обсёрваблы сразу выполнились
+  initData() {
     of(null).pipe(
       combineLatest(
         this.programService.getProgramComplex(),

@@ -13,16 +13,13 @@ import { ProtoTraining } from 'src/app/classes/proto-training';
   templateUrl: './programs-complex.component.html',
   styleUrls: ['./programs-complex.component.scss']
 })
-export class ProgramsComplexComponent implements OnInit {
+export class ProgramsComplexComponent {
 
   programComplexes: ProgramComplex[] = [];
   lastTrainings: Training[] = [];
   isLoaded = false;
 
   constructor(private programsService: ProgramsService, private router: Router) {
-  }
-
-  ngOnInit() {
     this.programsService.getProgramComplex().pipe(
       switchMap(res => {
         this.programComplexes = res.programComplexes;
