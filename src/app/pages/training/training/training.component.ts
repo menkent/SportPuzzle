@@ -44,9 +44,6 @@ export class TrainingComponent implements OnDestroy {
   public set protoExercises(value: ProtoExercise[]) {
     this._protoExercises.next(value);
   }
-
-  @ViewChild(MatVerticalStepper, { static: false }) stepper: MatVerticalStepper;
-
   getTrainingDate() {
     const d = this.training.date;
     return d ? new Date(d) : new Date();

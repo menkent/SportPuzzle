@@ -77,77 +77,75 @@
         </mat-step>
 
         <!-- УПРАЖНЕНИЯ -->
-        <ng-container *ngFor="let exercise of training.exercises; let last = last; let index = index;">
-            <mat-step [completed]="exercise.isCompleted">
-                <ng-template matStepLabel>
-                    <div class="exercise-label-wrapper">
-                      <div class="exercise-label-name">{{ exercise.name }}</div>
-                    </div>
-                </ng-template>
-
-                <div class="row exercise-label-icons">
-                    <button mat-icon-button (click)="$event.stopPropagation()" [matMenuTriggerFor]="menu">
-                        <mat-icon>swap_horiz</mat-icon>
-                    </button>
-                    <mat-menu #menu="matMenu" style="display: none;">
-                        <button mat-menu-item *ngFor="let protoExercise of (programService.exercises$ | async)">
-                          <span (click)="swapProtoExercise(exercise, protoExercise)">{{ protoExercise.name }}</span>
-                        </button>
-                    </mat-menu>
-
-                    <button mat-icon-button
-                            *ngIf="exercise.description"
-                            (click)="openHelpDialogExercise(exercise.protoLink, $event);"
-                    >
-                        <mat-icon>error_outline</mat-icon>
-                    </button>
-                    <button mat-icon-button
-                            *ngIf="exercise.protoLink.videoLink"
-                            (click)="openVideoLinkExercise(exercise.protoLink, $event)">
-                        <mat-icon>videocam</mat-icon>
-                    </button>
-
-                    <button mat-icon-button
-                            (click)="deleteExercise(exercise)">
-                        <mat-icon>delete</mat-icon>
-                    </button>
+        <mat-step [completed]="exercise.isCompleted" *ngFor="let exercise of training.exercises">
+            <ng-template matStepLabel>
+                <div class="exercise-label-wrapper">
+                  <div class="exercise-label-name">{{ exercise.name }}</div>
                 </div>
+            </ng-template>
 
-                <!-- Подходы из прошлой тренеровки -->
-                <div class="row" *ngIf="getPrevExercise(exercise.protoLink)">
-                  <div class="col-10 sub-header" innerHTML="{{ getPrevExercise(exercise.protoLink) }}"></div>
-                  <div class="col-2">
-                      <mat-icon (click)="userPrevExercise(exercise.protoLink)">vertical_align_bottom</mat-icon>
-                  </div>
-                </div>
+            <div class="row exercise-label-icons">
+                <button mat-icon-button (click)="$event.stopPropagation()" [matMenuTriggerFor]="menu">
+                    <mat-icon>swap_horiz</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu" style="display: none;">
+                    <button mat-menu-item *ngFor="let protoExercise of (programService.exercises$ | async)">
+                      <span (click)="swapProtoExercise(exercise, protoExercise)">{{ protoExercise.name }}</span>
+                    </button>
+                </mat-menu>
 
-                <!-- список подходов, кнопка добавления подхода. По завершению этого - нужно убрать пустые подходы -->
-                <div class="row">
-                  <ng-container *ngFor="let oneTry of exercise.tryes; let index = index;">
-                    <app-my-try 
-                      [namespace]="oneTry"
-                    ></app-my-try>
-                  </ng-container>
-                </div>  
-        
-                <!-- Кнопки -->
-                <div class="row btns-row">
-                  <button mat-fab color="basic" class="add-try-btn"
-                    (click)="addNewTry(exercise)"
-                  >
-                    <mat-icon>add</mat-icon>
-                  </button>
+                <button mat-icon-button
+                        *ngIf="exercise.description"
+                        (click)="openHelpDialogExercise(exercise.protoLink, $event);"
+                >
+                    <mat-icon>error_outline</mat-icon>
+                </button>
+                <button mat-icon-button
+                        *ngIf="exercise.protoLink.videoLink"
+                        (click)="openVideoLinkExercise(exercise.protoLink, $event)">
+                    <mat-icon>videocam</mat-icon>
+                </button>
 
-                  <!-- <button mat-fab color="primary" (click)="add_comment = true;">
-                    <mat-icon>add_comment</mat-icon>
-                  </button> -->
-                
-                  <button mat-fab matStepperNext color="primary">
-                      <mat-icon>arrow_forward</mat-icon>
-                  </button>
-                </div>
-            </mat-step>
-        </ng-container>
+                <button mat-icon-button
+                        (click)="deleteExercise(exercise)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+
+            <!-- Подходы из прошлой тренеровки -->
+            <div class="row" *ngIf="getPrevExercise(exercise.protoLink)">
+              <div class="col-10 sub-header" innerHTML="{{ getPrevExercise(exercise.protoLink) }}"></div>
+              <div class="col-2">
+                  <mat-icon (click)="userPrevExercise(exercise.protoLink)">vertical_align_bottom</mat-icon>
+              </div>
+            </div>
+
+            <!-- список подходов, кнопка добавления подхода. По завершению этого - нужно убрать пустые подходы -->
+            <div class="row">
+              <ng-container *ngFor="let oneTry of exercise.tryes">
+                <app-my-try 
+                  [namespace]="oneTry"
+                ></app-my-try>
+              </ng-container>
+            </div>  
+    
+            <!-- Кнопки -->
+            <div class="row btns-row">
+              <button mat-fab color="basic" class="add-try-btn"
+                (click)="addNewTry(exercise)"
+              >
+                <mat-icon>add</mat-icon>
+              </button>
+
+              <!-- <button mat-fab color="primary" (click)="add_comment = true;">
+                <mat-icon>add_comment</mat-icon>
+              </button> -->
+            
+              <button mat-fab matStepperNext color="primary">
+                  <mat-icon>arrow_forward</mat-icon>
+              </button>
+            </div>
+        </mat-step>
 
         <mat-step>
             <ng-template matStepLabel>Растяжка</ng-template>
