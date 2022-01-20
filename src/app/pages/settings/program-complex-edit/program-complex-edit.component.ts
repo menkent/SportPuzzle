@@ -67,6 +67,11 @@ export class ProgramComplexEditComponent implements OnInit {
     }
   }
 
+  updateTraining(prt: ProtoTraining) {
+    const index = this.programComplex.protoTrainings.findIndex(e => e === prt);
+    this.programComplex.protoTrainings[index] = prt;
+  }
+
   addTrainig() {
     this.programComplex.protoTrainings.push(new ProtoTraining({
       id: this.programService.generateId(),

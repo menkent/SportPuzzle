@@ -19,8 +19,7 @@ export class ProgramsService {
   private isLoadExercisesForUser: string = '';
 
   get programComplexes(): ProgramComplex[] {
-    const user = this.userInfo.user;
-    return user && user.programComplexes || [];
+    return this.userInfo?.user?.programComplexes || [];
   }
 
   set programComplexes(value: ProgramComplex[]) {

@@ -25,6 +25,7 @@ export class ProtoTrainigEditComponent implements OnInit {
 
   protoExercises: ProtoExercise[] = [];
   @Output() deleteTraining: EventEmitter<any> = new EventEmitter();
+  @Output() updateTraining: EventEmitter<any> = new EventEmitter();
 
   constructor(private programServise: ProgramsService, private dialog: DialogInfoService) { }
 
@@ -45,8 +46,10 @@ export class ProtoTrainigEditComponent implements OnInit {
   }
 
   selectionChange({value}, index) {
-    // console.log('selectionChange::', value);
-    this.getExerciseById(value).subscribe(res => this.namespace.exercises[index] = new ProtoExercise(res.toMap()));
+    this.getExerciseById(value).subscribe(res => {
+      this.namespace.exercises[index] = new ProtoExercise(res.toMap());
+      this.updateTraining.emit(this.namespace);
+    });
   }
 
   getExerciseById(id: string) {

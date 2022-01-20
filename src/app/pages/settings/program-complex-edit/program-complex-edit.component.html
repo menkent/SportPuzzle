@@ -9,11 +9,12 @@
           <input matInput type="text" placeholder="comment" name="comment" [(ngModel)]="programComplex.comment">
       </mat-form-field>
       <mat-divider></mat-divider>
-      <ng-container *ngFor="let training of programComplex.protoTrainings">
+      <ng-container *ngFor="let training of programComplex.protoTrainings; let index = index;">
         <div class="col-12">
           <app-proto-trainig-edit
             [namespace]="training"
             (deleteTraining)="deleteTraining($event)"
+            (updateTraining)="updateTraining($event)"
           ></app-proto-trainig-edit>
         </div>
       </ng-container>

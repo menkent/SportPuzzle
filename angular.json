@@ -45,7 +45,7 @@
               ],
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
+              "sourceMap": true,
               "extractCss": true,
               "namedChunks": false,
               "aot": true,
@@ -61,6 +61,14 @@
               ],
               "serviceWorker": true,
               "ngswConfigPath": "src/ngsw-config.json"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
             }
           }
         },
@@ -73,8 +81,12 @@
           "configurations": {
             "production": {
               "browserTarget": "SportPuzzle:build:production"
+            },
+            "development": {
+              "browserTarget": "SportPuzzle:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
