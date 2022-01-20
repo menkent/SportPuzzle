@@ -3,7 +3,7 @@ import { ProgramsService } from 'src/app/services/programs.service';
 import { ProgramComplex } from 'src/app/classes/program-complex';
 import { Router } from '@angular/router';
 import { FlatTreeControl, NestedTreeControl } from '@angular/cdk/tree';
-import { MatTreeFlattener, MatTreeFlatDataSource, MatTreeNestedDataSource } from '@angular/material';
+import { MatTreeNestedDataSource, MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { switchMap } from 'rxjs/operators';
 import { Training } from 'src/app/classes/training';
 import { ProtoTraining } from 'src/app/classes/proto-training';

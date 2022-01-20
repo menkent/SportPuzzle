@@ -4,7 +4,7 @@ import { ProtoTraining } from 'src/app/classes/proto-training';
 import { Training } from 'src/app/classes/training';
 import { ProgramsService } from 'src/app/services/programs.service';
 import { mergeMap, concat, merge, map, filter, tap, combineLatest, zipAll, switchMap, takeUntil } from 'rxjs/operators';
-import { MatVerticalStepper, MatDialog } from '@angular/material';
+import { MatStepper } from '@angular/material/stepper';
 import { Exercise } from 'src/app/classes/exercise';
 import { ProtoExercise } from 'src/app/classes/proto-exercise';
 import { MyTry } from 'src/app/classes/my-try';
@@ -45,7 +45,7 @@ export class TrainingComponent implements OnInit, OnDestroy {
     this._protoExercises.next(value);
   }
 
-  @ViewChild(MatVerticalStepper) stepper: MatVerticalStepper;
+  @ViewChild(MatStepper) stepper: MatStepper;
 
   getTrainingDate() {
     const d = this.training.date;
