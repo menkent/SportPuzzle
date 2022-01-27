@@ -28,7 +28,7 @@ build_stage:
     - master
   script:
     # - DEBIAN_FRONTEND=noninteractive apt install -y nodejs npm
-    - apt install npm -y -qq
+    # - apt install npm -y -qq
     - npm install -g @angular/cli -y -qq
   # - rm ./package-lock.json
     - npm i
