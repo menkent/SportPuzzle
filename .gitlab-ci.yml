@@ -49,6 +49,8 @@ deploy:
     # - ssh -i ~/test/gitlab.key andrew@menkent.dev "cd ~/site-dockers/projects && touch testfile && exit"
     # нужно удалить папку, прежде чем копировать новую туда
     - ssh -i ~/test/gitlab.key andrew@menkent.dev "cd ~/site-dockers/projects/nginx/src && rm -rf dist/SportPuzzle && exit"
+    # создание папки
+    - ssh -i ~/test/gitlab.key andrew@menkent.dev "cd ~/site-dockers/projects/nginx/src/dist && mkdir SportPuzzle && exit"
     # копирование файлов
     - scp -i ~/test/gitlab.key -r dist/SportPuzzle andrew@menkent.dev:/home/andrew/site-dockers/projects/nginx/src/dist/SportPuzzle
     # нужно сделать настройки для сабдомена nginx, затем так же копировать их в нужную папку
