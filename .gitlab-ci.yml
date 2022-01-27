@@ -5,7 +5,9 @@ stages:
   - upload
 
 before_script:
-  - DEBIAN_FRONTEND=noninteractive apt-get update
+  - ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime
+  - apt-get install -y tzdata
+  - dpkg-reconfigure --frontend noninteractive tzdata
   - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
   - eval $(ssh-agent -s)
   - mkdir -p ~/.ssh
@@ -24,6 +26,7 @@ build_stage:
   only:
     - master
   script:
+    - DEBIAN_FRONTEND=noninteractive apt install -y nodejs npm
     - apt install npm -y -qq
     - npm install -g @angular/cli -y -qq
     - rm ./package-lock.json
@@ -40,6 +43,7 @@ deploy:
   only:
     - master
   script:
+    - DEBIAN_FRONTEND=noninteractive apt install -y nodejs npm
     # Пример команды через ssh
     # - ssh -i ~/test/gitlab.key andrew@menkent.dev "cd ~/site-dockers/projects && touch testfile && exit"
     # нужно удалить папку, прежде чем копировать новую туда
