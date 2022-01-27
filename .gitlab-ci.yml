@@ -30,7 +30,7 @@ build_stage:
     - DEBIAN_FRONTEND=noninteractive apt install -y nodejs npm
     - apt install npm -y -qq
     - npm install -g @angular/cli -y -qq
-    - rm ./package-lock.json
+  # - rm ./package-lock.json
     - npm i
     - npm run toprod
   artifacts:
