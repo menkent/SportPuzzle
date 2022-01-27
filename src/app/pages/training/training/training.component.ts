@@ -3,7 +3,7 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { ProtoTraining } from 'src/app/classes/proto-training';
 import { Training } from 'src/app/classes/training';
 import { ProgramsService } from 'src/app/services/programs.service';
-import { mergeMap, concat, merge, map, filter, tap, combineLatest, zipAll, switchMap, takeUntil } from 'rxjs/operators';
+import { mergeMap, concat, merge, map, filter, tap, combineLatestWith, zipAll, switchMap, takeUntil } from 'rxjs/operators';
 import { MatStepper } from '@angular/material/stepper';
 import { Exercise } from 'src/app/classes/exercise';
 import { ProtoExercise } from 'src/app/classes/proto-exercise';
@@ -66,7 +66,31 @@ export class TrainingComponent implements OnInit, OnDestroy {
     private router: Router,
     private programService: ProgramsService,
     private dialogInfo: DialogInfoService
-    ) { }
+    ) { 
+      // define type of loading training
+      of(null).pipe(
+        combineLatestWith(
+          this.programService.getProgramComplex(),
+          this.route.paramMap,
+          this.route.queryParamMap
+        ),
+        switchMap((value: any, index) => {
+          const params = value[2];
+          const queryParamMap = value[3];
+          const protoid = params.get('protoid');
+          const id = queryParamMap.get('id');
+  
+          if (id) {  // значит это попытка редактирования программы
+            return this._editMode(id);
+          } else if (protoid) { // Попытка создания новой программы или продолжение недавней
+            return this._currentMode(protoid);
+          } else {
+            this.router.navigate(['/']);
+            return of(null);
+          }
+        }),
+      ).subscribe();
+    }
 
   private _createNewTraining() {
     const training = new Training({
@@ -141,30 +165,6 @@ export class TrainingComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // todo: реализвать через merge или forkJoin, чтобы все обсёрваблы сразу выполнились
-    of(null).pipe(
-      combineLatest(
-        this.programService.getProgramComplex(),
-        this.route.paramMap,
-        this.route.queryParamMap
-      ),
-      switchMap((value: any, index) => {
-        const params = value[2];
-        const queryParamMap = value[3];
-        const protoid = params.get('protoid');
-        const id = queryParamMap.get('id');
-
-        if (id) {  // значит это попытка редактирования программы
-          return this._editMode(id);
-        } else if (protoid) { // Попытка создания новой программы или продолжение недавней
-          return this._currentMode(protoid);
-        } else {
-          this.router.navigate(['/']);
-          return of(null);
-        }
-      }),
-    ).subscribe();
-
     // Получение списка последних Упражнений по текущей тренеровке
     this._protoExercises.asObservable().pipe(
       takeUntil(this.onDestroy$),
