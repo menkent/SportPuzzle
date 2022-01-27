@@ -5,7 +5,7 @@ stages:
   - upload
 
 before_script:
-  - DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get -y install tzdata
+  - DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get -y install
   - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
   - eval $(ssh-agent -s)
   - mkdir -p ~/.ssh
